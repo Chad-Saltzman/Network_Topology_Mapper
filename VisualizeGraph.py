@@ -62,7 +62,7 @@ class VisualizeGraph:
         self.devices[nodeMACAddress] = node
 
         # Create the node within the graph
-        self.graphNX.add_node(nodeMACAddress, text = nodeMACAddress, shape = 'image', image = icons[self.devices[mac].deviceType])
+        self.graphNX.add_node(nodeMACAddress, text = nodeMACAddress, shape = 'image', image = icons[self.devices[nodeMACAddress].deviceType])
 
         # Create the edges within the graph
         for neighborMAC in self.devices[nodeMACAddress].neighbors:
