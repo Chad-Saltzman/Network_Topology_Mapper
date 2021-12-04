@@ -5,24 +5,32 @@
 #   Purpose: 
 # -------------------------------------------------------------------
 
+#from IPython.core.display import Image
 from pyvis.network import Network
 import networkx as nx
 from DeviceProperties import Device
 import time
+import json
+
+# Image URLs for graph nodes
+icons = {
+    "Layer2": "icons/NetDiscover_Icon_Desktop.png",
+    "Layer3": "icons/NetDiscover_Icon_FireWall.png"
+}
 
 class VisualizeGraph:
     
     def __init__(self, devices):
         self.devices = devices
         self.graphNX = nx.Graph()
-        self.graphNT = Network(height = 800, width = 800)
+        self.graphNT = Network(height='750px', width='100%', bgcolor='#222222', font_color='white')
         self.createGraph()
 
     def startEditGraph(self):
         self.graphNT.toggle_physics(False)
 
     def endEditGraph(self):
-        self.graphNT = Network(height = 800, width = 800)
+        self.graphNT = Network(height='750px', width='100%', bgcolor='#222222', font_color='white')
         self.graphNT.toggle_physics(False)
         self.graphNT.from_nx(self.graphNX)
         self.graphNT.show('nx.html')
@@ -34,7 +42,7 @@ class VisualizeGraph:
 
         # Create the nodes within the graph
         for mac in self.devices:
-            self.graphNX.add_node(mac, text = mac)
+            self.graphNX.add_node(mac, size = 20, text = mac, shape = 'image', image = icons[self.devices[mac].deviceType])
         
         # Create the edges within the graph
         for mac in self.devices:
@@ -54,7 +62,7 @@ class VisualizeGraph:
         self.devices[nodeMACAddress] = node
 
         # Create the node within the graph
-        self.graphNX.add_node(nodeMACAddress, text = nodeMACAddress)
+        self.graphNX.add_node(nodeMACAddress, text = nodeMACAddress, shape = 'image', image = icons[self.devices[mac].deviceType])
 
         # Create the edges within the graph
         for neighborMAC in self.devices[nodeMACAddress].neighbors:
@@ -88,7 +96,7 @@ class VisualizeGraph:
             self.removeEdge(nodeMACAddress, neighborMAC)
 
         # Remove node from graph
-        self.graphNX.remove_node(node.MACAddress)
+        self.graphNX.remove_node(node.MACAddress,)
 
         # Remove node from devices dictionary
         del self.devices[node.MACAddress]
