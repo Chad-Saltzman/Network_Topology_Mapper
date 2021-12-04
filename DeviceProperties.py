@@ -13,8 +13,14 @@ class Device:
 
         self.MACAddress = MAC
         self.IPAddress = set(self.getIP(packets))
-        self.layer2Protocols = ["LLDP", "CDP", "IP route", "FDB", "ARP", "MLT", "CAN", "PPP"]
-        self.layer3Protocols = ["CLNS", "DDP", "EGP", "EIGRP", "ICMP", "IGMP", "IPsec", "IPV4", "IPV6", "IPX", "OSPF", "PIM", "RIP", "IPv4", "IPv6", "HSRP"]
+        self.switchProtocols = ["LLDP", "CDP", "IP route", "FDB", "ARP", "MLT", "CAN", "PPP"]
+        self.routerProtocols = ["CLNS", "DDP", "EGP", "EIGRP", "ICMP", "IGMP", "IPsec", "IPV4", "IPV6", "IPX", "OSPF", "PIM", "RIP", "IPv4", "IPv6", "HSRP"]
+        self.desktopProtocol = ["HTTP", "DHCP"]
+        self.laptopProtocol = ["802.11", "WPA2", "WPA"]
+        self.IPPhoneProtocol = ["SIP", "VoIP"]
+        self.printerProtocol = ["IPP, LPD"]
+        self.serverProtocol = ["SNMP"]
+        self.firewallProtocol = ["NAT"]
         self.deviceType = self.findDeviceType(packets)
         self.neighbors = self.getNeighbors(packets)
         self.vendor = self.getVendor()
@@ -43,14 +49,23 @@ class Device:
     def findDeviceType(self, packets):
         self.deviceType = None
         for packet in packets:
-            if packet['Protocol'] in self.layer2Protocols and self.deviceType != "Layer3":
-                self.deviceType = "Layer2"
-            elif packet['Protocol'] in self.layer3Protocols:
-                self.deviceType = "Layer3"
-            elif packet['Protocol'] not in self.layer2Protocols or packet['Protocol'] not in self.layer3Protocols and not self.deviceType:
-                self.deviceType = "EndDevice"
+            if packet['Protocol'] in self.switchProtocols and self.deviceType != "Layer3":
+                self.deviceType = "Switch"
+            elif packet['Protocol'] in self.routerProtocols:
+                self.deviceType = "Router"
+            elif packet['Protocol'] in self.firewallProtocol:
+                self.deviceType = "Firewall"
+            elif packet['Protocol'] in self.IPPhoneProtocol:
+                self.deviceType = "IPPhone"
+            elif packet['Protocol'] in self.laptopProtocol:
+                self.deviceType = "Laptop"
+            elif packet['Protocol'] in self.desktopProtocol:
+                self.deviceType = "Desktop"
+            elif packet['Protocol'] in self.printerProtocol:
+                self.deviceType = "Printer"
+            elif packet['Protocol'] in self.serverProtocol:
+                self.deviceType = "Server"
                     
-            
         return self.deviceType
     
     def getVendor(self):
@@ -207,7 +222,7 @@ class BrowserFrame(tk.Frame):
         rect = [0, 0, self.winfo_width(), self.winfo_height()]
         window_info.SetAsChild(self.get_window_handle(), rect)
         self.browser = cef.CreateBrowserSync(window_info,
-                                             url="file:///C:/Users/ChimneySmoke/Documents/VS/Network_Topology_Mapper/nx.html") #todo
+                                             url="file:///H:/Documents/GitHub/Network_Topology_Mapper/nx.html") #todo
         assert self.browser
         self.browser.SetClientHandler(LoadHandler(self))
         self.browser.SetClientHandler(FocusHandler(self))
