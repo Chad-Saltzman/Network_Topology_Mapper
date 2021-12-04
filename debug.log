@@ -1,0 +1,21 @@
+[1203/210504.043:ERROR:gpu_process_transport_factory.cc(1017)] Lost UI shared context.
+[1203/210504.065:ERROR:command_buffer_proxy_impl.cc(133)] ContextResult::kTransientFailure: Failed to send GpuChannelMsg_CreateCommandBuffer.
+[1203/212638.018:ERROR:tcp_socket_win.cc(336)] bind() returned an error: An attempt was made to access a socket in a way forbidden by its access permissions. (0x271D)
+[1203/212638.019:ERROR:devtools_http_handler.cc(292)] Cannot start http server for devtools. Stop devtools.
+[1203/213212.955:ERROR:tcp_socket_win.cc(336)] bind() returned an error: An attempt was made to access a socket in a way forbidden by its access permissions. (0x271D)
+[1203/213212.955:ERROR:devtools_http_handler.cc(292)] Cannot start http server for devtools. Stop devtools.
+[1203/213409.532:ERROR:tcp_socket_win.cc(336)] bind() returned an error: An attempt was made to access a socket in a way forbidden by its access permissions. (0x271D)
+[1203/213409.532:ERROR:devtools_http_handler.cc(292)] Cannot start http server for devtools. Stop devtools.
+[1203/213640.553:ERROR:tcp_socket_win.cc(336)] bind() returned an error: An attempt was made to access a socket in a way forbidden by its access permissions. (0x271D)
+[1203/213640.553:ERROR:devtools_http_handler.cc(292)] Cannot start http server for devtools. Stop devtools.
+[1203/224241.468:ERROR:tcp_socket_win.cc(336)] bind() returned an error: An attempt was made to access a socket in a way forbidden by its access permissions. (0x271D)
+[1203/224241.468:ERROR:devtools_http_handler.cc(292)] Cannot start http server for devtools. Stop devtools.
+[1203/224247.299:ERROR:tcp_socket_win.cc(336)] bind() returned an error: An attempt was made to access a socket in a way forbidden by its access permissions. (0x271D)
+[1203/224247.299:ERROR:devtools_http_handler.cc(292)] Cannot start http server for devtools. Stop devtools.
+[1203/224412.207:ERROR:tcp_socket_win.cc(336)] bind() returned an error: An attempt was made to access a socket in a way forbidden by its access permissions. (0x271D)
+[1203/224412.207:ERROR:devtools_http_handler.cc(292)] Cannot start http server for devtools. Stop devtools.
+[1203/224413.890:ERROR:quota_settings.cc(109)] Unable to compute QuotaSettings.
+[1203/232326.225:ERROR:command_buffer_proxy_impl.cc(133)] ContextResult::kTransientFailure: Failed to send GpuChannelMsg_CreateCommandBuffer.
+[1203/232326.226:ERROR:broker_win.cc(134)] Error sending sync broker message: The pipe is being closed. (0xE8)
+[1203/232329.313:ERROR:tcp_socket_win.cc(336)] bind() returned an error: An attempt was made to access a socket in a way forbidden by its access permissions. (0x271D)
+[1203/232329.314:ERROR:devtools_http_handler.cc(292)] Cannot start http server for devtools. Stop devtools.

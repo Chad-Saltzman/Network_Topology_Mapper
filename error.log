@@ -1,0 +1,12 @@
+
+[2021-12-03 21:04:56] Traceback (most recent call last):
+  File "C:\Users\VMWare WP\Desktop\NetDiscover GUI Elements\Network_Topology_Mapper-RonaldToolbarsButtons\GUIThing.py", line 420, in <module>
+    main()
+  File "C:\Users\VMWare WP\Desktop\NetDiscover GUI Elements\Network_Topology_Mapper-RonaldToolbarsButtons\GUIThing.py", line 51, in main
+    app = MainFrame(root)
+  File "C:\Users\VMWare WP\Desktop\NetDiscover GUI Elements\Network_Topology_Mapper-RonaldToolbarsButtons\GUIThing.py", line 77, in __init__
+    self.setup_icon()
+  File "C:\Users\VMWare WP\Desktop\NetDiscover GUI Elements\Network_Topology_Mapper-RonaldToolbarsButtons\GUIThing.py", line 138, in setup_icon
+    icon_path = os.path.join(resources, "tkinter"+IMAGE_EXT)
+NameError: name 'IMAGE_EXT' is not defined
+
