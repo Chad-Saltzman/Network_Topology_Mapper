@@ -14,61 +14,104 @@ class VisualizeGraph:
     
     def __init__(self, devices):
         self.devices = devices
-        self.graph = Network(height='750px', width='100%', bgcolor='#222222', font_color='white')
+        self.graphNX = nx.Graph()
+        self.graphNT = Network(height = 800, width = 800)
         self.createGraph()
 
     def startEditGraph(self):
-        self.graph.toggle_physics(False)
+        self.graphNT.toggle_physics(False)
 
     def endEditGraph(self):
-        self.graph.show('nx.html')
+        self.graphNT = Network(height = 800, width = 800)
+        self.graphNT.toggle_physics(False)
+        self.graphNT.from_nx(self.graphNX)
+        self.graphNT.show('nx.html')
 
+    # Create graph with class devices
     def createGraph(self):
 
         self.startEditGraph()
 
         # Create the nodes within the graph
         for mac in self.devices:
-            self.graph.add_node(mac, mac, title = mac)
+            self.graphNX.add_node(mac, text = mac)
         
         # Create the edges within the graph
         for mac in self.devices:
-            for neighborMac in self.devices[mac].neighbors:
-                self.graph.add_edge(mac, neighborMac, value = "edge")
+            for neighborMAC in self.devices[mac].neighbors:
+                self.graphNX.add_edge(mac, neighborMAC)
 
         self.endEditGraph()
 
+    # Add node to graph
     def addNode(self, node):
         
         self.startEditGraph()
 
         nodeMACAddress = node.MACAddress
 
-        # Add node to devices
+        # Add node to devices dictionary
         self.devices[nodeMACAddress] = node
 
         # Create the node within the graph
-        self.graph.add_node(nodeMACAddress, nodeMACAddress, title = nodeMACAddress)
+        self.graphNX.add_node(nodeMACAddress, text = nodeMACAddress)
 
         # Create the edges within the graph
-        for neighborMac in self.devices[nodeMACAddress].neighbors:
-            self.graph.add_edge(nodeMACAddress, neighborMac, value = "edge")
+        for neighborMAC in self.devices[nodeMACAddress].neighbors:
+            self.graphNX.add_edge(nodeMACAddress, neighborMAC)
             
         self.endEditGraph()
 
+    # Add node to edge 
     def addEdge(self, startNodeMACAddress, endNodeMACAddress):
         
         self.startEditGraph()
 
-        # Create the edges within the graph
+        # Add new neighbors to nodes
         self.devices[startNodeMACAddress].neighbors.append(endNodeMACAddress)
         self.devices[endNodeMACAddress].neighbors.append(startNodeMACAddress)
 
-        self.graph.add_edge(startNodeMACAddress, endNodeMACAddress, value = "edge")
+        # Create the edge within the graph
+        self.graphNX.add_edge(startNodeMACAddress, endNodeMACAddress)
             
         self.endEditGraph()
 
+    # Remove node in graph
+    def removeNode(self, node):
+        
+        self.startEditGraph()
 
+        nodeMACAddress = node.MACAddress
+
+        # Remove links from graph
+        for neighborMAC in self.devices[nodeMACAddress].neighbors:
+            self.removeEdge(nodeMACAddress, neighborMAC)
+
+        # Remove node from graph
+        self.graphNX.remove_node(node.MACAddress)
+
+        # Remove node from devices dictionary
+        del self.devices[node.MACAddress]
+
+        self.endEditGraph()
+
+    # Remove node in graph
+    def removeEdge(self, startNodeMACAddress, endNodeMACAddress):
+        
+        self.startEditGraph()
+
+        # Remove neighbors from nodes
+        if endNodeMACAddress in self.devices[startNodeMACAddress].neighbors:
+            self.devices[startNodeMACAddress].neighbors.remove(endNodeMACAddress)
+        if startNodeMACAddress in self.devices[endNodeMACAddress].neighbors:
+            self.devices[endNodeMACAddress].neighbors.remove(startNodeMACAddress)
+
+        # Remove edge from graph
+        self.graphNX.remove_edge(startNodeMACAddress, endNodeMACAddress)
+
+        self.endEditGraph()
+
+# Given an input list, return the flattened list
 def flattenList(list):
     return [item for sublist in list for item in sublist]
 
@@ -117,19 +160,28 @@ for i in range(len(MACS)):
         device_packets.append(sample_Packets[index])
     Devices[list(MACS)[i]] = Device(device_packets, list(MACS)[i])
 
-for device in Devices:
-    print(Devices[device])
+#for device in Devices:
+  #  print(Devices[device])
 
-d = Device([{"SourceIP" : "192.168.0.2", "DestinationIP" : "192.168.0.3", "SourceMAC" : "00:10:7b:35:f5:b5", "DestinationMAC" : "00:10:7b:35:f3:c6", "Protocol" : "OSPF"}], "A")
-e = Device([{"SourceIP" : "192.168.0.2", "DestinationIP" : "192.168.0.3", "SourceMAC" : "00:10:7b:35:f5:b5", "DestinationMAC" : "00:10:7b:35:f4:c6", "Protocol" : "OSPF"}], "1")
+d = Device([{"SourceIP" : "192.168.10.11", "DestinationIP" : "192.168.10.12", "SourceMAC" : "00:10:7b:12:34:56", "DestinationMAC" : "3a-ac-1b-1d-c9-05", "Protocol" : "ARP"}], "A")
+e = Device([{"SourceIP" : "192.168.10.11", "DestinationIP" : "192.168.10.12", "SourceMAC" : "00:10:7b:12:34:56", "DestinationMAC" : "3a-ac-1b-1d-c9-05", "Protocol" : "ARP"}], "1")
     
 
 
 vg = VisualizeGraph(Devices)
 
-#vg.addNode(d)
-#vg.addNode(e)
+vg.addNode(d)
+vg.addNode(e)
+vg.addEdge("A", "1")
+time.sleep(1)
+vg.removeNode(d)
+#vg.removeEdge("A", "1")
+#vg.removeNode(d)
+#vg.removeNode(e)
+#vg.removeNode(d)
+
 #vg.addEdge("A", "1")
+#vg.removeEdge("A", "1")
 
 
 #vg.createGraph()
