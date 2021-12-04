@@ -8,62 +8,69 @@
 from pyvis.network import Network
 import networkx as nx
 from DeviceProperties import Device
-
-class Node:
-    def __init(self, connections):
-        self.connections = connections
+import time
 
 class VisualizeGraph:
     
     def __init__(self, devices):
+        self.devices = devices
         self.graph = Network(height='750px', width='100%', bgcolor='#222222', font_color='white')
-        self.createGraph(devices)
+        self.createGraph()
 
     def startEditGraph(self):
-        self.graph.toggle_physics(True)
+        self.graph.toggle_physics(False)
 
     def endEditGraph(self):
-        self.graph.toggle_physics(False)
         self.graph.show('nx.html')
 
-    def createGraph(self, devices):
+    def createGraph(self):
 
         self.startEditGraph()
 
         # Create the nodes within the graph
-        for device in devices:
-            self.graph.add_node(devices[device].id, devices[device].MACAddress, title = devices[device].MACAddress)
-
-            # Create the edges within the graph
-            for neighbor in devices[device].neighbors:
-                self.graph.add_edge(devices[device].id, neighbor.id, value = "edge")
+        for mac in self.devices:
+            self.graph.add_node(mac, mac, title = mac)
+        
+        # Create the edges within the graph
+        for mac in self.devices:
+            for neighborMac in self.devices[mac].neighbors:
+                self.graph.add_edge(mac, neighborMac, value = "edge")
 
         self.endEditGraph()
 
-    def addNode(self, node, connectedNodes):
+    def addNode(self, node):
         
         self.startEditGraph()
+
+        nodeMACAddress = node.MACAddress
+
+        # Add node to devices
+        self.devices[nodeMACAddress] = node
 
         # Create the node within the graph
-        self.graph.add_node(node, node, title = node)
+        self.graph.add_node(nodeMACAddress, nodeMACAddress, title = nodeMACAddress)
 
         # Create the edges within the graph
-        for connectedNode in connectedNodes:
-            self.graph.add_edge(node, connectedNode, value = "edge")
+        for neighborMac in self.devices[nodeMACAddress].neighbors:
+            self.graph.add_edge(nodeMACAddress, neighborMac, value = "edge")
             
         self.endEditGraph()
 
-    def addEdge(self, startNode, endNode):
+    def addEdge(self, startNodeMACAddress, endNodeMACAddress):
         
         self.startEditGraph()
 
         # Create the edges within the graph
-        self.graph.add_edge(startNode, endNode, value = "edge")
+        self.devices[startNodeMACAddress].neighbors.append(endNodeMACAddress)
+        self.devices[endNodeMACAddress].neighbors.append(startNodeMACAddress)
+
+        self.graph.add_edge(startNodeMACAddress, endNodeMACAddress, value = "edge")
             
         self.endEditGraph()
 
 
-
+def flattenList(list):
+    return [item for sublist in list for item in sublist]
 
 
 
@@ -101,6 +108,7 @@ sample_Packets = [
     {"SourceIP" : "192.168.20.21", "DestinationIP" : "192.168.20.24", "SourceMAC" : "00:10:7b:24:68:13", "DestinationMAC" : "89-61-86-23-44-38", "Protocol" : "ARP"},  # Packet from Switch3 to PC0       ##
     {"SourceIP" : "192.168.20.21", "DestinationIP" : "192.168.20.25", "SourceMAC" : "00:10:7b:24:68:13", "DestinationMAC" : "f1-b0-44-37-32-36", "Protocol" : "ARP"},  # Packet from Switch3 to Printer1  ##
 ]
+
 Devices = {}
 MACS = findUniqueMACs(sample_Packets)
 for i in range(len(MACS)):
@@ -108,12 +116,23 @@ for i in range(len(MACS)):
     for index in MACS[list(MACS)[i]]:
         device_packets.append(sample_Packets[index])
     Devices[list(MACS)[i]] = Device(device_packets, list(MACS)[i])
+
 for device in Devices:
     print(Devices[device])
+
+d = Device([{"SourceIP" : "192.168.0.2", "DestinationIP" : "192.168.0.3", "SourceMAC" : "00:10:7b:35:f5:b5", "DestinationMAC" : "00:10:7b:35:f3:c6", "Protocol" : "OSPF"}], "A")
+e = Device([{"SourceIP" : "192.168.0.2", "DestinationIP" : "192.168.0.3", "SourceMAC" : "00:10:7b:35:f5:b5", "DestinationMAC" : "00:10:7b:35:f4:c6", "Protocol" : "OSPF"}], "1")
+    
 
 
 vg = VisualizeGraph(Devices)
 
+#vg.addNode(d)
+#vg.addNode(e)
+#vg.addEdge("A", "1")
+
+
+#vg.createGraph()
 #vg.AddNode("7", ["a", "1"] )
 
 #vg.AddEdge("7", "A")

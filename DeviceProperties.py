@@ -8,11 +8,8 @@ import json
 import itertools
 
 class Device:
-
-    newid = itertools.count()
     
-    def __init__(self, packets, MAC):
-        self.id = next(Device.newid)
+    def __init__(self, packets = None, MAC = None):
 
         self.MACAddress = MAC
         self.IPAddress = set(self.getIP(packets))
@@ -22,9 +19,17 @@ class Device:
         self.neighbors = self.getNeighbors(packets)
         self.vendor = self.getVendor()
         
-    
+    #def __init__(self, MAC, IPAddress, deviceType, neighbors, vendor):
+      #  self.MACAddress = MAC
+      #  self.IPAddress = IPAddress
+      #  self.layer2Protocols = ["LLDP", "CDP", "IP route", "FDB", "ARP", "MLT", "CAN", "PPP"]
+      #  self.layer3Protocols = ["CLNS", "DDP", "EGP", "EIGRP", "ICMP", "IGMP", "IPsec", "IPV4", "IPV6", "IPX", "OSPF", "PIM", "RIP", "IPv4", "IPv6", "HSRP"]
+      #  self.deviceType = deviceType
+      #  self.neighbors = neighbors
+      #  self.vendor = vendor
+
     def __str__(self):
-        return f"{self.id=}\n{self.MACAddress=}\n{self.IPAddress=}\n{self.deviceType=}\n{self.neighbors=}\n{self.vendor=}\n"
+        return f"{self.MACAddress=}\n{self.IPAddress=}\n{self.deviceType=}\n{self.neighbors=}\n{self.vendor=}\n"
 
     def getIP(self, packets):
         IP_Addresses = []
@@ -40,7 +45,7 @@ class Device:
         neighbors = []
         for packet in packets:
             for key in packet:
-                if (key == "DestinationIP" or key == "SourceIP") and packet[key] not in neighbors and packet[key] not in self.IPAddress:
+                if (key == "DestinationMAC" or key == "SourceMAC") and packet[key] not in neighbors and packet[key] not in self.MACAddress:
                     neighbors.append(packet[key])
         return neighbors
 
@@ -60,13 +65,13 @@ class Device:
     def getVendor(self):
         return None
         try:
-            response = requests.get(f"http://www.macvendorlookup.com/api/v2/{self.MACAddress}/json", timeout=1)
+            response = requests.get(f"http://www.macvendorlookup.com/api/v2/%7Bself.MACAddress%7D/json", timeout=1)
+            json_response = json.loads(response.text)
+            return json_response[0]['company']
         except:
-            print("Failed to get vendor")
-            return None
-        json_response = json.loads(response.text)
-        return json_response[0]['company']
-
+            response = requests.get(f"https://api.macvendors.com/%7Bself.MACAddress%7D", timeout=1)
+            return response.text
+            
 class Layer2(Device):
 
     def __init__(self, MAC, packet, IP=""):
