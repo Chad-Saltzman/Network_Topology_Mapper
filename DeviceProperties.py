@@ -18,7 +18,7 @@ class Device:
         self.desktopProtocol = ["HTTP", "DHCP"]
         self.laptopProtocol = ["802.11", "WPA2", "WPA"]
         self.IPPhoneProtocol = ["SIP", "VoIP"]
-        self.printerProtocol = ["IPP, LPD"]
+        self.printerProtocol = ["IPP", "LPD"]
         self.serverProtocol = ["SNMP"]
         self.firewallProtocol = ["NAT"]
         self.deviceType = self.findDeviceType(packets)
@@ -48,24 +48,39 @@ class Device:
 
     def findDeviceType(self, packets):
         self.deviceType = None
+
+        protocols_by_device = [self.routerProtocols, self.switchProtocols, self.firewallProtocol, self.IPPhoneProtocol, self.laptopProtocol, self.desktopProtocol, self.printerProtocol, self.serverProtocol]
         for packet in packets:
-            if packet['Protocol'] in self.switchProtocols and self.deviceType != "Layer3":
-                self.deviceType = "Switch"
-            elif packet['Protocol'] in self.routerProtocols:
-                self.deviceType = "Router"
-            elif packet['Protocol'] in self.firewallProtocol:
-                self.deviceType = "Firewall"
-            elif packet['Protocol'] in self.IPPhoneProtocol:
-                self.deviceType = "IPPhone"
-            elif packet['Protocol'] in self.laptopProtocol:
-                self.deviceType = "Laptop"
-            elif packet['Protocol'] in self.desktopProtocol:
-                self.deviceType = "Desktop"
-            elif packet['Protocol'] in self.printerProtocol:
-                self.deviceType = "Printer"
-            elif packet['Protocol'] in self.serverProtocol:
-                self.deviceType = "Server"
-                    
+            for device_type in protocols_by_device:
+                for protocol in device_type:
+                    if packet['Protocol'] in self.routerProtocols:
+                        self.deviceType = "Router"
+                        return self.deviceType
+                    elif packet['Protocol'] in self.switchProtocols and self.deviceType != "Router":
+                        self.deviceType = "Switch"
+                        return self.deviceType
+                    elif packet['Protocol'] in self.firewallProtocol:
+                        self.deviceType = "Firewall"
+                        return self.deviceType
+                    elif packet['Protocol'] in self.IPPhoneProtocol:
+                        self.deviceType = "IPPhone"
+                        return self.deviceType
+                    elif packet['Protocol'] in self.laptopProtocol:
+                        self.deviceType = "Laptop"
+                        return self.deviceType
+                    elif packet['Protocol'] in self.desktopProtocol:
+                        self.deviceType = "Desktop"
+                        return self.deviceType
+                    elif packet['Protocol'] in self.printerProtocol:
+                        self.deviceType = "Printer"
+                        return self.deviceType
+                    elif packet['Protocol'] in self.serverProtocol:
+                        self.deviceType = "Server"
+                        return self.deviceType
+        print(self.MACAddress)
+        print(packets)  
+        print(self.deviceType)  
+        print("\n\n\n")
         return self.deviceType
     
     def getVendor(self):

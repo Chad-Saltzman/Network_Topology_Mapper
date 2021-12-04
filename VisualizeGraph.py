@@ -14,8 +14,15 @@ import json
 
 # Image URLs for graph nodes
 icons = {
-    "Layer2": "icons/NetDiscover_Icon_Desktop.png",
-    "Layer3": "icons/NetDiscover_Icon_FireWall.png"
+    "Desktop": "icons/NetDiscover_Icon_Desktop.png",
+    "Firewall" : "icons/NetDiscover_Icon_FireWall.png",
+    "Laptop" : "icons/NetDiscover_Icon_Laptop.png",
+    "Router" : "icons/NetDiscover_Icon_Router.png",
+    "Server" : "icons/NetDiscover_Icon_Servers.png",
+    "Switch" : "icons/NetDiscover_Icon_Switch.png",
+    "Printer" : "icons/NetDiscover_Icon_Modem.png",
+    "IPPhone" : "icons/NetDiscover_Icon_Modem.png",
+    
 }
 
 class VisualizeGraph:
@@ -140,7 +147,7 @@ def findUniqueMACs(packets):
             MAC_List[packet["DestinationMAC"]].add(packets.index(packet))
     return MAC_List
 
-#  Hard coded data as an example of what the parsed data from a packet capture would look like.
+#  Hard coded data as an example of what the parsed data from a packet capture would look like. Loop through router first for each protocol
 sample_Packets = [
     {"SourceIP" : "192.168.0.2", "DestinationIP" : "192.168.0.3", "SourceMAC" : "00:10:7b:35:f5:b5", "DestinationMAC" : "00:10:7b:35:f5:c6", "Protocol" : "OSPF"},     # Packet from Router1 to Router2   ##
     {"SourceIP" : "192.168.0.6", "DestinationIP" : "192.168.0.7", "SourceMAC" : "00:10:7b:35:f5:b5", "DestinationMAC" : "00:10:7b:35:f5:d7", "Protocol" : "OSPF"},     # Packet from Router1 to Router3   ##
@@ -156,7 +163,7 @@ sample_Packets = [
     {"SourceIP" : "192.168.20.20", "DestinationIP" : "192.168.20.21", "SourceMAC" : "00:10:7b:35:f5:d7", "DestinationMAC" : "00:10:7b:24:68:13", "Protocol" : "CDP"},  # Packet from Router3 to Switch3   ##
     {"SourceIP" : "192.168.20.21", "DestinationIP" : "192.168.20.22", "SourceMAC" : "00:10:7b:24:68:13", "DestinationMAC" : "1b-95-5b-93-4a-34", "Protocol" : "HTTP"},  # Packet from Switch3 to PC1       ##
     {"SourceIP" : "192.168.20.21", "DestinationIP" : "192.168.20.23", "SourceMAC" : "00:10:7b:24:68:13", "DestinationMAC" : "9e-a9-c9-a6-e4-99", "Protocol" : "VoIP"},  # Packet from Switch3 to IP Phone0 ##
-    {"SourceIP" : "192.168.20.21", "DestinationIP" : "192.168.20.24", "SourceMAC" : "00:10:7b:24:68:13", "DestinationMAC" : "89-61-86-23-44-38", "Protocol" : "DHCP"},  # Packet from Switch3 to PC0       ##
+    {"SourceIP" : "192.168.20.23", "DestinationIP" : "192.168.20.24", "SourceMAC" : "9e-a9-c9-a6-e4-99", "DestinationMAC" : "89-61-86-23-44-38", "Protocol" : "DHCP"},  # Packet from IPPhone0 to PC0       ##
     {"SourceIP" : "192.168.20.21", "DestinationIP" : "192.168.20.25", "SourceMAC" : "00:10:7b:24:68:13", "DestinationMAC" : "f1-b0-44-37-32-36", "Protocol" : "IPP"},  # Packet from Switch3 to Printer1  ##
 ]
 
