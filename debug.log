@@ -19,3 +19,71 @@
 [1203/232326.226:ERROR:broker_win.cc(134)] Error sending sync broker message: The pipe is being closed. (0xE8)
 [1203/232329.313:ERROR:tcp_socket_win.cc(336)] bind() returned an error: An attempt was made to access a socket in a way forbidden by its access permissions. (0x271D)
 [1203/232329.314:ERROR:devtools_http_handler.cc(292)] Cannot start http server for devtools. Stop devtools.
+[1204/005508.003:ERROR:tcp_socket_win.cc(336)] bind() returned an error: An attempt was made to access a socket in a way forbidden by its access permissions. (0x271D)
+[1204/005508.004:ERROR:devtools_http_handler.cc(292)] Cannot start http server for devtools. Stop devtools.
+[1204/041028.533:ERROR:tcp_socket_win.cc(336)] bind() returned an error: An attempt was made to access a socket in a way forbidden by its access permissions. (0x271D)
+[1204/041028.533:ERROR:devtools_http_handler.cc(292)] Cannot start http server for devtools. Stop devtools.
+[1204/041249.203:ERROR:tcp_socket_win.cc(336)] bind() returned an error: An attempt was made to access a socket in a way forbidden by its access permissions. (0x271D)
+[1204/041249.204:ERROR:devtools_http_handler.cc(292)] Cannot start http server for devtools. Stop devtools.
+[1204/041912.235:ERROR:tcp_socket_win.cc(336)] bind() returned an error: An attempt was made to access a socket in a way forbidden by its access permissions. (0x271D)
+[1204/041912.236:ERROR:devtools_http_handler.cc(292)] Cannot start http server for devtools. Stop devtools.
+[1204/042819.677:ERROR:tcp_socket_win.cc(336)] bind() returned an error: An attempt was made to access a socket in a way forbidden by its access permissions. (0x271D)
+[1204/042819.678:ERROR:devtools_http_handler.cc(292)] Cannot start http server for devtools. Stop devtools.
+[1204/043631.108:ERROR:tcp_socket_win.cc(336)] bind() returned an error: An attempt was made to access a socket in a way forbidden by its access permissions. (0x271D)
+[1204/043631.109:ERROR:devtools_http_handler.cc(292)] Cannot start http server for devtools. Stop devtools.
+[1204/043845.772:ERROR:browser_host_impl.cc(1666)] Invalid URL passed to CefBrowserHostImpl::LoadURL: 
+[1204/043856.138:ERROR:browser_host_impl.cc(1666)] Invalid URL passed to CefBrowserHostImpl::LoadURL: 
+[1204/043913.047:ERROR:tcp_socket_win.cc(336)] bind() returned an error: An attempt was made to access a socket in a way forbidden by its access permissions. (0x271D)
+[1204/043913.047:ERROR:devtools_http_handler.cc(292)] Cannot start http server for devtools. Stop devtools.
+[1204/044214.951:ERROR:tcp_socket_win.cc(336)] bind() returned an error: An attempt was made to access a socket in a way forbidden by its access permissions. (0x271D)
+[1204/044214.951:ERROR:devtools_http_handler.cc(292)] Cannot start http server for devtools. Stop devtools.
+[1204/044736.448:ERROR:tcp_socket_win.cc(336)] bind() returned an error: An attempt was made to access a socket in a way forbidden by its access permissions. (0x271D)
+[1204/044736.448:ERROR:devtools_http_handler.cc(292)] Cannot start http server for devtools. Stop devtools.
+[1204/045655.077:ERROR:tcp_socket_win.cc(336)] bind() returned an error: An attempt was made to access a socket in a way forbidden by its access permissions. (0x271D)
+[1204/045655.077:ERROR:devtools_http_handler.cc(292)] Cannot start http server for devtools. Stop devtools.
+[1204/045950.888:ERROR:tcp_socket_win.cc(336)] bind() returned an error: An attempt was made to access a socket in a way forbidden by its access permissions. (0x271D)
+[1204/045950.888:ERROR:devtools_http_handler.cc(292)] Cannot start http server for devtools. Stop devtools.
+[1204/050221.769:ERROR:tcp_socket_win.cc(336)] bind() returned an error: An attempt was made to access a socket in a way forbidden by its access permissions. (0x271D)
+[1204/050221.769:ERROR:devtools_http_handler.cc(292)] Cannot start http server for devtools. Stop devtools.
+[1204/050258.819:ERROR:tcp_socket_win.cc(336)] bind() returned an error: An attempt was made to access a socket in a way forbidden by its access permissions. (0x271D)
+[1204/050258.819:ERROR:devtools_http_handler.cc(292)] Cannot start http server for devtools. Stop devtools.
+[1204/061918.210:ERROR:request_handler.cpp(109)] [Browser process] OnRenderProcessTerminated()
+
+[1204/062014.499:ERROR:tcp_socket_win.cc(336)] bind() returned an error: An attempt was made to access a socket in a way forbidden by its access permissions. (0x271D)
+[1204/062014.500:ERROR:devtools_http_handler.cc(292)] Cannot start http server for devtools. Stop devtools.
+[1204/062210.821:ERROR:tcp_socket_win.cc(336)] bind() returned an error: An attempt was made to access a socket in a way forbidden by its access permissions. (0x271D)
+[1204/062210.821:ERROR:devtools_http_handler.cc(292)] Cannot start http server for devtools. Stop devtools.
+[1204/062223.589:ERROR:tcp_socket_win.cc(336)] bind() returned an error: An attempt was made to access a socket in a way forbidden by its access permissions. (0x271D)
+[1204/062223.589:ERROR:devtools_http_handler.cc(292)] Cannot start http server for devtools. Stop devtools.
+[1204/062227.070:ERROR:tcp_socket_win.cc(336)] bind() returned an error: An attempt was made to access a socket in a way forbidden by its access permissions. (0x271D)
+[1204/062227.070:ERROR:devtools_http_handler.cc(292)] Cannot start http server for devtools. Stop devtools.
+[1204/062242.055:ERROR:tcp_socket_win.cc(336)] bind() returned an error: An attempt was made to access a socket in a way forbidden by its access permissions. (0x271D)
+[1204/062242.056:ERROR:devtools_http_handler.cc(292)] Cannot start http server for devtools. Stop devtools.
+[1204/062308.140:ERROR:tcp_socket_win.cc(336)] bind() returned an error: An attempt was made to access a socket in a way forbidden by its access permissions. (0x271D)
+[1204/062308.140:ERROR:devtools_http_handler.cc(292)] Cannot start http server for devtools. Stop devtools.
+[1204/062331.229:ERROR:tcp_socket_win.cc(336)] bind() returned an error: An attempt was made to access a socket in a way forbidden by its access permissions. (0x271D)
+[1204/062331.229:ERROR:devtools_http_handler.cc(292)] Cannot start http server for devtools. Stop devtools.
+[1204/062443.134:ERROR:tcp_socket_win.cc(336)] bind() returned an error: An attempt was made to access a socket in a way forbidden by its access permissions. (0x271D)
+[1204/062443.134:ERROR:devtools_http_handler.cc(292)] Cannot start http server for devtools. Stop devtools.
+[1204/062851.839:ERROR:tcp_socket_win.cc(336)] bind() returned an error: An attempt was made to access a socket in a way forbidden by its access permissions. (0x271D)
+[1204/062851.839:ERROR:devtools_http_handler.cc(292)] Cannot start http server for devtools. Stop devtools.
+[1204/063216.167:ERROR:tcp_socket_win.cc(336)] bind() returned an error: An attempt was made to access a socket in a way forbidden by its access permissions. (0x271D)
+[1204/063216.167:ERROR:devtools_http_handler.cc(292)] Cannot start http server for devtools. Stop devtools.
+[1204/063447.966:ERROR:tcp_socket_win.cc(336)] bind() returned an error: An attempt was made to access a socket in a way forbidden by its access permissions. (0x271D)
+[1204/063447.966:ERROR:devtools_http_handler.cc(292)] Cannot start http server for devtools. Stop devtools.
+[1204/063806.960:ERROR:broker_win.cc(134)] Error sending sync broker message: The pipe is being closed. (0xE8)
+[1204/063806.960:ERROR:command_buffer_proxy_impl.cc(101)] ContextResult::kFatalFailure: AllocateAndMapSharedMemory failed
+[1204/063807.010:ERROR:broker_win.cc(134)] Error sending sync broker message: The pipe is being closed. (0xE8)
+[1204/064527.391:ERROR:tcp_socket_win.cc(336)] bind() returned an error: An attempt was made to access a socket in a way forbidden by its access permissions. (0x271D)
+[1204/064527.391:ERROR:devtools_http_handler.cc(292)] Cannot start http server for devtools. Stop devtools.
+[1204/064615.814:ERROR:tcp_socket_win.cc(336)] bind() returned an error: An attempt was made to access a socket in a way forbidden by its access permissions. (0x271D)
+[1204/064615.814:ERROR:devtools_http_handler.cc(292)] Cannot start http server for devtools. Stop devtools.
+[1204/065508.925:ERROR:tcp_socket_win.cc(336)] bind() returned an error: An attempt was made to access a socket in a way forbidden by its access permissions. (0x271D)
+[1204/065508.926:ERROR:devtools_http_handler.cc(292)] Cannot start http server for devtools. Stop devtools.
+[1204/065523.222:ERROR:tcp_socket_win.cc(336)] bind() returned an error: An attempt was made to access a socket in a way forbidden by its access permissions. (0x271D)
+[1204/065523.222:ERROR:devtools_http_handler.cc(292)] Cannot start http server for devtools. Stop devtools.
+[1204/070928.832:ERROR:tcp_socket_win.cc(336)] bind() returned an error: An attempt was made to access a socket in a way forbidden by its access permissions. (0x271D)
+[1204/070928.833:ERROR:devtools_http_handler.cc(292)] Cannot start http server for devtools. Stop devtools.
+[1204/070938.208:ERROR:broker_win.cc(134)] Error sending sync broker message: The pipe is being closed. (0xE8)
+[1204/071016.949:ERROR:tcp_socket_win.cc(336)] bind() returned an error: An attempt was made to access a socket in a way forbidden by its access permissions. (0x271D)
+[1204/071016.950:ERROR:devtools_http_handler.cc(292)] Cannot start http server for devtools. Stop devtools.

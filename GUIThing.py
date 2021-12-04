@@ -1,20 +1,38 @@
 
 # Ronald Du
-# from tkinter import *
-# from tkinter.ttk import *
 
-# from cefpython3 import cefpython as cef
+# Tkinter Front End 
 
-from cefpython3 import cefpython as cef
+# not upscaling to 4k right. is this a 4K problem??
+
+# this only runs with Python 3.9 on Windows!
+# on Linux and Mac, CEFPython3 currently only supports up to Python 3.7!!!
+
+# do not try to drag the window on demo day... it will crash
+
+# lets us run C code and call DLLs in Windows
 import ctypes
+# imports tkinter for the basic gui
 try:
     import tkinter as tk
+    from tkinter import filedialog
 except ImportError:
     import Tkinter as tk
+    from Tkinter import filedialog
+
+# imports basic libaries needed
 import sys
 import os
 import platform
 
+
+# for grabbing current path
+import pathlib
+
+#for running the graph html file
+from cefpython3 import cefpython as cef
+
+#logging library for debugging
 import logging as _logging
 
 
@@ -23,16 +41,10 @@ LINUX = (platform.system() == "Linux")
 MAC = (platform.system() == "Darwin")
 
 logger = _logging.getLogger("tkinter_.py")
+
 IMAGE_EXT = ".png" if tk.TkVersion > 8.5 else ".gif"
 
-#root = tk.Tk()
 
-# GUIThing = MainFrame(root)
-
-
-# MainWindow.title("NetDiscover")
-
-# MainWindow.mainloop()
 
 
 def main():
@@ -49,17 +61,39 @@ def main():
     # sys.excepthook = cef.ExceptHook  # To shutdown all CEF processes on error
     # # Tk must be initialized before CEF otherwise fatal error (Issue #306)
     root = tk.Tk()
+    root.iconbitmap('NetDiscover_Logo.ico')
+    if WINDOWS:
+        # this sets the window icon of the main windoww
+        
+        # root.iconbitmap(default='NetDiscover_Logo.ico')
+        # sets the application ID
+        NetDiscoverAppID = u'CS425.Team14.NetDiscover.Prototype'
+        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(NetDiscoverAppID)
+        # make the program multi threaded      
+        # print("Is this even running??")
+        # yeah it is
+        settings={'multi_threaded_message_loop': True}
+        #fixes ugly 4k scaling on my 4k monitors
+        # ctypes.windll.shcore.SetProcessDpiAwareness(True)
+    
     app = MainFrame(root)
 
-    # menubar = tk.Menu(root)
-
-    # FileMenu = tk.Menu(menubar, tearoff = 0)
-    # menubar.add_cascade(label="File", menu=FileMenu)
-
+    #default settings for CEF (linux?) will be default
     settings = {}
+    
+
+    # if this program is running on windows, set the taskbar icon to this
+    # also assigns this application an app ID for Windows
+
+    # if program is running on MAC, needs external messgae pump
     if MAC:
         settings["external_message_pump"] = True
+
+    #intializes the chronium window
     cef.Initialize(settings=settings)
+
+    #print(pathlib.Path().absolute())
+
     app.mainloop()
     logger.debug("Main loop exited")
     cef.Shutdown()
@@ -73,43 +107,62 @@ class MainFrame(tk.Frame):
 
         self.browser_frame = None
         self.navigation_bar = None
+        self.SideButtons = None
         self.root = root
+        
 
         # Root
-        root.geometry("900x500")
+        # this sets the resolution of the new window
+        # YScaledRes = self.scaled(1450)
+        # XScaledRes = self.scaled(900)
+        # root.geometry(str(self.scaled(1450))+'x'+str(self.scaled(900)))
+
+        root.geometry("1450x900")
+
+        
+        
+        # root.iconphoto(False, tk.PhotoImage(file='NetDiscover_Logo.png'))
         tk.Grid.rowconfigure(root, 0, weight=1)
         tk.Grid.columnconfigure(root, 0, weight=1)
 
-        menubar = tk.Menu(self.root)
+        menubar = tk.Menu(self.root, tearoff = 0)
+        root.tk.call('wm', 'iconphoto', root._w, tk.PhotoImage(file='NetDiscover_Logo.png'))
         self.root.config(menu=menubar)
 
         # This creates a new File Menu
-        FileMenu = tk.Menu(menubar)
-        FileMenu.add_command(label="Open", command=self.onExit)
-        FileMenu.add_command(label="Save", command=self.onExit)
+        FileMenu = tk.Menu(menubar, tearoff = 0)
+        FileMenu.add_command(label="Open", command=self.OpenFileExplorer)
+        FileMenu.add_command(label="Save", command=self.SaveFileExplorer)
         FileMenu.add_command(label="WhoKnows", command=self.onExit)
         menubar.add_cascade(label="File", menu=FileMenu)
 
         # Creates a new Edit Menu
-        EditMenu = tk.Menu(menubar)
+        EditMenu = tk.Menu(menubar, tearoff = 0)
         EditMenu.add_command(label="Add", command=self.onExit)
         EditMenu.add_command(label="Delete", command=self.onExit)
         EditMenu.add_command(label="WhoKnows", command=self.onExit)
         menubar.add_cascade(label="Edit", menu=EditMenu)
 
         # what exactly do we need?
-        NodeMenu = tk.Menu(menubar)
+        NodeMenu = tk.Menu(menubar, tearoff = 0)
         NodeMenu.add_command(label="Add Node", command=self.onExit)
         NodeMenu.add_command(label="Delete Node", command=self.onExit)
         NodeMenu.add_command(label="Examine Node", command=self.onExit)
         menubar.add_cascade(label="Node", menu=NodeMenu)
+
+        # what exactly do we need?
+        AnalysisMenu = tk.Menu(menubar, tearoff = 0)
+        AnalysisMenu.add_command(label="???", command=self.onExit)
+        AnalysisMenu.add_command(label="???", command=self.onExit)
+        AnalysisMenu.add_command(label="???", command=self.onExit)
+        menubar.add_cascade(label="Analysis", menu=AnalysisMenu)
 
         # MainFrame
         tk.Frame.__init__(self, root)
         self.master.title("NetDiscover")
         self.master.protocol("WM_DELETE_WINDOW", self.on_close)
         self.master.bind("<Configure>", self.on_root_configure)
-        self.setup_icon()
+
         self.bind("<Configure>", self.on_configure)
         self.bind("<FocusIn>", self.on_focus_in)
         self.bind("<FocusOut>", self.on_focus_out)
@@ -157,6 +210,30 @@ class MainFrame(tk.Frame):
             self.browser_frame = None
         else:
             self.master.destroy()
+            
+    # def scaled(self, original_res):
+    #     screen = tk.Tk()
+    #     current_dpi = screen.winfo_fpixels('1i')
+    #     screen.destroy()
+
+    #     SCALE = current_dpi/20
+    #     return round(original_res * SCALE)
+
+    # need to make the program DPI aware cause it looks really bad on my screens with high DPI
+
+
+    # this function "opens" up a file and saves it to filename variable
+    # this function should call a bunch of other functions that let it open something
+    def OpenFileExplorer(self):
+        filename = tk.filedialog.askopenfile()
+        print(filename)
+
+
+    # this function should "save" a file and assigns wherevere it dumped it to filename variable
+    # this function should call a bunch of other functions that let it savesomething
+    def SaveFileExplorer(self):
+        filename = tk.filedialog.askopenfile()
+        print(filename)
 
     def get_browser(self):
         if self.browser_frame:
@@ -168,16 +245,8 @@ class MainFrame(tk.Frame):
             return self.browser_frame
         return None
 
-    def setup_icon(self):
-        resources = os.path.join(os.path.dirname(__file__), "resources")
-        icon_path = os.path.join(resources, "tkinter"+IMAGE_EXT)
-        if os.path.exists(icon_path):
-            self.icon = tk.PhotoImage(file=icon_path)
-            # noinspection PyProtectedMember
-            self.master.call("wm", "iconphoto", self.master._w, self.icon)
-
+    # when this is called exit the program
     def onExit(self):
-
         self.quit()
 
 
@@ -197,10 +266,12 @@ class BrowserFrame(tk.Frame):
 
     def embed_browser(self):
         window_info = cef.WindowInfo()
-        rect = [0, 0, self.winfo_width(), self.winfo_height()]
+        #rect = [100, 100, self.winfo_width(), self.winfo_height()]
+        rect = [self.winfo_width() * .05, self.winfo_height() * .05, self.winfo_width() * .95, self.winfo_height()  * .95]
         window_info.SetAsChild(self.get_window_handle(), rect)
-        self.browser = cef.CreateBrowserSync(window_info,
-                                             url="https://www.google.com/")
+        # self.browser = cef.CreateBrowserSync(window_info, url="file:///C:/Users/duron/Desktop/Network_Topology_Mapper-RonaldToolbarsButtons/nx.html")
+        # will now work from anywhere as long as the html file is named nx.html is in the same directory
+        self.browser = cef.CreateBrowserSync(window_info, url="file://" + str(pathlib.Path().absolute()) + "/nx.html")
         assert self.browser
         self.browser.SetClientHandler(LifespanHandler(self))
         self.browser.SetClientHandler(LoadHandler(self))
@@ -306,33 +377,9 @@ class LoadHandler(object):
     def __init__(self, browser_frame):
         self.browser_frame = browser_frame
 
-    def OnLoadStart(self, browser, **_):
-        if self.browser_frame.master.navigation_bar:
-            self.browser_frame.master.navigation_bar.set_url(browser.GetUrl())
-
-
-# class FocusHandler(object):
-#     """For focus problems see Issue #255 and Issue #535. """
-
-#     def __init__(self, browser_frame):
-#         self.browser_frame = browser_frame
-
-#     def OnTakeFocus(self, next_component, **_):
-#         logger.debug("FocusHandler.OnTakeFocus, next={next}"
-#                      .format(next=next_component))
-
-#     def OnSetFocus(self, source, **_):
-#         logger.debug("FocusHandler.OnSetFocus, source={source}"
-#                      .format(source=source))
-#         if LINUX:
-#             return False
-#         else:
-#             return True
-
-#     def OnGotFocus(self, **_):
-#         logger.debug("FocusHandler.OnGotFocus")
-#         if LINUX:
-#             self.browser_frame.focus_set()
+    # def OnLoadStart(self, browser, **_):
+    #     if self.browser_frame.master.navigation_bar:
+    #         self.browser_frame.master.navigation_bar.set_url(browser.GetUrl())
 
 
 class NavigationBar(tk.Frame):
@@ -348,23 +395,23 @@ class NavigationBar(tk.Frame):
         tk.Frame.__init__(self, master)
         resources = os.path.join(os.path.dirname(__file__), "resources")
 
-        # Back button
-        back_png = os.path.join(resources, "back"+IMAGE_EXT)
-        if os.path.exists(back_png):
-            self.back_image = tk.PhotoImage(file=back_png)
-        self.back_button = tk.Button(self, image=self.back_image,
-                                     command=self.go_back)
+        # # Back button
+        # back_png = os.path.join(resources, "back"+IMAGE_EXT)
+        # if os.path.exists(back_png):
+        #     self.back_image = tk.PhotoImage(file=back_png)
+        # self.back_button = tk.Button(self, image=self.back_image,
+        #                              command=self.go_back)
 
-        # self.back_button = tk.Menu(self)
-        self.back_button.grid(row=0, column=0)
+        # # self.back_button = tk.Menu(self)
+        # self.back_button.grid(row=0, column=0)
 
-        # Forward button
-        forward_png = os.path.join(resources, "forward"+IMAGE_EXT)
-        if os.path.exists(forward_png):
-            self.forward_image = tk.PhotoImage(file=forward_png)
-        self.forward_button = tk.Button(self, image=self.forward_image,
-                                        command=self.go_forward)
-        self.forward_button.grid(row=0, column=1)
+        # # Forward button
+        # forward_png = os.path.join(resources, "forward"+IMAGE_EXT)
+        # if os.path.exists(forward_png):
+        #     self.forward_image = tk.PhotoImage(file=forward_png)
+        # self.forward_button = tk.Button(self, image=self.forward_image,
+        #                                 command=self.go_forward)
+        # self.forward_button.grid(row=0, column=1)
 
         # Reload button
         reload_png = os.path.join(resources, "reload"+IMAGE_EXT)
@@ -374,41 +421,41 @@ class NavigationBar(tk.Frame):
                                        command=self.reload)
         self.reload_button.grid(row=0, column=2)
 
-        # Url entry
-        self.url_entry = tk.Entry(self)
-        self.url_entry.bind("<FocusIn>", self.on_url_focus_in)
-        self.url_entry.bind("<FocusOut>", self.on_url_focus_out)
-        self.url_entry.bind("<Return>", self.on_load_url)
-        self.url_entry.bind("<Button-1>", self.on_button1)
-        self.url_entry.grid(row=0, column=3,
-                            sticky=(tk.N + tk.S + tk.E + tk.W))
-        tk.Grid.rowconfigure(self, 0, weight=100)
-        tk.Grid.columnconfigure(self, 3, weight=100)
+        # # Url entry
+        # self.url_entry = tk.Entry(self)
+        # self.url_entry.bind("<FocusIn>", self.on_url_focus_in)
+        # self.url_entry.bind("<FocusOut>", self.on_url_focus_out)
+        # self.url_entry.bind("<Return>", self.on_load_url)
+        # self.url_entry.bind("<Button-1>", self.on_button1)
+        # self.url_entry.grid(row=0, column=3,
+        #                     sticky=(tk.N + tk.S + tk.E + tk.W))
+        # tk.Grid.rowconfigure(self, 0, weight=100)
+        # tk.Grid.columnconfigure(self, 3, weight=100)
 
         # Update state of buttons
-        self.update_state()
+        # self.update_state()
 
-    def go_back(self):
-        if self.master.get_browser():
-            self.master.get_browser().GoBack()
+    # def go_back(self):
+    #     if self.master.get_browser():
+    #         self.master.get_browser().GoBack()
 
-    def go_forward(self):
-        if self.master.get_browser():
-            self.master.get_browser().GoForward()
+    # def go_forward(self):
+    #     if self.master.get_browser():
+    #         self.master.get_browser().GoForward()
 
     def reload(self):
         if self.master.get_browser():
             self.master.get_browser().Reload()
 
-    def set_url(self, url):
-        self.url_entry.delete(0, tk.END)
-        self.url_entry.insert(0, url)
+    # def set_url(self, url):
+    #     self.url_entry.delete(0, tk.END)
+    #     self.url_entry.insert(0, url)
 
-    def on_url_focus_in(self, _):
-        logger.debug("NavigationBar.on_url_focus_in")
+    # def on_url_focus_in(self, _):
+    #     logger.debug("NavigationBar.on_url_focus_in")
 
-    def on_url_focus_out(self, _):
-        logger.debug("NavigationBar.on_url_focus_out")
+    # def on_url_focus_out(self, _):
+    #     logger.debug("NavigationBar.on_url_focus_out")
 
     def on_load_url(self, _):
         if self.master.get_browser():
@@ -420,41 +467,47 @@ class NavigationBar(tk.Frame):
         logger.debug("NavigationBar.on_button1")
         self.master.master.focus_force()
 
-    def update_state(self):
-        browser = self.master.get_browser()
-        if not browser:
-            if self.back_state != tk.DISABLED:
-                self.back_button.config(state=tk.DISABLED)
-                self.back_state = tk.DISABLED
-            if self.forward_state != tk.DISABLED:
-                self.forward_button.config(state=tk.DISABLED)
-                self.forward_state = tk.DISABLED
-            self.after(100, self.update_state)
-            return
-        if browser.CanGoBack():
-            if self.back_state != tk.NORMAL:
-                self.back_button.config(state=tk.NORMAL)
-                self.back_state = tk.NORMAL
-        else:
-            if self.back_state != tk.DISABLED:
-                self.back_button.config(state=tk.DISABLED)
-                self.back_state = tk.DISABLED
-        if browser.CanGoForward():
-            if self.forward_state != tk.NORMAL:
-                self.forward_button.config(state=tk.NORMAL)
-                self.forward_state = tk.NORMAL
-        else:
-            if self.forward_state != tk.DISABLED:
-                self.forward_button.config(state=tk.DISABLED)
-                self.forward_state = tk.DISABLED
-        self.after(100, self.update_state)
+    # def update_state(self):
+    #     browser = self.master.get_browser()
+    #     if not browser:
+    #         if self.back_state != tk.DISABLED:
+    #             self.back_button.config(state=tk.DISABLED)
+    #             self.back_state = tk.DISABLED
+    #         if self.forward_state != tk.DISABLED:
+    #             self.forward_button.config(state=tk.DISABLED)
+    #             self.forward_state = tk.DISABLED
+    #         self.after(100, self.update_state)
+    #         return
+    #     if browser.CanGoBack():
+    #         if self.back_state != tk.NORMAL:
+    #             self.back_button.config(state=tk.NORMAL)
+    #             self.back_state = tk.NORMAL
+    #     else:
+    #         if self.back_state != tk.DISABLED:
+    #             self.back_button.config(state=tk.DISABLED)
+    #             self.back_state = tk.DISABLED
+    #     if browser.CanGoForward():
+    #         if self.forward_state != tk.NORMAL:
+    #             self.forward_button.config(state=tk.NORMAL)
+    #             self.forward_state = tk.NORMAL
+    #     else:
+    #         if self.forward_state != tk.DISABLED:
+    #             self.forward_button.config(state=tk.DISABLED)
+    #             self.forward_state = tk.DISABLED
+    #     self.after(100, self.update_state)
+
+# side buttons? idk maybe
+class SideButtons(tk.Frame):
+
+    def __init__(self, root):
+        tk.Frame.__init__(self, root)
+
+        for row in range(2):
+           for col in range(10):
+                butt1 = tk.Button(self, bg='blue', width=1)
+                butt1.grid(row=row, column=col)
 
 
-class Tabs(tk.Frame):
-
-    def __init__(self):
-        tk.Frame.__init__(self)
-        # TODO: implement tabs
 
 
 if __name__ == '__main__':
