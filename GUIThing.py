@@ -1,166 +1,132 @@
-# -------------------------------------------------------------------
-#
-#   DeviceProperties.py
-#
-#    
-#   
-#
-# -------------------------------------------------------------------
 
-import tkinter as tk
-from pyvis.network import Network
-import networkx as nx
-import requests
-import re
-import sys
-import json
-import itertools
+# Ronald Du
 
-class Device:
-    
-    def __init__(self, packets = None, MAC = None):
+# Tkinter Front End 
 
-        self.MACAddress = MAC
-        self.IPAddress = set(self.getIP(packets))
-        self.switchProtocols = ["LLDP", "CDP", "IP route", "FDB", "ARP", "MLT", "CAN", "PPP"]
-        self.routerProtocols = ["CLNS", "DDP", "EGP", "EIGRP", "ICMP", "IGMP", "IPsec", "IPV4", "IPV6", "IPX", "OSPF", "PIM", "RIP", "IPv4", "IPv6", "HSRP"]
-        self.desktopProtocol = ["HTTP", "DHCP"]
-        self.laptopProtocol = ["802.11", "WPA2", "WPA"]
-        self.IPPhoneProtocol = ["SIP", "VoIP"]
-        self.printerProtocol = ["IPP", "LPD"]
-        self.serverProtocol = ["SNMP"]
-        self.firewallProtocol = ["NAT"]
-        self.deviceType = self.findDeviceType(packets)
-        self.neighbors = self.getNeighbors(packets)
-        self.vendor = self.getVendor()
 
-    def __str__(self):
-        return f"{self.MACAddress=}\n{self.IPAddress=}\n{self.deviceType=}\n{self.neighbors=}\n{self.vendor=}\n"
+# this only runs with Python 3.9 on Windows!
+# on Linux and Mac, CEFPython3 currently only supports up to Python 3.7!!!
 
-    def getIP(self, packets):
-        IP_Addresses = []
-        for packet in packets:
-            device_end = "Source" if self.MACAddress == packet['SourceMAC'] else "Destination"
-            if device_end == "Source":
-                IP_Addresses.append(packet['SourceIP'])
-            else:
-                IP_Addresses.append(packet['DestinationIP'])
-        return IP_Addresses
-    
-    def getNeighbors(self, packets):
-        neighbors = []
-        for packet in packets:
-            for key in packet:
-                if (key == "DestinationMAC" or key == "SourceMAC") and packet[key] not in neighbors and packet[key] not in self.MACAddress:
-                    neighbors.append(packet[key])
-        return neighbors
-
-    def findDeviceType(self, packets):
-        self.deviceType = None
-
-        protocols_by_device = [self.routerProtocols, self.switchProtocols, self.firewallProtocol, self.IPPhoneProtocol, self.laptopProtocol, self.desktopProtocol, self.printerProtocol, self.serverProtocol]
-        for packet in packets:
-            for device_type in protocols_by_device:
-                for protocol in device_type:
-                    if packet['Protocol'] in self.routerProtocols:
-                        self.deviceType = "Router"
-                        return self.deviceType
-                    elif packet['Protocol'] in self.switchProtocols and self.deviceType != "Router":
-                        self.deviceType = "Switch"
-                        return self.deviceType
-                    elif packet['Protocol'] in self.firewallProtocol:
-                        self.deviceType = "Firewall"
-                        return self.deviceType
-                    elif packet['Protocol'] in self.IPPhoneProtocol:
-                        self.deviceType = "IPPhone"
-                        return self.deviceType
-                    elif packet['Protocol'] in self.laptopProtocol:
-                        self.deviceType = "Laptop"
-                        return self.deviceType
-                    elif packet['Protocol'] in self.desktopProtocol:
-                        self.deviceType = "Desktop"
-                        return self.deviceType
-                    elif packet['Protocol'] in self.printerProtocol:
-                        self.deviceType = "Printer"
-                        return self.deviceType
-                    elif packet['Protocol'] in self.serverProtocol:
-                        self.deviceType = "Server"
-                        return self.deviceType
-        #print(self.MACAddress)
-        #print(packets)  
-        #print(self.deviceType)  
-        #print("\n\n\n")
-        return self.deviceType
-    
-    def getVendor(self):
-        return None
-        try:
-            response = requests.get(f"http://www.macvendorlookup.com/api/v2/%7Bself.MACAddress%7D/json", timeout=1)
-            json_response = json.loads(response.text)
-            return json_response[0]['company']
-        except:
-            response = requests.get(f"https://api.macvendors.com/%7Bself.MACAddress%7D", timeout=1)
-            return response.text
-            
-class Layer2(Device):
-
-    def __init__(self, MAC, packet, IP=""):
-        super().__init__(MAC, packet, IP)
-        self.image = "Switch_Icon.png"
-
-    def createDevice(self):
-        pass
-        
-    
-class Layer3(Device):
-    def __init__(self, MAC, packet, IP):
-        super().__init__(MAC, packet, IP)
-        self.image = "Router_Icon.png"
-
-    def createDevice(self):
-        pass
-    
-from cefpython3 import cefpython as cef
+# lets us run C code and call DLLs in Windows
 import ctypes
+# imports tkinter for the basic gui
 try:
     import tkinter as tk
 except ImportError:
     import Tkinter as tk
+
+# imports basic libaries needed
 import sys
 import os
 import platform
+
+
+# for grabbing current path
+import pathlib
+
+#for running the graph html file
+from cefpython3 import cefpython as cef
+
+#logging library for debugging
 import logging as _logging
 
-#Fix for PyCharm hints warnings
-WindowUtils = cef.WindowUtils()
 
-#Platforms
 WINDOWS = (platform.system() == "Windows")
 LINUX = (platform.system() == "Linux")
 MAC = (platform.system() == "Darwin")
 
-#Globals
 logger = _logging.getLogger("tkinter_.py")
-
-#Constants
-#Tk 8.5 doesn't support png images
 IMAGE_EXT = ".png" if tk.TkVersion > 8.5 else ".gif"
+
+
+
+
+def main():
+    # logger.setLevel(_logging.DEBUG)
+    # stream_handler = _logging.StreamHandler()
+    # formatter = _logging.Formatter("[%(filename)s] %(message)s")
+    # stream_handler.setFormatter(formatter)
+    # logger.addHandler(stream_handler)
+    # logger.info("CEF Python {ver}".format(ver=cef.__version__))
+    # logger.info("Python {ver} {arch}".format(
+    #         ver=platform.python_version(), arch=platform.architecture()[0]))
+    # logger.info("Tk {ver}".format(ver=tk.Tcl().eval('info patchlevel')))
+    # assert cef.__version__ >= "55.3", "CEF Python v55.3+ required to run this"
+    # sys.excepthook = cef.ExceptHook  # To shutdown all CEF processes on error
+    # # Tk must be initialized before CEF otherwise fatal error (Issue #306)
+    root = tk.Tk()
+    app = MainFrame(root)
+
+    #default settings for CEF (linux?) will be default
+    settings = {}
+
+    # if this program is running on windows, set the taskbar icon to this
+    # also assigns this application an app ID for Windows
+    if WINDOWS:
+        NetDiscoverAppID = 'CS425.Team14.DuClaireDyeSaltzman.NetDiscover.Prototype'
+        # make the program multi threaded
+        # settings={'multi_threaded_message_loop': True}
+
+    # if program is running on MAC, needs external messgae pump
+    if MAC:
+        settings["external_message_pump"] = True
+
+    #intializes the chronium window
+    cef.Initialize(settings=settings)
+    print(pathlib.Path().absolute())
+
+    app.mainloop()
+    logger.debug("Main loop exited")
+    cef.Shutdown()
 
 
 class MainFrame(tk.Frame):
 
     def __init__(self, root):
+
+        # creates the menubar
+
         self.browser_frame = None
         self.navigation_bar = None
+        self.root = root
 
-        #Root
-        root.geometry("900x640")
+        # Root
+        # this sets the resolution of the new window
+        root.geometry("900x500")
+
+        # this sets the window icon of the main windoww
+        root.tk.call('wm', 'iconphoto', root._w, tk.PhotoImage(file='NetDiscover_Logo.png'))
+        # root.iconphoto(False, tk.PhotoImage(file='NetDiscover_Logo.png'))
         tk.Grid.rowconfigure(root, 0, weight=1)
         tk.Grid.columnconfigure(root, 0, weight=1)
 
-        MainFrame
+        menubar = tk.Menu(self.root, tearoff = 0)
+        self.root.config(menu=menubar)
+
+        # This creates a new File Menu
+        FileMenu = tk.Menu(menubar, tearoff = 0)
+        FileMenu.add_command(label="Open", command=self.onExit)
+        FileMenu.add_command(label="Save", command=self.onExit)
+        FileMenu.add_command(label="WhoKnows", command=self.onExit)
+        menubar.add_cascade(label="File", menu=FileMenu)
+
+        # Creates a new Edit Menu
+        EditMenu = tk.Menu(menubar, tearoff = 0)
+        EditMenu.add_command(label="Add", command=self.onExit)
+        EditMenu.add_command(label="Delete", command=self.onExit)
+        EditMenu.add_command(label="WhoKnows", command=self.onExit)
+        menubar.add_cascade(label="Edit", menu=EditMenu)
+
+        # what exactly do we need?
+        NodeMenu = tk.Menu(menubar, tearoff = 0)
+        NodeMenu.add_command(label="Add Node", command=self.onExit)
+        NodeMenu.add_command(label="Delete Node", command=self.onExit)
+        NodeMenu.add_command(label="Examine Node", command=self.onExit)
+        menubar.add_cascade(label="Node", menu=NodeMenu)
+
+        # MainFrame
         tk.Frame.__init__(self, root)
-        self.master.title("Tkinter example")
+        self.master.title("NetDiscover")
         self.master.protocol("WM_DELETE_WINDOW", self.on_close)
         self.master.bind("<Configure>", self.on_root_configure)
         self.setup_icon()
@@ -168,21 +134,21 @@ class MainFrame(tk.Frame):
         self.bind("<FocusIn>", self.on_focus_in)
         self.bind("<FocusOut>", self.on_focus_out)
 
-        #NavigationBar
+        # NavigationBar
         self.navigation_bar = NavigationBar(self)
         self.navigation_bar.grid(row=0, column=0,
-                                 sticky=(tk.N + tk.S + tk.E + tk.W))
+                                sticky=(tk.N + tk.S + tk.E + tk.W))
         tk.Grid.rowconfigure(self, 0, weight=0)
         tk.Grid.columnconfigure(self, 0, weight=0)
 
-        BrowserFrame
+        # BrowserFrame
         self.browser_frame = BrowserFrame(self, self.navigation_bar)
         self.browser_frame.grid(row=1, column=0,
                                 sticky=(tk.N + tk.S + tk.E + tk.W))
         tk.Grid.rowconfigure(self, 1, weight=1)
         tk.Grid.columnconfigure(self, 0, weight=1)
 
-        #Pack MainFrame
+        # Pack MainFrame
         self.pack(fill=tk.BOTH, expand=tk.YES)
 
     def on_root_configure(self, _):
@@ -208,7 +174,9 @@ class MainFrame(tk.Frame):
     def on_close(self):
         if self.browser_frame:
             self.browser_frame.on_root_close()
-        self.master.destroy()
+            self.browser_frame = None
+        else:
+            self.master.destroy()
 
     def get_browser(self):
         if self.browser_frame:
@@ -225,50 +193,72 @@ class MainFrame(tk.Frame):
         icon_path = os.path.join(resources, "tkinter"+IMAGE_EXT)
         if os.path.exists(icon_path):
             self.icon = tk.PhotoImage(file=icon_path)
-            #noinspection PyProtectedMember
+            # noinspection PyProtectedMember
             self.master.call("wm", "iconphoto", self.master._w, self.icon)
+
+    def onExit(self):
+
+        self.quit()
 
 
 class BrowserFrame(tk.Frame):
 
-    def __init__(self, master, navigation_bar=None):
+    def __init__(self, mainframe, navigation_bar=None):
         self.navigation_bar = navigation_bar
         self.closing = False
         self.browser = None
-        tk.Frame.__init__(self, master)
+        tk.Frame.__init__(self, mainframe)
+        self.mainframe = mainframe
         self.bind("<FocusIn>", self.on_focus_in)
         self.bind("<FocusOut>", self.on_focus_out)
         self.bind("<Configure>", self.on_configure)
+        """For focus problems see Issue #255 and Issue #535. """
         self.focus_set()
 
     def embed_browser(self):
         window_info = cef.WindowInfo()
         rect = [0, 0, self.winfo_width(), self.winfo_height()]
         window_info.SetAsChild(self.get_window_handle(), rect)
-        self.browser = cef.CreateBrowserSync(window_info,
-                                             url="file:///H:/Documents/GitHub/Network_Topology_Mapper/nx.html") #todo
+        # self.browser = cef.CreateBrowserSync(window_info, url="file:///C:/Users/duron/Desktop/Network_Topology_Mapper-RonaldToolbarsButtons/nx.html")
+        # will now work from anywhere as long as the html file is named nx.html is in the same directory
+        self.browser = cef.CreateBrowserSync(window_info, url="file://" + str(pathlib.Path().absolute()) + "/nx.html")
         assert self.browser
+        self.browser.SetClientHandler(LifespanHandler(self))
         self.browser.SetClientHandler(LoadHandler(self))
-        self.browser.SetClientHandler(FocusHandler(self))
+        # self.browser.SetClientHandler(FocusHandler(self))
         self.message_loop_work()
 
     def get_window_handle(self):
-        if self.winfo_id() > 0:
-            return self.winfo_id()
-        elif MAC:
-            #On Mac window id is an invalid negative value (Issue #308).
-            #This is kind of a dirty hack to get window handle using
-            #PyObjC package. If you change structure of windows then you
-            #need to do modifications here as well.
-            #noinspection PyUnresolvedReferences
+        if MAC:
+            # Do not use self.winfo_id() on Mac, because of these issues:
+            # 1. Window id sometimes has an invalid negative value (Issue #308).
+            # 2. Even with valid window id it crashes during the call to NSView.setAutoresizingMask:
+            #    https://github.com/cztomczak/cefpython/issues/309#issuecom t-661094466
+            #
+            # To fix it using PyObjC package to obtain window handle. If you change structure of windows then you
+            # need to do modifications here as well.
+            #
+            # There is still one issue with this solution. Sometimes there is more than one window, for example when application
+            # didn't close cleanly last time Python displays an NSAlert window asking whether to Reopen that window. In such
+            # case app will crash and you will see in console:
+            # > Fatal Python error: PyEval_RestoreThread: NULL tstate
+            # > zsh: abort      python tkinter_.py
+            # Error messages related to this: https://github.com/cztomczak/cefpython/issues/441
+            #
+            # There is yet another issue that might be related as well:
+            # https://github.com/cztomczak/cefpython/issues/583
+
+            # noinspection PyUnresolvedReferences
             from AppKit import NSApp
-            #noinspection PyUnresolvedReferences
+            # noinspection PyUnresolvedReferences
             import objc
-            #Sometimes there is more than one window, when application
-            #didn't close cleanly last time Python displays an NSAlert
-            #window asking whether to Reopen that window.
-            #noinspection PyUnresolvedReferences
-            return objc.pyobjc_id(NSApp.windows()[-1].contentView())
+            logger.info("winfo_id={}".format(self.winfo_id()))
+            # noinspection PyUnresolvedReferences
+            content_view = objc.pyobjc_id(NSApp.windows()[-1].contentView())
+            logger.info("content_view={}".format(content_view))
+            return content_view
+        elif self.winfo_id() > 0:
+            return self.winfo_id()
         else:
             raise Exception("Couldn't obtain window handle")
 
@@ -281,7 +271,7 @@ class BrowserFrame(tk.Frame):
             self.embed_browser()
 
     def on_root_configure(self):
-        #Root <Configure> event will be called when top window is moved
+        # Root <Configure> event will be called when top window is moved
         if self.browser:
             self.browser.NotifyMoveOrResizeStarted()
 
@@ -302,19 +292,34 @@ class BrowserFrame(tk.Frame):
 
     def on_focus_out(self, _):
         logger.debug("BrowserFrame.on_focus_out")
-        if self.browser:
+        """For focus problems see Issue #255 and Issue #535. """
+        if LINUX and self.browser:
             self.browser.SetFocus(False)
 
     def on_root_close(self):
+        logger.info("BrowserFrame.on_root_close")
         if self.browser:
+            logger.debug("CloseBrowser")
             self.browser.CloseBrowser(True)
             self.clear_browser_references()
-        self.destroy()
+        else:
+            logger.debug("tk.Frame.destroy")
+            self.destroy()
 
     def clear_browser_references(self):
-        #Clear browser references that you keep anywhere in your
-        #code. All references must be cleared for CEF to shutdown cleanly.
+        # Clear browser references that you keep anywhere in your
+        # code. All references must be cleared for CEF to shutdown cleanly.
         self.browser = None
+
+
+class LifespanHandler(object):
+
+    def __init__(self, tkFrame):
+        self.tkFrame = tkFrame
+
+    def OnBeforeClose(self, browser, **_):
+        logger.debug("LifespanHandler.OnBeforeClose")
+        self.tkFrame.quit()
 
 
 class LoadHandler(object):
@@ -327,29 +332,34 @@ class LoadHandler(object):
             self.browser_frame.master.navigation_bar.set_url(browser.GetUrl())
 
 
-class FocusHandler(object):
+# class FocusHandler(object):
+#     """For focus problems see Issue #255 and Issue #535. """
 
-    def __init__(self, browser_frame):
-        self.browser_frame = browser_frame
+#     def __init__(self, browser_frame):
+#         self.browser_frame = browser_frame
 
-    def OnTakeFocus(self, next_component, **_):
-        logger.debug("FocusHandler.OnTakeFocus, next={next}"
-                     .format(next=next_component))
+#     def OnTakeFocus(self, next_component, **_):
+#         logger.debug("FocusHandler.OnTakeFocus, next={next}"
+#                      .format(next=next_component))
 
-    def OnSetFocus(self, source, **_):
-        logger.debug("FocusHandler.OnSetFocus, source={source}"
-                     .format(source=source))
-        return False
+#     def OnSetFocus(self, source, **_):
+#         logger.debug("FocusHandler.OnSetFocus, source={source}"
+#                      .format(source=source))
+#         if LINUX:
+#             return False
+#         else:
+#             return True
 
-    def OnGotFocus(self, **_):
-        """Fix CEF focus issues (#255). Call browser frame's focus_set
-           to get rid of type cursor in url entry widget."""
-        logger.debug("FocusHandler.OnGotFocus")
-        self.browser_frame.focus_set()
+#     def OnGotFocus(self, **_):
+#         logger.debug("FocusHandler.OnGotFocus")
+#         if LINUX:
+#             self.browser_frame.focus_set()
 
 
 class NavigationBar(tk.Frame):
+
     def __init__(self, master):
+
         self.back_state = tk.NONE
         self.forward_state = tk.NONE
         self.back_image = None
@@ -359,15 +369,17 @@ class NavigationBar(tk.Frame):
         tk.Frame.__init__(self, master)
         resources = os.path.join(os.path.dirname(__file__), "resources")
 
-        #Back button
+        # Back button
         back_png = os.path.join(resources, "back"+IMAGE_EXT)
         if os.path.exists(back_png):
             self.back_image = tk.PhotoImage(file=back_png)
         self.back_button = tk.Button(self, image=self.back_image,
                                      command=self.go_back)
+
+        # self.back_button = tk.Menu(self)
         self.back_button.grid(row=0, column=0)
 
-        #Forward button
+        # Forward button
         forward_png = os.path.join(resources, "forward"+IMAGE_EXT)
         if os.path.exists(forward_png):
             self.forward_image = tk.PhotoImage(file=forward_png)
@@ -375,7 +387,7 @@ class NavigationBar(tk.Frame):
                                         command=self.go_forward)
         self.forward_button.grid(row=0, column=1)
 
-        #Reload button
+        # Reload button
         reload_png = os.path.join(resources, "reload"+IMAGE_EXT)
         if os.path.exists(reload_png):
             self.reload_image = tk.PhotoImage(file=reload_png)
@@ -383,7 +395,7 @@ class NavigationBar(tk.Frame):
                                        command=self.reload)
         self.reload_button.grid(row=0, column=2)
 
-        #Url entry
+        # Url entry
         self.url_entry = tk.Entry(self)
         self.url_entry.bind("<FocusIn>", self.on_url_focus_in)
         self.url_entry.bind("<FocusOut>", self.on_url_focus_out)
@@ -394,7 +406,7 @@ class NavigationBar(tk.Frame):
         tk.Grid.rowconfigure(self, 0, weight=100)
         tk.Grid.columnconfigure(self, 3, weight=100)
 
-        #Update state of buttons
+        # Update state of buttons
         self.update_state()
 
     def go_back(self):
@@ -425,7 +437,7 @@ class NavigationBar(tk.Frame):
             self.master.get_browser().LoadUrl(self.url_entry.get())
 
     def on_button1(self, _):
-        """Fix CEF focus issues (#255). See also FocusHandler.OnGotFocus."""
+        """For focus problems see Issue #255 and Issue #535. """
         logger.debug("NavigationBar.on_button1")
         self.master.master.focus_force()
 
@@ -459,22 +471,12 @@ class NavigationBar(tk.Frame):
         self.after(100, self.update_state)
 
 
+class Tabs(tk.Frame):
+
+    def __init__(self):
+        tk.Frame.__init__(self)
+        # TODO: implement tabs
+
+
 if __name__ == '__main__':
-    logger.setLevel(_logging.INFO)
-    stream_handler = _logging.StreamHandler()
-    formatter = _logging.Formatter("[%(filename)s] %(message)s")
-    stream_handler.setFormatter(formatter)
-    logger.addHandler(stream_handler)
-    logger.info("CEF Python {ver}".format(ver=cef.__version__))
-    logger.info("Python {ver} {arch}".format(
-            ver=platform.python_version(), arch=platform.architecture()[0]))
-    logger.info("Tk {ver}".format(ver=tk.Tcl().eval('info patchlevel')))
-    assert cef.__version__ >= "55.3", "CEF Python v55.3+ required to run this"
-    sys.excepthook = cef.ExceptHook  # To shutdown all CEF processes on error
-    root = tk.Tk()
-    app = MainFrame(root)
-    #Tk must be initialized before CEF otherwise fatal error (Issue #306)
-    cef.Initialize()
-    
-    app.mainloop()
-    cef.Shutdown()
+    main()
