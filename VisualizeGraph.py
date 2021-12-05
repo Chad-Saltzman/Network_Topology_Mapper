@@ -14,12 +14,12 @@ import time
 
 # Image URLs for graph nodes
 defaultIcons = {
-    "Desktop"  : "icons/NetDiscover_Icon_Desktop_V1.png",
-    "Firewall" : "icons/NetDiscover_Icon_FireWall_V1.png",
-    "Laptop"   : "icons/NetDiscover_Icon_Laptop_V1.png",
-    "Router"   : "icons/NetDiscover_Icon_Router_V1.png",
-    "Server"   : "icons/NetDiscover_Icon_Servers_V1.png",
-    "Switch"   : "icons/NetDiscover_Icon_Switch_V1.png",
+    "Desktop"  : "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Desktop_V1.png",
+    "Firewall" : "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_FireWall_V1.png",
+    "Laptop"   : "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Laptop_V1.png",
+    "Router"   : "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Modem_V1.png",
+    "Server"   : "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Servers_V1.png",
+    "Switch"   : "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Switch_V1.png",
     "Printer"  : "icons/NetDiscover_Icon_Modem_V1.png",
     "IPPhone"  : "icons/NetDiscover_Icon_Modem_V1.png",
 }
