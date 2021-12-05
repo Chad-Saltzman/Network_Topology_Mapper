@@ -1,11 +1,11 @@
 
 # Ronald Du
 
-# Tkinter Front End 
+# Tkinter Front End
 
 # not upscaling to 4k right. is this a 4K problem??
 
-# this only runs with Python 3.9 on Windows!
+# this only runs with Python 3.9 and lower on Windows!
 # on Linux and Mac, CEFPython3 currently only supports up to Python 3.7!!!
 
 # do not try to drag the window on demo day... it will crash
@@ -29,10 +29,10 @@ import platform
 # for grabbing current path
 import pathlib
 
-#for running the graph html file
+# for running the graph html file
 from cefpython3 import cefpython as cef
 
-#logging library for debugging
+# logging library for debugging
 import logging as _logging
 
 
@@ -45,42 +45,32 @@ logger = _logging.getLogger("tkinter_.py")
 IMAGE_EXT = ".png" if tk.TkVersion > 8.5 else ".gif"
 
 
-
-
 def main():
-    # logger.setLevel(_logging.DEBUG)
-    # stream_handler = _logging.StreamHandler()
-    # formatter = _logging.Formatter("[%(filename)s] %(message)s")
-    # stream_handler.setFormatter(formatter)
-    # logger.addHandler(stream_handler)
-    # logger.info("CEF Python {ver}".format(ver=cef.__version__))
-    # logger.info("Python {ver} {arch}".format(
-    #         ver=platform.python_version(), arch=platform.architecture()[0]))
-    # logger.info("Tk {ver}".format(ver=tk.Tcl().eval('info patchlevel')))
-    # assert cef.__version__ >= "55.3", "CEF Python v55.3+ required to run this"
-    # sys.excepthook = cef.ExceptHook  # To shutdown all CEF processes on error
-    # # Tk must be initialized before CEF otherwise fatal error (Issue #306)
+
     root = tk.Tk()
     root.iconbitmap('NetDiscover_Logo.ico')
+    
     if WINDOWS:
         # this sets the window icon of the main windoww
-        
+
         # root.iconbitmap(default='NetDiscover_Logo.ico')
         # sets the application ID
+
         NetDiscoverAppID = u'CS425.Team14.NetDiscover.Prototype'
-        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(NetDiscoverAppID)
-        # make the program multi threaded      
+        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(
+            NetDiscoverAppID)
+        # make the program multi threaded
         # print("Is this even running??")
         # yeah it is
-        settings={'multi_threaded_message_loop': True}
-        #fixes ugly 4k scaling on my 4k monitors
+        settings = {'multi_threaded_message_loop': True}
+        # fixes ugly 4k scaling on my 4k monitors
         # ctypes.windll.shcore.SetProcessDpiAwareness(True)
-    
-    app = MainFrame(root)
 
-    #default settings for CEF (linux?) will be default
+    app = MainFrame(root)
+    # canvas1 = tk.Frame(root, width=600, height=300, bg='yellow')
+
+    # default settings for CEF (linux?) will be default
     settings = {}
-    
 
     # if this program is running on windows, set the taskbar icon to this
     # also assigns this application an app ID for Windows
@@ -89,16 +79,17 @@ def main():
     if MAC:
         settings["external_message_pump"] = True
 
-    #intializes the chronium window
+    # intializes the chronium window
     cef.Initialize(settings=settings)
 
-    #print(pathlib.Path().absolute())
+    # print(pathlib.Path().absolute())
 
     app.mainloop()
     logger.debug("Main loop exited")
     cef.Shutdown()
 
 
+#main window
 class MainFrame(tk.Frame):
 
     def __init__(self, root):
@@ -107,9 +98,12 @@ class MainFrame(tk.Frame):
 
         self.browser_frame = None
         self.navigation_bar = None
-        self.SideButtons = None
+        # self.SideButtons = None
+
+        # self.ViewPanel = None
+
         self.root = root
-        
+
 
         # Root
         # this sets the resolution of the new window
@@ -117,45 +111,52 @@ class MainFrame(tk.Frame):
         # XScaledRes = self.scaled(900)
         # root.geometry(str(self.scaled(1450))+'x'+str(self.scaled(900)))
 
-        root.geometry("1450x900")
+        root.geometry("1450x700")
 
-        
-        
         # root.iconphoto(False, tk.PhotoImage(file='NetDiscover_Logo.png'))
         tk.Grid.rowconfigure(root, 0, weight=1)
         tk.Grid.columnconfigure(root, 0, weight=1)
 
-        menubar = tk.Menu(self.root, tearoff = 0)
-        root.tk.call('wm', 'iconphoto', root._w, tk.PhotoImage(file='NetDiscover_Logo.png'))
+        menubar = tk.Menu(self.root, tearoff=0)
+        # cpane = CollapsiblePane(root, 'Expanded', 'Collapsed')
+        root.tk.call('wm', 'iconphoto', root._w,
+                     tk.PhotoImage(file='NetDiscover_Logo.png'))
         self.root.config(menu=menubar)
 
         # This creates a new File Menu
-        FileMenu = tk.Menu(menubar, tearoff = 0)
+        FileMenu = tk.Menu(menubar, tearoff=0)
         FileMenu.add_command(label="Open", command=self.OpenFileExplorer)
         FileMenu.add_command(label="Save", command=self.SaveFileExplorer)
         FileMenu.add_command(label="WhoKnows", command=self.onExit)
         menubar.add_cascade(label="File", menu=FileMenu)
 
         # Creates a new Edit Menu
-        EditMenu = tk.Menu(menubar, tearoff = 0)
+        EditMenu = tk.Menu(menubar, tearoff=0)
         EditMenu.add_command(label="Add", command=self.onExit)
         EditMenu.add_command(label="Delete", command=self.onExit)
         EditMenu.add_command(label="WhoKnows", command=self.onExit)
         menubar.add_cascade(label="Edit", menu=EditMenu)
 
         # what exactly do we need?
-        NodeMenu = tk.Menu(menubar, tearoff = 0)
+        NodeMenu = tk.Menu(menubar, tearoff=0)
         NodeMenu.add_command(label="Add Node", command=self.onExit)
         NodeMenu.add_command(label="Delete Node", command=self.onExit)
         NodeMenu.add_command(label="Examine Node", command=self.onExit)
         menubar.add_cascade(label="Node", menu=NodeMenu)
 
         # what exactly do we need?
-        AnalysisMenu = tk.Menu(menubar, tearoff = 0)
+        AnalysisMenu = tk.Menu(menubar, tearoff=0)
         AnalysisMenu.add_command(label="???", command=self.onExit)
         AnalysisMenu.add_command(label="???", command=self.onExit)
         AnalysisMenu.add_command(label="???", command=self.onExit)
         menubar.add_cascade(label="Analysis", menu=AnalysisMenu)
+
+
+        
+        # this is supposed to be a side panel
+        # no longer object oriented after this
+        ViewPanel = tk.Frame(root, width=200, bg='white', height=500, relief='sunken', borderwidth=2)
+        ViewPanel.pack(expand=False, fill='y', side='left', anchor='nw')
 
         # MainFrame
         tk.Frame.__init__(self, root)
@@ -191,6 +192,7 @@ class MainFrame(tk.Frame):
 
     def on_configure(self, event):
         logger.debug("MainFrame.on_configure")
+        # is this what sets it???
         if self.browser_frame:
             width = event.width
             height = event.height
@@ -210,7 +212,7 @@ class MainFrame(tk.Frame):
             self.browser_frame = None
         else:
             self.master.destroy()
-            
+
     # def scaled(self, original_res):
     #     screen = tk.Tk()
     #     current_dpi = screen.winfo_fpixels('1i')
@@ -221,16 +223,16 @@ class MainFrame(tk.Frame):
 
     # need to make the program DPI aware cause it looks really bad on my screens with high DPI
 
-
     # this function "opens" up a file and saves it to filename variable
     # this function should call a bunch of other functions that let it open something
+
     def OpenFileExplorer(self):
         filename = tk.filedialog.askopenfile()
         print(filename)
 
-
     # this function should "save" a file and assigns wherevere it dumped it to filename variable
     # this function should call a bunch of other functions that let it savesomething
+
     def SaveFileExplorer(self):
         filename = tk.filedialog.askopenfile()
         print(filename)
@@ -249,7 +251,7 @@ class MainFrame(tk.Frame):
     def onExit(self):
         self.quit()
 
-
+#is
 class BrowserFrame(tk.Frame):
 
     def __init__(self, mainframe, navigation_bar=None):
@@ -266,12 +268,12 @@ class BrowserFrame(tk.Frame):
 
     def embed_browser(self):
         window_info = cef.WindowInfo()
-        #rect = [100, 100, self.winfo_width(), self.winfo_height()]
-        rect = [self.winfo_width() * .05, self.winfo_height() * .05, self.winfo_width() * .95, self.winfo_height()  * .95]
+        rect = [0, 0, self.winfo_width(), self.winfo_height()]
         window_info.SetAsChild(self.get_window_handle(), rect)
         # self.browser = cef.CreateBrowserSync(window_info, url="file:///C:/Users/duron/Desktop/Network_Topology_Mapper-RonaldToolbarsButtons/nx.html")
         # will now work from anywhere as long as the html file is named nx.html is in the same directory
-        self.browser = cef.CreateBrowserSync(window_info, url="file://" + str(pathlib.Path().absolute()) + "/nx.html")
+        self.browser = cef.CreateBrowserSync(
+            window_info, url="file://" + str(pathlib.Path().absolute()) + "/nx.html")
         assert self.browser
         self.browser.SetClientHandler(LifespanHandler(self))
         self.browser.SetClientHandler(LoadHandler(self))
@@ -328,9 +330,12 @@ class BrowserFrame(tk.Frame):
     def on_mainframe_configure(self, width, height):
         if self.browser:
             if WINDOWS:
+                # all this does is change the location of the window ???
+                print("blah blh blah")
+                # ???
+                # this must auto resize it somehow
                 ctypes.windll.user32.SetWindowPos(
-                    self.browser.GetWindowHandle(), 0,
-                    0, 0, width, height, 0x0002)
+                    self.browser.GetWindowHandle(), 0, 0, 0, width, height, 0)
             elif LINUX:
                 self.browser.SetBounds(0, 0, width, height)
             self.browser.NotifyMoveOrResizeStarted()
@@ -497,6 +502,8 @@ class NavigationBar(tk.Frame):
     #     self.after(100, self.update_state)
 
 # side buttons? idk maybe
+
+
 class SideButtons(tk.Frame):
 
     def __init__(self, root):
@@ -507,6 +514,43 @@ class SideButtons(tk.Frame):
                 butt1 = tk.Button(self, bg='blue', width=1)
                 butt1.grid(row=row, column=col)
 
+# need to make two panels
+# one for showing node infomation
+# one for creating a new node
+# needs to hook into
+
+# class ViewPanel(tk.Frame):
+#     def __init__(self, master):
+
+#             self.back_state = tk.NONE
+#             self.forward_state = tk.NONE
+#             self.back_image = None
+#             self.forward_image = None
+#             self.reload_image = None
+
+#             tk.Frame.__init__(self, master)
+#             resources = os.path.join(os.path.dirname(__file__), "resources")
+
+
+#             # Reload button
+#             reload_png = os.path.join(resources, "reload"+IMAGE_EXT)
+#             if os.path.exists(reload_png):
+#                 self.reload_image = tk.PhotoImage(file=reload_png)
+#             self.reload_button = tk.Button(self, image=self.reload_image,
+#                                         command=self.reload)
+#             self.reload_button.grid(row=0, column=2)
+
+
+#     def reload(self):
+#             if self.master.get_browser():
+#                 self.master.get_browser().Reload()
+
+
+
+#     def on_button1(self, _):
+#             """For focus problems see Issue #255 and Issue #535. """
+#             logger.debug("NavigationBar.on_button1")
+#             self.master.master.focus_force()
 
 
 
