@@ -32,4 +32,4 @@ except:
     HtmlFile = open(f'nx.html', 'r', encoding='utf-8')
 
 # Load HTML file in HTML components for display 
-components.html(HtmlFile.read(), height=435)
+components.html(HtmlFile.read(), height=800)
