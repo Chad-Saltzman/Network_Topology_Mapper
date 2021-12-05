@@ -1,3 +1,12 @@
+# -------------------------------------------------------------------
+#
+#   DeviceProperties.py
+#
+#    
+#   
+#
+# -------------------------------------------------------------------
+
 import tkinter as tk
 from pyvis.network import Network
 import networkx as nx
@@ -77,10 +86,10 @@ class Device:
                     elif packet['Protocol'] in self.serverProtocol:
                         self.deviceType = "Server"
                         return self.deviceType
-        print(self.MACAddress)
-        print(packets)  
-        print(self.deviceType)  
-        print("\n\n\n")
+        #print(self.MACAddress)
+        #print(packets)  
+        #print(self.deviceType)  
+        #print("\n\n\n")
         return self.deviceType
     
     def getVendor(self):
