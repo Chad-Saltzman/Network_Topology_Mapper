@@ -6,7 +6,7 @@
 #   and graph editing/inspecting functionality.
 #
 # -------------------------------------------------------------------
-
+import time
 from VisualizeGraph import VisualizeGraph
 from DeviceProperties import Device
 # 
@@ -65,7 +65,7 @@ VisualizeGraph(devices)
 d = Device([{"SourceIP" : "192.168.10.11", "DestinationIP" : "192.168.10.12", "SourceMAC" : "00:10:7b:12:34:56", "DestinationMAC" : "3a-ac-1b-1d-c9-05", "Protocol" : "ARP"}], "A")
 e = Device([{"SourceIP" : "192.168.10.11", "DestinationIP" : "192.168.10.12", "SourceMAC" : "00:10:7b:12:34:56", "DestinationMAC" : "3a-ac-1b-1d-c9-05", "Protocol" : "ARP"}], "1")
 
-vg = VisualizeGraph(Devices)
+vg = VisualizeGraph(devices)
 
 vg.addNode(d)
 vg.addNode(e)

@@ -14,14 +14,14 @@ import time
 
 # Image URLs for graph nodes
 defaultIcons = {
-    "Desktop"  : "icons/NetDiscover_Icon_Desktop.png",
-    "Firewall" : "icons/NetDiscover_Icon_FireWall.png",
-    "Laptop"   : "icons/NetDiscover_Icon_Laptop.png",
-    "Router"   : "icons/NetDiscover_Icon_Router.png",
-    "Server"   : "icons/NetDiscover_Icon_Servers.png",
-    "Switch"   : "icons/NetDiscover_Icon_Switch.png",
-    "Printer"  : "icons/NetDiscover_Icon_Modem.png",
-    "IPPhone"  : "icons/NetDiscover_Icon_Modem.png",
+    "Desktop"  : "icons/NetDiscover_Icon_Desktop_V1.png",
+    "Firewall" : "icons/NetDiscover_Icon_FireWall_V1.png",
+    "Laptop"   : "icons/NetDiscover_Icon_Laptop_V1.png",
+    "Router"   : "icons/NetDiscover_Icon_Router_V1.png",
+    "Server"   : "icons/NetDiscover_Icon_Servers_V1.png",
+    "Switch"   : "icons/NetDiscover_Icon_Switch_V1.png",
+    "Printer"  : "icons/NetDiscover_Icon_Modem_V1.png",
+    "IPPhone"  : "icons/NetDiscover_Icon_Modem_V1.png",
 }
 
 # Containts the visulization struture for the graph
