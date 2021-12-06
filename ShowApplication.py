@@ -58,12 +58,21 @@ samplePackets = [
     {"SourceIP" : "192.168.20.21", "DestinationIP" : "192.168.20.25", "SourceMAC" : "00:10:7b:24:68:13", "DestinationMAC" : "f1-b0-44-37-32-36", "Protocol" : "IPP"},  # Packet from Switch3 to Printer1  ##
 ]
 
+samplePackets2 = [
+    {"SourceIP" : "192.168.0.2", "DestinationIP" : "192.168.0.3", "SourceMAC" : "00:10:7b:35:f5:b5", "DestinationMAC" : "00:10:7b:35:f5:c6", "Protocol" : "OSPF"},     # Packet from Router1 to Router2   ##
+    {"SourceIP" : "192.168.0.6", "DestinationIP" : "192.168.0.7", "SourceMAC" : "00:10:7b:35:f5:b5", "DestinationMAC" : "00:10:7b:35:f5:d7", "Protocol" : "OSPF"},     # Packet from Router1 to Router3   ##
+]
 
 
 attributes = GraphAttributes(bgColor = '#000000')
 devices = process.getDevices(samplePackets)
 graph = VisualizeGraph(devices = devices, fileName = "example.html", graphAttributes = attributes)
-topologiesDict = {'Example Graph': graph, 'Graph 2': graph}
+
+attributes2 = GraphAttributes(bgColor = '#131229')
+devices2 = process.getDevices(samplePackets2)
+graph2 = VisualizeGraph(devices = devices2, fileName = "example2.html", graphAttributes = attributes2)
+
+topologiesDict = {'Example Graph': graph, 'Simple Graph': graph2}
 
 
 
@@ -118,11 +127,11 @@ if selectedMap == 'Create New Topology':
         if expander.button('Create'):
             selectedMap = 'Topology1'
 
-
-        
 else:
     showHTMLTopology(topologiesDict[selectedMap].fileName)
 
+    # Show time slider
+    sliderRange = st.slider("Time Period (Days)", value = 100)
 
     # Show device attributes
 
