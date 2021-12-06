@@ -7,58 +7,122 @@
 #
 # -------------------------------------------------------------------
 
+# Import Dependencies
 from pyvis.network import Network
 import networkx as nx
-from DeviceProperties import Device
-import time
 
 # Image URLs for graph nodes
 defaultIcons = {
-    "Desktop"  : "icons/NetDiscover_Icon_Desktop_V1.png",
-    "Firewall" : "icons/NetDiscover_Icon_FireWall_V1.png",
-    "Laptop"   : "icons/NetDiscover_Icon_Laptop_V1.png",
-    "Router"   : "icons/NetDiscover_Icon_Router_V1.png",
-    "Server"   : "icons/NetDiscover_Icon_Servers_V1.png",
-    "Switch"   : "icons/NetDiscover_Icon_Switch_V1.png",
-    "Printer"  : "icons/NetDiscover_Icon_Modem_V1.png",
-    "IPPhone"  : "icons/NetDiscover_Icon_Modem_V1.png",
+    "Desktop"  : "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Desktop_V1.png",
+    "Firewall" : "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_FireWall_V1.png",
+    "Laptop"   : "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Laptop_V1.png",
+    "Router"   : "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Modem_V1.png",
+    "Server"   : "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Servers_V1.png",
+    "Switch"   : "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Switch_V1.png",
+    "Printer"  : "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Desktop_V1.png",
+    "IPPhone"  : "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Desktop_V1.png"
+}
+
+shapeIcons = {
+    "Desktop"  : "dot",
+    "Firewall" : "square",
+    "Laptop"   : "dot",
+    "Router"   : "triangle",
+    "Server"   : "star",
+    "Switch"   : "diamond",
+    "Printer"  : "dot",
+    "IPPhone"  : "dot"
+}
+
+shapeColors = {
+    "Desktop"  : "#6151E7",
+    "Firewall" : "#E75151",
+    "Laptop"   : "#b551E7",
+    "Router"   : "#E9C46A",
+    "Server"   : "#E76F51",
+    "Switch"   : "#2A9D8F",
+    "Printer"  : "#51E5E7",
+    "IPPhone"  : "#51E76F"
 }
 
 # Containts the visulization struture for the graph
 class GraphAttributes:
 
-    def __init__(self, nodeSize = 20, icons = defaultIcons, fontColor = 'white', bgColor = '#222222', edgeWidth = 4, edgeColor = 'lightblue'):
-        self.nodeSize = nodeSize
-        self.icons = icons
-        self.fontColor = fontColor
-        self.bgColor = bgColor
-        self.edgeWidth = edgeWidth
-        self.edgeColor = edgeColor
+    def __init__(self, nodeSize = 20, icons = defaultIcons, fontColor = 'white', bgColor = '#222222', edgeWidth = 4, edgeColor = 'lightblue', graphStyle = "Shape"):
+        self.nodeSize   = nodeSize
+        self.icons      = icons
+        self.fontColor  = fontColor
+        self.bgColor    = bgColor
+        self.edgeWidth  = edgeWidth
+        self.edgeColor  = edgeColor
+        self.graphStyle = graphStyle
+        self.shape      = shapeIcons 
 
 class VisualizeGraph:
     
     # Initialize the graph visulization
-    def __init__(self, devices = None, graphAttributes = GraphAttributes()):
+    def __init__(self, fileName = "nx.html", devices = None, graphAttributes = GraphAttributes()):
+        self.fileName = fileName
         self.devices = devices
         self.gA = graphAttributes
         self.graphNX = nx.Graph()   # undirectional, no parallel edges
         self.graphNT = None
-        self.createGraph()
+        if devices is not None:
+            self.createGraph()
+        else:
+            self.updateGraph()
 
     # End the graph 
     def updateGraph(self):
-        self.graphNT = Network(height='100%', width='100%', bgcolor=self.gA.bgColor, font_color=self.gA.fontColor)
-        self.graphNT.toggle_physics(True)
-        self.graphNT.barnes_hut(gravity=0, central_gravity=0, spring_length=0, spring_strength=0, damping=0, overlap=1)
+        self.graphNT = Network(height='750px', width='100%', bgcolor=self.gA.bgColor, font_color=self.gA.fontColor)
+        #region Options
+        self.graphNT.set_options("""
+                var options = {
+                "configure": {
+                    "enabled": false,
+                    "filter": true
+                },
+                "edges": {
+                    "color": {
+                        "inherit": true
+                    },
+                    "smooth": {
+                        "enabled": false,
+                        "type": "continuous"
+                    }
+                },
+                "interaction": {
+                    "hover": true,
+                    "dragNodes": true,
+                    "hideEdgesOnDrag": false,
+                    "hideNodesOnDrag": false,
+                    "navigationButtons": true
+                },
+                "physics": {
+                    "enabled": true,
+                    "stabilization": {
+                        "enabled": true,
+                        "fit": true,
+                        "iterations": 1000,
+                        "onlyDynamicEdges": false,
+                        "updateInterval": 50
+                    }
+                }
+                }
+                """)
+        #endregion
         self.graphNT.from_nx(self.graphNX)
-        self.graphNT.show('nx.html')
+        self.graphNT.save_graph(self.fileName)
 
     # Create graph with class devices
     def createGraph(self):
 
         # Create the nodes within the graph
         for mac in self.devices:
-            self.graphNX.add_node(mac, size = self.gA.nodeSize, text = mac, shape = 'image', image = self.gA.icons[self.devices[mac].deviceType])
+            if self.gA.graphStyle == "Image":
+                self.graphNX.add_node(mac, size = self.gA.nodeSize, text = mac, shape = 'image', image = self.gA.icons[self.devices[mac].deviceType])
+            elif self.gA.graphStyle == "Shape":
+                self.graphNX.add_node(mac, size = self.gA.nodeSize, text = mac, color = shapeColors[self.devices[mac].deviceType], shape = self.gA.shape[self.devices[mac].deviceType])
         
         # Create the edges within the graph
         for mac in self.devices:
@@ -76,7 +140,10 @@ class VisualizeGraph:
         self.devices[nodeMACAddress] = node
 
         # Create the node within the graph
-        self.graphNX.add_node(nodeMACAddress, size = self.gA.nodeSize, text = nodeMACAddress, shape = 'image', image = self.gA.icons[self.devices[nodeMACAddress].deviceType])
+        if self.gA.graphStyle == "Image":
+            self.graphNX.add_node(nodeMACAddress, size = self.gA.nodeSize, text = nodeMACAddress, shape = 'image', image = self.gA.icons[self.devices[nodeMACAddress].deviceType])
+        elif self.gA.graphStyle == "Shape":
+            self.graphNX.add_node(nodeMACAddress, size = self.gA.nodeSize, text = nodeMACAddress, color = shapeColors[self.devices[nodeMACAddress].deviceType], shape = self.gA.shape[self.devices[nodeMACAddress].deviceType])
 
         # Create the edges within the graph
         for neighborMAC in self.devices[nodeMACAddress].neighbors:
@@ -97,21 +164,21 @@ class VisualizeGraph:
         self.updateGraph()
 
     # Remove node in graph
-    def removeNode(self, node):
-        
-        nodeMACAddress = node.MACAddress
+    def removeNode(self, nodeMACAddress):
+        try:
+            # Remove links from graph
+            for neighborMAC in self.devices[nodeMACAddress].neighbors:
+                self.removeEdge(nodeMACAddress, neighborMAC)
+            
+            # Remove node from graph
+            self.graphNX.remove_node(nodeMACAddress)
 
-        # Remove links from graph
-        for neighborMAC in self.devices[nodeMACAddress].neighbors:
-            self.removeEdge(nodeMACAddress, neighborMAC)
+            # Remove node from devices dictionary
+            del self.devices[nodeMACAddress]
 
-        # Remove node from graph
-        self.graphNX.remove_node(node.MACAddress)
-
-        # Remove node from devices dictionary
-        del self.devices[node.MACAddress]
-
-        self.updateGraph()
+            self.updateGraph()
+        except:
+            None
 
     # Remove node in graph
     def removeEdge(self, startNodeMACAddress, endNodeMACAddress):
@@ -133,3 +200,7 @@ class VisualizeGraph:
 # Given an input list, return the flattened list
 def flattenList(list):
     return [item for sublist in list for item in sublist]
+
+# Convert graph data into text file to be exported to
+def getGraphData():
+    return "Graph Data"

@@ -1,0 +1,80 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 100%;
+            height: 750px;
+            background-color: #000000;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"color": "#E9C46A", "font": {"color": "white"}, "id": "00:10:7b:35:f5:b5", "image": "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Modem_V1.png", "label": "00:10:7b:35:f5:b5", "shape": "triangle", "size": 20, "text": "00:10:7b:35:f5:b5"}, {"color": "#E9C46A", "font": {"color": "white"}, "id": "00:10:7b:35:f5:c6", "image": "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Modem_V1.png", "label": "00:10:7b:35:f5:c6", "shape": "triangle", "size": 20, "text": "00:10:7b:35:f5:c6"}, {"color": "#E9C46A", "font": {"color": "white"}, "id": "00:10:7b:35:f5:d7", "image": "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Modem_V1.png", "label": "00:10:7b:35:f5:d7", "shape": "triangle", "size": 20, "text": "00:10:7b:35:f5:d7"}, {"color": "#2A9D8F", "font": {"color": "white"}, "id": "00:10:7b:12:34:56", "image": "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Switch_V1.png", "label": "00:10:7b:12:34:56", "shape": "diamond", "size": 20, "text": "00:10:7b:12:34:56"}, {"color": "#2A9D8F", "font": {"color": "white"}, "id": "00:10:7b:78:91:23", "image": "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Switch_V1.png", "label": "00:10:7b:78:91:23", "shape": "diamond", "size": 20, "text": "00:10:7b:78:91:23"}, {"color": "#2A9D8F", "font": {"color": "white"}, "id": "00:10:7b:45:67:89", "image": "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Switch_V1.png", "label": "00:10:7b:45:67:89", "shape": "diamond", "size": 20, "text": "00:10:7b:45:67:89"}, {"color": "#2A9D8F", "font": {"color": "white"}, "id": "00:10:7b:24:68:13", "image": "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Switch_V1.png", "label": "00:10:7b:24:68:13", "shape": "diamond", "size": 20, "text": "00:10:7b:24:68:13"}, {"color": "#E75151", "font": {"color": "white"}, "id": "3a-ac-1b-1d-c9-05", "image": "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_FireWall_V1.png", "label": "3a-ac-1b-1d-c9-05", "shape": "square", "size": 20, "text": "3a-ac-1b-1d-c9-05"}, {"color": "#E76F51", "font": {"color": "white"}, "id": "8b-b1-44-1e-1d-77", "image": "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Servers_V1.png", "label": "8b-b1-44-1e-1d-77", "shape": "star", "size": 20, "text": "8b-b1-44-1e-1d-77"}, {"color": "#b551E7", "font": {"color": "white"}, "id": "93-b7-be-34-ac-5f", "image": "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Laptop_V1.png", "label": "93-b7-be-34-ac-5f", "shape": "dot", "size": 20, "text": "93-b7-be-34-ac-5f"}, {"color": "#b551E7", "font": {"color": "white"}, "id": "91-f1-b5-5c-1a-cf", "image": "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Laptop_V1.png", "label": "91-f1-b5-5c-1a-cf", "shape": "dot", "size": 20, "text": "91-f1-b5-5c-1a-cf"}, {"color": "#b551E7", "font": {"color": "white"}, "id": "7e-68-0b-b8-3d-29", "image": "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Laptop_V1.png", "label": "7e-68-0b-b8-3d-29", "shape": "dot", "size": 20, "text": "7e-68-0b-b8-3d-29"}, {"color": "#6151E7", "font": {"color": "white"}, "id": "0d-bf-cd-f4-40-9d", "image": "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Desktop_V1.png", "label": "0d-bf-cd-f4-40-9d", "shape": "dot", "size": 20, "text": "0d-bf-cd-f4-40-9d"}, {"color": "#6151E7", "font": {"color": "white"}, "id": "1b-95-5b-93-4a-34", "image": "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Desktop_V1.png", "label": "1b-95-5b-93-4a-34", "shape": "dot", "size": 20, "text": "1b-95-5b-93-4a-34"}, {"color": "#51E76F", "font": {"color": "white"}, "id": "9e-a9-c9-a6-e4-99", "image": "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Desktop_V1.png", "label": "9e-a9-c9-a6-e4-99", "shape": "dot", "size": 20, "text": "9e-a9-c9-a6-e4-99"}, {"color": "#51E5E7", "font": {"color": "white"}, "id": "f1-b0-44-37-32-36", "image": "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Desktop_V1.png", "label": "f1-b0-44-37-32-36", "shape": "dot", "size": 20, "text": "f1-b0-44-37-32-36"}, {"color": "#6151E7", "font": {"color": "white"}, "id": "89-61-86-23-44-38", "image": "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Desktop_V1.png", "label": "89-61-86-23-44-38", "shape": "dot", "size": 20, "text": "89-61-86-23-44-38"}]);
+        edges = new vis.DataSet([{"color": "lightblue", "from": "00:10:7b:35:f5:b5", "to": "00:10:7b:35:f5:c6", "weight": 4}, {"color": "lightblue", "from": "00:10:7b:35:f5:b5", "to": "00:10:7b:35:f5:d7", "weight": 4}, {"color": "lightblue", "from": "00:10:7b:35:f5:c6", "to": "00:10:7b:12:34:56", "weight": 4}, {"color": "lightblue", "from": "00:10:7b:35:f5:c6", "to": "00:10:7b:78:91:23", "weight": 4}, {"color": "lightblue", "from": "00:10:7b:35:f5:d7", "to": "00:10:7b:45:67:89", "weight": 4}, {"color": "lightblue", "from": "00:10:7b:35:f5:d7", "to": "00:10:7b:24:68:13", "weight": 4}, {"color": "lightblue", "from": "00:10:7b:12:34:56", "to": "3a-ac-1b-1d-c9-05", "weight": 4}, {"color": "lightblue", "from": "00:10:7b:12:34:56", "to": "8b-b1-44-1e-1d-77", "weight": 4}, {"color": "lightblue", "from": "00:10:7b:78:91:23", "to": "93-b7-be-34-ac-5f", "weight": 4}, {"color": "lightblue", "from": "00:10:7b:78:91:23", "to": "91-f1-b5-5c-1a-cf", "weight": 4}, {"color": "lightblue", "from": "00:10:7b:45:67:89", "to": "7e-68-0b-b8-3d-29", "weight": 4}, {"color": "lightblue", "from": "00:10:7b:45:67:89", "to": "0d-bf-cd-f4-40-9d", "weight": 4}, {"color": "lightblue", "from": "00:10:7b:24:68:13", "to": "1b-95-5b-93-4a-34", "weight": 4}, {"color": "lightblue", "from": "00:10:7b:24:68:13", "to": "9e-a9-c9-a6-e4-99", "weight": 4}, {"color": "lightblue", "from": "00:10:7b:24:68:13", "to": "f1-b0-44-37-32-36", "weight": 4}, {"color": "lightblue", "from": "9e-a9-c9-a6-e4-99", "to": "89-61-86-23-44-38", "weight": 4}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {"configure": {"enabled": false, "filter": true}, "edges": {"color": {"inherit": true}, "smooth": {"enabled": false, "type": "continuous"}}, "interaction": {"hover": true, "dragNodes": true, "hideEdgesOnDrag": false, "hideNodesOnDrag": false, "navigationButtons": true}, "physics": {"enabled": true, "stabilization": {"enabled": true, "fit": true, "iterations": 1000, "onlyDynamicEdges": false, "updateInterval": 50}}};
+        
+        
+
+        
+
+        network = new vis.Network(container, data, options);
+	 
+        
+
+
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>
