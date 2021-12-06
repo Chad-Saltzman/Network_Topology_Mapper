@@ -208,3 +208,7 @@ class VisualizeGraph:
 # Given an input list, return the flattened list
 def flattenList(list):
     return [item for sublist in list for item in sublist]
+
+# Convert graph data into text file to be exported to
+def getGraphData():
+    return "Graph Data"

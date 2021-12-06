@@ -21,7 +21,7 @@ import codecs
 
 # Import DeviceProperties, VisualizeGraph, ProcessPackets
 from DeviceProperties import Device, deviceTypes, deviceTypeKeys
-from VisualizeGraph import VisualizeGraph, GraphAttributes
+from VisualizeGraph import VisualizeGraph, GraphAttributes, getGraphData
 import ProcessPackets as process
 
 # Get Application Icons
@@ -118,7 +118,7 @@ nodeMaps.append("Create New Topology")
 # Select Network Topology or Open New
 col1, col2 = st.columns((10, 1))
 selectedMap = col1.selectbox("Select Network Topology To Visualize", nodeMaps)
-downloadButton = col2.download_button(label = "Download", data = open(topologiesDict[selectedMap].fileName, 'r', encoding='utf-8'))
+downloadButton = col2.download_button(label = "Download", data = open(VisualizeGraph.getGraphData(), 'r', encoding='utf-8'), file_name = 'graph.png')
 
 # Show file upload if 'Create New Topology' is selected
 if selectedMap == 'Create New Topology':
