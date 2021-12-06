@@ -173,21 +173,18 @@ class VisualizeGraph:
         self.updateGraph()
 
     # Remove node in graph
-    def removeNode(self, node):
+    def removeNode(self, nodeMACAddress):
         
-        nodeMACAddress = node.MACAddress
-
         # Remove links from graph
         self.deviceMACs.remove(nodeMACAddress)
         for neighborMAC in self.devices[nodeMACAddress].neighbors:
             self.removeEdge(nodeMACAddress, neighborMAC)
-            
-
+        
         # Remove node from graph
-        self.graphNX.remove_node(node.MACAddress)
+        self.graphNX.remove_node(nodeMACAddress)
 
         # Remove node from devices dictionary
-        del self.devices[node.MACAddress]
+        del self.devices[nodeMACAddress]
 
         self.updateGraph()
 

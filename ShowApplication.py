@@ -226,9 +226,9 @@ else:
     elif currentMode == 'Remove Node':
         removeNodeSelect = st.sidebar.selectbox('Select a Node', topologiesDict[selectedMap].deviceMACs)
 
-        RemoveNodeTime = st.sidebar.button('Remove Device')
-        if RemoveNodeTime:
-            print()
+        DeleteNodeTime = st.sidebar.button('Delete')
+        if DeleteNodeTime:
+            topologiesDict[selectedMap].removeNode(removeNodeSelect)
 
     elif currentMode == 'Analyze Networks':        
         layoutType = st.sidebar.selectbox('Topology Layout', ['Bus', 'Ring', 'Star', 'Tree', 'Mesh'])   

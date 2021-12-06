@@ -29,7 +29,6 @@ def findUniqueMACs(packets):
 def getDevices(packets):
     devices = {}
     MACS = findUniqueMACs(packets)
-    print(MACS)
     for i in range(len(MACS)):
         device_packets = []
         for index in MACS[list(MACS)[i]]:
