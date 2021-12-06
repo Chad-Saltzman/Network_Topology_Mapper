@@ -18,10 +18,11 @@ from pyvis.network import Network
 from PIL import Image
 import base64
 import codecs
+import pyautogui
 
 # Import DeviceProperties, VisualizeGraph, ProcessPackets
 from DeviceProperties import Device, deviceTypes, deviceTypeKeys
-from VisualizeGraph import VisualizeGraph, GraphAttributes, getGraphData
+from VisualizeGraph import VisualizeGraph, GraphAttributes, getGraphData, defaultIcons
 import ProcessPackets as process
 
 # Get Application Icons
@@ -66,16 +67,31 @@ samplePackets2 = [
     {"SourceIP" : "192.168.10.11", "DestinationIP" : "192.168.10.13", "SourceMAC" : "00:10:7b:12:34:56", "DestinationMAC" : "8b-b1-44-1e-1d-77", "Protocol" : "SNMP"},  
 ]
 
+# Initialization
+if 'loaded' not in st.session_state:
+    st.session_state.loaded = 0
 
-attributes = GraphAttributes(bgColor = '#000000', graphStyle = "Image")
-devices = process.getDevices(samplePackets)
-graph = VisualizeGraph(devices = devices, fileName = "example.html", graphAttributes = attributes)
+if (st.session_state.loaded == 0):
+    st.session_state.loaded = 1
+    attributes = GraphAttributes(bgColor = '#000000', graphStyle = "Image")
+    devices = process.getDevices(samplePackets)
+    graph = VisualizeGraph(devices = devices, fileName = "example.html", graphAttributes = attributes)
 
-attributes2 = GraphAttributes(bgColor = '#131229', graphStyle = "Shape")
-devices2 = process.getDevices(samplePackets2)
-graph2 = VisualizeGraph(devices = devices2, fileName = "example2.html", graphAttributes = attributes2)
+    attributes2 = GraphAttributes(bgColor = '#131229', graphStyle = "Shape")
+    devices2 = process.getDevices(samplePackets2)
+    graph2 = VisualizeGraph(devices = devices2, fileName = "example2.html", graphAttributes = attributes2)
 
-topologiesDict = {'Example Graph': graph, 'Simple Graph': graph2}
+    topologiesDict = {'Example Graph': graph, 'Simple Graph': graph2}
+
+elif (st.session_state.loaded == 1):
+    topologiesDict = st.session_state.topologiesDict
+
+if 'graph' not in st.session_state:
+    st.session_state.topologiesDict = topologiesDict
+
+
+
+
 
 #endregion
 
@@ -116,9 +132,10 @@ nodeMaps = getList(topologiesDict)
 nodeMaps.append("Create New Topology")
 
 # Select Network Topology or Open New
-col1, col2 = st.columns((10, 1))
+col1, col2, col3 = st.columns((10, 1, 1))
 selectedMap = col1.selectbox("Select Network Topology To Visualize", nodeMaps)
-downloadButton = col2.download_button(label = "Download", data = open(VisualizeGraph.getGraphData(), 'r', encoding='utf-8'), file_name = 'graph.png')
+downloadButton = col2.download_button(label = "Download", data = open(topologiesDict[selectedMap].fileName, 'r', encoding='utf-8'), file_name = 'graph.html')
+col3.button("Refresh")
 
 # Show file upload if 'Create New Topology' is selected
 if selectedMap == 'Create New Topology':
@@ -131,7 +148,7 @@ if selectedMap == 'Create New Topology':
             selectedMap = 'Topology1'
 
 else:
-    showHTMLTopology(topologiesDict[selectedMap].fileName)
+    showHTMLTopology(st.session_state.topologiesDict[selectedMap].fileName)
 
     # Show time slider
     sliderRange = st.slider("Time Period (Days)", value = 100)
@@ -189,7 +206,7 @@ else:
     # Change sidebar menu depending on CurrentMode
     if currentMode == 'View/Edit Node':
         #need to import all nodes into this thing somehow, when a new node is selected in select box, update the rest of the boxes
-        currentNodeSelect = st.sidebar.selectbox('Select a Node', topologiesDict[selectedMap].deviceMACs)
+        currentNodeSelect = st.sidebar.selectbox('Select a Node', getList(st.session_state.topologiesDict[selectedMap].devices))
 
         # Get current device selected
         try:
@@ -201,73 +218,56 @@ else:
 
         # Show Device IP Address so they can be changed
         
-        i = 1
-        for IP in node.IPAddress:
-            st.sidebar.text_input("IP Address " + str(i), IP)
+        selectedIPAddresses = list(node.IPAddress)
+        i = 0
+        for IP in selectedIPAddresses:
+            selectedIPAddresses[i] = st.sidebar.text_input("IP Address " + str(i + 1), selectedIPAddresses[i])
             i += 1
 
         vendor = st.sidebar.text_input('Vendor', node.vendor)
 
         EditNodeTime = st.sidebar.button('Update Device')
         if EditNodeTime:
-            topologiesDict[selectedMap].devices[currentNodeSelect].MACAddress = "AAAAAAAAAA"
+            topologiesDict[selectedMap].devices[currentNodeSelect].deviceType = selectedNodeDeviceType
+            topologiesDict[selectedMap].devices[currentNodeSelect].IPAddress  = set(selectedIPAddresses)
+            topologiesDict[selectedMap].devices[currentNodeSelect].vendor     = vendor
+
 
     elif currentMode == 'Add Node':
 
         # New Node Properties
-        newNodeMACAddress  = st.sidebar.text_input('MAC Address')
-        newDeviceIPAddress = st.sidebar.text_input('IP Addresses')
-        newDeviceType      = st.sidebar.selectbox('Device Type', deviceTypeKeys)
-        newDeviceNeighbors = st.sidebar.text_input('Neighbors MAC Addresses')
-        newDeviceVendor    = st.sidebar.text_input('Device Vendor')
+        newDeviceMACAddress  = st.sidebar.text_input('MAC Address')
+        newDeviceDestMAC     = st.sidebar.selectbox('Destination MAC Address', getList(st.session_state.topologiesDict[selectedMap].devices))
+        newDeviceIPAddress   = st.sidebar.text_input('IP Addresses')
+        newDeviceType        = st.sidebar.selectbox('Device Type', deviceTypeKeys)
+        newDeviceProtocol    = st.sidebar.selectbox('Device Protocol', deviceTypes[newDeviceType])
 
         AddNodeTime = st.sidebar.button('Add Device')
         if AddNodeTime:
-            print()  
+            st.session_state.Loaded = 1
+            node = Device(packets = [{"SourceIP" : newDeviceIPAddress, "DestinationIP" : "", "SourceMAC" : newDeviceMACAddress, "DestinationMAC" : newDeviceDestMAC, "Protocol" : newDeviceProtocol}], MAC = newDeviceMACAddress)
+            st.session_state.topologiesDict[selectedMap].addNode(node)
 
     elif currentMode == 'Remove Node':
-        removeNodeSelect = st.sidebar.selectbox('Select a Node', topologiesDict[selectedMap].deviceMACs)
+        removeNodeSelect = st.sidebar.selectbox('Select a Node', getList(st.session_state.topologiesDict[selectedMap].devices))
 
         DeleteNodeTime = st.sidebar.button('Delete')
         if DeleteNodeTime:
-            topologiesDict[selectedMap].removeNode(removeNodeSelect)
-
+            st.session_state.Loaded = 1
+            st.session_state.topologiesDict[selectedMap].removeNode(removeNodeSelect)
+            
     elif currentMode == 'Analyze Networks':        
         layoutType = st.sidebar.selectbox('Topology Layout', ['Bus', 'Ring', 'Star', 'Tree', 'Mesh'])   
         graphStyle = st.sidebar.selectbox('Graph Style', ['Monochromatic','Colored', 'Shape'])
 
+        if graphStyle == 'Monochromatic':
+            st.session_state.topologiesDict[selectedMap].gA.icons = defaultIcons
+            st.session_state.topologiesDict[selectedMap].gA.graphStyle = "Image"
+        elif graphStyle == 'Colored':
+            st.session_state.topologiesDict[selectedMap].gA.icons = defaultIcons
+            st.session_state.topologiesDict[selectedMap].gA.graphStyle = "Image"
+        elif graphStyle == 'Shape':
+            st.session_state.topologiesDict[selectedMap].gA.graphStyle = "Shape"
 
-
-
-    # each one of these variables are what i think are needed to add a node
-    def AddNodeFrontWrapper(AddNodeSourceIP, AddNodeDestinyIP, AddNodeSourceMAC, AddNodeDestinyMAC, AddNodeDeviceType):
-        # needs to invoke addNode and add edge in VisualizeGraph... and then refresh the nx.html
-        # what exactly is a node data structure?
-
-        print("blob")
-        reloadHTML()
-
-    def DeleteNodeFrontWrapper(NodeToDelete):
-        # needs to invoke removenode and remove edge in VisualizeGraph... and then refresh the nx.html
-        # what exactly is a node data structure?
-
-        print("blob")
-        reloadHTML()
-
-    def EditNodeFrontWrapper(CurrentNodeSelect, SelectedNodeSourceIP, SelectedNodeDestinyIP, SelectedNodeSourceMAC, SelectedNodeDestinyMAC, SelectedNodeProtocol, SelectedNodeDeviceType):
-        # not sure what this is supposed to invoke in visualizegraph tbh - maybe create new graph with new data and write new html file?
-
-        print("blob")
-        reloadHTML()
-
-
-
-
-
-
-
-
-
-
-
-
+        
+        st.session_state.topologiesDict[selectedMap].createGraph()

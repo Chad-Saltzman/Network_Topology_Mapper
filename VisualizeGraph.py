@@ -70,7 +70,6 @@ class VisualizeGraph:
     def __init__(self, fileName = "nx.html", devices = None, graphAttributes = GraphAttributes()):
         self.fileName = fileName
         self.devices = devices
-        self.deviceMACs = []
         self.gA = graphAttributes
         self.graphNX = nx.Graph()   # undirectional, no parallel edges
         self.graphNT = None
@@ -124,9 +123,10 @@ class VisualizeGraph:
     # Create graph with class devices
     def createGraph(self):
 
+        self.gA.shape = shapeIcons 
+
         # Create the nodes within the graph
         for mac in self.devices:
-            self.deviceMACs.append(mac)
             if self.gA.graphStyle == "Image":
                 self.graphNX.add_node(mac, size = self.gA.nodeSize, text = mac, shape = 'image', image = self.gA.icons[self.devices[mac].deviceType])
             elif self.gA.graphStyle == "Shape":
@@ -146,13 +146,12 @@ class VisualizeGraph:
 
         # Add node to devices dictionary
         self.devices[nodeMACAddress] = node
-        self.deviceMACs.append(nodeMACAddress)
 
         # Create the node within the graph
         if self.gA.graphStyle == "Image":
             self.graphNX.add_node(nodeMACAddress, size = self.gA.nodeSize, text = nodeMACAddress, shape = 'image', image = self.gA.icons[self.devices[nodeMACAddress].deviceType])
         elif self.gA.graphStyle == "Shape":
-            self.graphNX.add_node(nodeMACAddress, size = self.gA.nodeSize, text = nodeMACAddress, color = shapeColors[self.devices[nodeMACAddress].deviceType], shape = self.gA.shape[node.devices[nodeMACAddress].deviceType])
+            self.graphNX.add_node(nodeMACAddress, size = self.gA.nodeSize, text = nodeMACAddress, color = shapeColors[self.devices[nodeMACAddress].deviceType], shape = self.gA.shape[self.devices[nodeMACAddress].deviceType])
 
         # Create the edges within the graph
         for neighborMAC in self.devices[nodeMACAddress].neighbors:
@@ -174,19 +173,20 @@ class VisualizeGraph:
 
     # Remove node in graph
     def removeNode(self, nodeMACAddress):
-        
-        # Remove links from graph
-        for neighborMAC in self.devices[nodeMACAddress].neighbors:
-            self.removeEdge(nodeMACAddress, neighborMAC)
-        
-        # Remove node from graph
-        self.graphNX.remove_node(nodeMACAddress)
+        try:
+            # Remove links from graph
+            for neighborMAC in self.devices[nodeMACAddress].neighbors:
+                self.removeEdge(nodeMACAddress, neighborMAC)
+            
+            # Remove node from graph
+            self.graphNX.remove_node(nodeMACAddress)
 
-        # Remove node from devices dictionary
-        del self.devices[nodeMACAddress]
-        #self.deviceMACs.remove(nodeMACAddress)
+            # Remove node from devices dictionary
+            del self.devices[nodeMACAddress]
 
-        self.updateGraph()
+            self.updateGraph()
+        except:
+            None
 
     # Remove node in graph
     def removeEdge(self, startNodeMACAddress, endNodeMACAddress):
