@@ -19,6 +19,7 @@ def getList(dict):
     return list
 #endregion
 
+# Device Initialisms
 deviceTypes = {
     "Switch"  : ["LLDP", "CDP", "IP route", "FDB", "ARP", "MLT", "CAN", "PPP"],
     "Router"  : ["CLNS", "DDP", "EGP", "EIGRP", "ICMP", "IGMP", "IPsec", "IPV4", "IPV6", "IPX", "OSPF", "PIM", "RIP", "IPv4", "IPv6", "HSRP"],
