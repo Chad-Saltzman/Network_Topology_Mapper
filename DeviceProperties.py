@@ -9,6 +9,7 @@
 
 import requests
 import json
+import time
 
 # region HELPER
 def getList(dict):
@@ -124,6 +125,7 @@ class Device:
             response = requests.get(f"http://www.macvendorlookup.com/api/v2/{self.MACAddress}/json", timeout=1)
             json_response = json.loads(response.text)
             vendor = json_response[0]['company']
+            time.sleep(0.5)
             if type(vendor) == str:
                 return vendor
             else:
@@ -131,6 +133,7 @@ class Device:
         except:
             response = requests.get(f"https://api.macvendors.com/{self.MACAddress}", timeout=1)
             vendor = response.text 
+            time.sleep(0.5)
             if type(vendor) == str:
                 return response.text
             else:
