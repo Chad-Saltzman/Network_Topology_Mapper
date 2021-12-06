@@ -6,11 +6,10 @@
 #   and graph editing/inspecting functionality.
 #
 # -------------------------------------------------------------------
-import time
-from VisualizeGraph import VisualizeGraph
+
 from DeviceProperties import Device
 
-# 
+# Gets unique MACS
 def findUniqueMACs(packets):
     MAC_List = {}
     for packet in packets:
@@ -25,7 +24,7 @@ def findUniqueMACs(packets):
             MAC_List[packet["DestinationMAC"]].append(packets.index(packet))
     return MAC_List
 
-
+# Gets devices from packets
 def getDevices(packets):
     devices = {}
     MACS = findUniqueMACs(packets)

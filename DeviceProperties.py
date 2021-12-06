@@ -2,19 +2,13 @@
 #
 #   DeviceProperties.py
 #
-#   Purpose:  
+#   Purpose: Allows for the creation of Device objects.
 #   
 #
 # -------------------------------------------------------------------
 
-import tkinter as tk
-from pyvis.network import Network
-import networkx as nx
 import requests
-import re
-import sys
 import json
-import itertools
 
 # region HELPER
 def getList(dict):

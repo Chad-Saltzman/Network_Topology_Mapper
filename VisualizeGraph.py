@@ -11,9 +11,6 @@
 from pyvis.network import Network
 import networkx as nx
 
-# Import DeviceProperties
-from DeviceProperties import Device
-
 # Image URLs for graph nodes
 defaultIcons = {
     "Desktop"  : "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Desktop_V1.png",
@@ -22,8 +19,8 @@ defaultIcons = {
     "Router"   : "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Modem_V1.png",
     "Server"   : "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Servers_V1.png",
     "Switch"   : "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Switch_V1.png",
-    "Printer"  : "icons/NetDiscover_Icon_Modem_Colored.png",
-    "IPPhone"  : "icons/NetDiscover_Icon_Modem_Colored.png"
+    "Printer"  : "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Desktop_V1.png",
+    "IPPhone"  : "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Desktop_V1.png"
 }
 
 shapeIcons = {
@@ -52,17 +49,14 @@ shapeColors = {
 class GraphAttributes:
 
     def __init__(self, nodeSize = 20, icons = defaultIcons, fontColor = 'white', bgColor = '#222222', edgeWidth = 4, edgeColor = 'lightblue', graphStyle = "Shape"):
-        self.nodeSize  = nodeSize
-        self.icons     = icons
-        self.fontColor = fontColor
-        self.bgColor   = bgColor
-        self.edgeWidth = edgeWidth
-        self.edgeColor = edgeColor
+        self.nodeSize   = nodeSize
+        self.icons      = icons
+        self.fontColor  = fontColor
+        self.bgColor    = bgColor
+        self.edgeWidth  = edgeWidth
+        self.edgeColor  = edgeColor
         self.graphStyle = graphStyle
-        if self.graphStyle == "Shape":
-            self.shape = shapeIcons 
-        else:
-            self.shape = "image"
+        self.shape      = shapeIcons 
 
 class VisualizeGraph:
     
@@ -122,8 +116,6 @@ class VisualizeGraph:
 
     # Create graph with class devices
     def createGraph(self):
-
-        self.gA.shape = shapeIcons 
 
         # Create the nodes within the graph
         for mac in self.devices:

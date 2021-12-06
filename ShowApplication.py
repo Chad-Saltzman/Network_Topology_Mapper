@@ -8,17 +8,10 @@
 # -------------------------------------------------------------------
 
 # Import Dependencies
-from enum import auto
 import streamlit as st
 import streamlit.components.v1 as components
-import pandas as pd
-import networkx as nx
-from pyvis.network import Network
 
 from PIL import Image
-import base64
-import codecs
-import pyautogui
 
 # Import DeviceProperties, VisualizeGraph, ProcessPackets
 from DeviceProperties import Device, deviceTypes, deviceTypeKeys
@@ -89,10 +82,6 @@ elif (st.session_state.loaded == 1):
 if 'graph' not in st.session_state:
     st.session_state.topologiesDict = topologiesDict
 
-
-
-
-
 #endregion
 
 # region METHODS
@@ -132,10 +121,8 @@ nodeMaps = getList(topologiesDict)
 nodeMaps.append("Create New Topology")
 
 # Select Network Topology or Open New
-col1, col2, col3 = st.columns((10, 1, 1))
-selectedMap = col1.selectbox("Select Network Topology To Visualize", nodeMaps)
-downloadButton = col2.download_button(label = "Download", data = open(topologiesDict[selectedMap].fileName, 'r', encoding='utf-8'), file_name = 'graph.html')
-col3.button("Refresh")
+selectedMap = st.selectbox("Select Network Topology To Visualize", nodeMaps)
+col1, col2, col3 = st.columns((13, 1, 1))
 
 # Show file upload if 'Create New Topology' is selected
 if selectedMap == 'Create New Topology':
@@ -148,6 +135,10 @@ if selectedMap == 'Create New Topology':
             selectedMap = 'Topology1'
 
 else:
+    
+    downloadButton = col2.download_button(label = "Download", data = open(topologiesDict[selectedMap].fileName, 'r', encoding='utf-8'), file_name = 'graph.html')
+    col3.button("Refresh")
+
     showHTMLTopology(st.session_state.topologiesDict[selectedMap].fileName)
 
     # Show time slider
@@ -200,13 +191,13 @@ else:
     st.sidebar.markdown("# Network Inspector")
     currentMode = st.sidebar.radio(
         "Actions",
-        ('View/Edit Node', 'Add Node', 'Remove Node', 'Analyze Networks')
+        ('View/Edit Device', 'Add Device', 'Remove Device', 'Analyze Networks')
     )
 
     # Change sidebar menu depending on CurrentMode
-    if currentMode == 'View/Edit Node':
+    if currentMode == 'View/Edit Device':
         #need to import all nodes into this thing somehow, when a new node is selected in select box, update the rest of the boxes
-        currentNodeSelect = st.sidebar.selectbox('Select a Node', getList(st.session_state.topologiesDict[selectedMap].devices))
+        currentNodeSelect = st.sidebar.selectbox('Select a Device', getList(st.session_state.topologiesDict[selectedMap].devices))
 
         # Get current device selected
         try:
@@ -233,7 +224,7 @@ else:
             topologiesDict[selectedMap].devices[currentNodeSelect].vendor     = vendor
 
 
-    elif currentMode == 'Add Node':
+    elif currentMode == 'Add Device':
 
         # New Node Properties
         newDeviceMACAddress  = st.sidebar.text_input('MAC Address')
@@ -248,10 +239,10 @@ else:
             node = Device(packets = [{"SourceIP" : newDeviceIPAddress, "DestinationIP" : "", "SourceMAC" : newDeviceMACAddress, "DestinationMAC" : newDeviceDestMAC, "Protocol" : newDeviceProtocol}], MAC = newDeviceMACAddress)
             st.session_state.topologiesDict[selectedMap].addNode(node)
 
-    elif currentMode == 'Remove Node':
+    elif currentMode == 'Remove Device':
         removeNodeSelect = st.sidebar.selectbox('Select a Node', getList(st.session_state.topologiesDict[selectedMap].devices))
 
-        DeleteNodeTime = st.sidebar.button('Delete')
+        DeleteNodeTime = st.sidebar.button('Remove Device')
         if DeleteNodeTime:
             st.session_state.Loaded = 1
             st.session_state.topologiesDict[selectedMap].removeNode(removeNodeSelect)
