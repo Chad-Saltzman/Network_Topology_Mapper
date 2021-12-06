@@ -61,20 +61,21 @@ samplePackets = [
 samplePackets2 = [
     {"SourceIP" : "192.168.0.2", "DestinationIP" : "192.168.0.3", "SourceMAC" : "00:10:7b:35:f5:b5", "DestinationMAC" : "00:10:7b:35:f5:c6", "Protocol" : "OSPF"},     # Packet from Router1 to Router2   ##
     {"SourceIP" : "192.168.0.6", "DestinationIP" : "192.168.0.7", "SourceMAC" : "00:10:7b:35:f5:b5", "DestinationMAC" : "00:10:7b:35:f5:d7", "Protocol" : "OSPF"},     # Packet from Router1 to Router3   ##
+    {"SourceIP" : "192.168.10.10", "DestinationIP" : "192.168.10.11", "SourceMAC" : "00:10:7b:35:f5:c6", "DestinationMAC" : "00:10:7b:12:34:56", "Protocol" : "CDP"},  # Packet from Router2 to Switch0   ##
+    {"SourceIP" : "192.168.10.11", "DestinationIP" : "192.168.10.12", "SourceMAC" : "00:10:7b:12:34:56", "DestinationMAC" : "3a-ac-1b-1d-c9-05", "Protocol" : "NAT"},  # Packet from Switch0 to ASA0      ##
+    {"SourceIP" : "192.168.10.11", "DestinationIP" : "192.168.10.13", "SourceMAC" : "00:10:7b:12:34:56", "DestinationMAC" : "8b-b1-44-1e-1d-77", "Protocol" : "SNMP"},  
 ]
 
 
-attributes = GraphAttributes(bgColor = '#000000')
+attributes = GraphAttributes(bgColor = '#000000', graphStyle = "Image")
 devices = process.getDevices(samplePackets)
 graph = VisualizeGraph(devices = devices, fileName = "example.html", graphAttributes = attributes)
 
-attributes2 = GraphAttributes(bgColor = '#131229')
+attributes2 = GraphAttributes(bgColor = '#131229', graphStyle = "Shape")
 devices2 = process.getDevices(samplePackets2)
 graph2 = VisualizeGraph(devices = devices2, fileName = "example2.html", graphAttributes = attributes2)
 
 topologiesDict = {'Example Graph': graph, 'Simple Graph': graph2}
-
-
 
 #endregion
 

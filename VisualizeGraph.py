@@ -26,17 +26,43 @@ defaultIcons = {
     "IPPhone"  : "icons/NetDiscover_Icon_Modem_Colored.png"
 }
 
+shapeIcons = {
+    "Desktop"  : "dot",
+    "Firewall" : "square",
+    "Laptop"   : "dot",
+    "Router"   : "triangle",
+    "Server"   : "star",
+    "Switch"   : "diamond",
+    "Printer"  : "dot",
+    "IPPhone"  : "dot"
+}
+
+shapeColors = {
+    "Desktop"  : "#6151E7",
+    "Firewall" : "#E75151",
+    "Laptop"   : "#b551E7",
+    "Router"   : "#E9C46A",
+    "Server"   : "#E76F51",
+    "Switch"   : "#2A9D8F",
+    "Printer"  : "#51E5E7",
+    "IPPhone"  : "#51E76F"
+}
+
 # Containts the visulization struture for the graph
 class GraphAttributes:
 
-    def __init__(self, nodeSize = 20, icons = defaultIcons, fontColor = 'white', bgColor = '#222222', edgeWidth = 4, edgeColor = 'lightblue'):
-        self.nodeSize = nodeSize
-        self.icons = icons
+    def __init__(self, nodeSize = 20, icons = defaultIcons, fontColor = 'white', bgColor = '#222222', edgeWidth = 4, edgeColor = 'lightblue', graphStyle = "Shape"):
+        self.nodeSize  = nodeSize
+        self.icons     = icons
         self.fontColor = fontColor
-        self.bgColor = bgColor
+        self.bgColor   = bgColor
         self.edgeWidth = edgeWidth
         self.edgeColor = edgeColor
-        self.shape = "circle"
+        self.graphStyle = graphStyle
+        if self.graphStyle == "Shape":
+            self.shape = shapeIcons 
+        else:
+            self.shape = "image"
 
 class VisualizeGraph:
     
@@ -101,10 +127,10 @@ class VisualizeGraph:
         # Create the nodes within the graph
         for mac in self.devices:
             self.deviceMACs.append(mac)
-            try:
+            if self.gA.graphStyle == "Image":
                 self.graphNX.add_node(mac, size = self.gA.nodeSize, text = mac, shape = 'image', image = self.gA.icons[self.devices[mac].deviceType])
-            except: 
-                self.graphNX.add_node(mac, size = self.gA.nodeSize, text = mac, shape = self.gA.shape)
+            elif self.gA.graphStyle == "Shape":
+                self.graphNX.add_node(mac, size = self.gA.nodeSize, text = mac, color = shapeColors[self.devices[mac].deviceType], shape = self.gA.shape[self.devices[mac].deviceType])
         
         # Create the edges within the graph
         for mac in self.devices:
@@ -123,10 +149,10 @@ class VisualizeGraph:
 
         # Create the node within the graph
         self.deviceMACs.append(nodeMACAddress)
-        try:
+        if self.gA.graphStyle == "Image":
             self.graphNX.add_node(nodeMACAddress, size = self.gA.nodeSize, text = nodeMACAddress, shape = 'image', image = self.gA.icons[self.devices[nodeMACAddress].deviceType])
-        except: 
-            self.graphNX.add_node(nodeMACAddress, size = self.gA.nodeSize, text = nodeMACAddress, shape = self.gA.shape)
+        elif self.gA.graphStyle == "Shape":
+            self.graphNX.add_node(nodeMACAddress, size = self.gA.nodeSize, text = nodeMACAddress, color = shapeColors[self.devices[nodeMACAddress].deviceType], shape = self.gA.shape[node.devices[nodeMACAddress].deviceType])
 
         # Create the edges within the graph
         for neighborMAC in self.devices[nodeMACAddress].neighbors:
