@@ -146,9 +146,9 @@ class VisualizeGraph:
 
         # Add node to devices dictionary
         self.devices[nodeMACAddress] = node
+        self.deviceMACs.append(nodeMACAddress)
 
         # Create the node within the graph
-        self.deviceMACs.append(nodeMACAddress)
         if self.gA.graphStyle == "Image":
             self.graphNX.add_node(nodeMACAddress, size = self.gA.nodeSize, text = nodeMACAddress, shape = 'image', image = self.gA.icons[self.devices[nodeMACAddress].deviceType])
         elif self.gA.graphStyle == "Shape":
@@ -176,7 +176,6 @@ class VisualizeGraph:
     def removeNode(self, nodeMACAddress):
         
         # Remove links from graph
-        self.deviceMACs.remove(nodeMACAddress)
         for neighborMAC in self.devices[nodeMACAddress].neighbors:
             self.removeEdge(nodeMACAddress, neighborMAC)
         
@@ -185,6 +184,7 @@ class VisualizeGraph:
 
         # Remove node from devices dictionary
         del self.devices[nodeMACAddress]
+        #self.deviceMACs.remove(nodeMACAddress)
 
         self.updateGraph()
 

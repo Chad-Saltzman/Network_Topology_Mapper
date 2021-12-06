@@ -116,7 +116,9 @@ nodeMaps = getList(topologiesDict)
 nodeMaps.append("Create New Topology")
 
 # Select Network Topology or Open New
-selectedMap = st.selectbox("Select Network Topology To Visualize", nodeMaps)
+col1, col2 = st.columns((10, 1))
+selectedMap = col1.selectbox("Select Network Topology To Visualize", nodeMaps)
+downloadButton = col2.download_button(label = "Download", data = open(topologiesDict[selectedMap].fileName, 'r', encoding='utf-8'))
 
 # Show file upload if 'Create New Topology' is selected
 if selectedMap == 'Create New Topology':
