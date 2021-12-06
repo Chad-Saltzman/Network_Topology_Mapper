@@ -119,14 +119,21 @@ class Device:
         return self.deviceType
     
     def getVendor(self):
-        return None
         try:
-            response = requests.get(f"http://www.macvendorlookup.com/api/v2/%7Bself.MACAddress%7D/json", timeout=1)
+            response = requests.get(f"http://www.macvendorlookup.com/api/v2/{self.MACAddress}/json", timeout=1)
             json_response = json.loads(response.text)
-            return json_response[0]['company']
+            vendor = json_response[0]['company']
+            if type(vendor) == str:
+                return vendor
+            else:
+                 return "None"
         except:
-            response = requests.get(f"https://api.macvendors.com/%7Bself.MACAddress%7D", timeout=1)
-            return response.text
+            response = requests.get(f"https://api.macvendors.com/{self.MACAddress}", timeout=1)
+            vendor = response.text 
+            if type(vendor) == str:
+                return response.text
+            else:
+                 return "None"
             
 
     def getNeighborsMACString(self):
