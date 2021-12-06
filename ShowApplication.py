@@ -20,7 +20,7 @@ import base64
 import codecs
 
 # Import DeviceProperties, VisualizeGraph, ProcessPackets
-from DeviceProperties import Device, deviceTypes 
+from DeviceProperties import Device, deviceTypes, deviceTypeKeys
 from VisualizeGraph import VisualizeGraph, GraphAttributes
 import ProcessPackets as process
 
@@ -63,8 +63,7 @@ samplePackets = [
 attributes = GraphAttributes(bgColor = '#000000')
 devices = process.getDevices(samplePackets)
 graph = VisualizeGraph(devices = devices, fileName = "example.html", graphAttributes = attributes)
-graph2 = VisualizeGraph()
-topologiesDict = {'Example Graph': graph, 'Empty Graph': graph2}
+topologiesDict = {'Example Graph': graph, 'Graph 2': graph}
 
 
 
@@ -111,11 +110,16 @@ selectedMap = st.selectbox("Select Network Topology To Visualize", nodeMaps)
 
 # Show file upload if 'Create New Topology' is selected
 if selectedMap == 'Create New Topology':
-    expander = st.expander(label = "Please Input Packet Capture", expanded = True)
+    expander = st.expander(label = "", expanded = True)
     with expander:
-        uploadedFile = st.file_uploader('')
+        st.text_input('Topology Graph Name')
+        uploadedFile = st.file_uploader('Please Input Packet Capture')
+        
         if expander.button('Create'):
             selectedMap = 'Topology1'
+
+
+        
 else:
     showHTMLTopology(topologiesDict[selectedMap].fileName)
 
@@ -163,91 +167,86 @@ else:
 
 #region Sidebar Menu
 
-# Sidebar title and menu options
-st.sidebar.markdown("# Network Inspector")
-currentMode = st.sidebar.radio(
-    "Actions",
-    ('View/Edit Node', 'Add Node', 'Remove Node', 'Analyze Networks')
-)
+    # Sidebar title and menu options
+    st.sidebar.markdown("# Network Inspector")
+    currentMode = st.sidebar.radio(
+        "Actions",
+        ('View/Edit Node', 'Add Node', 'Remove Node', 'Analyze Networks')
+    )
 
-# Change sidebar menu depending on CurrentMode
-if currentMode == 'View/Edit Node':
-    #need to import all nodes into this thing somehow, when a new node is selected in select box, update the rest of the boxes
-    currentNodeSelect = st.sidebar.selectbox('Select a Node', topologiesDict[selectedMap].deviceMACs)
+    # Change sidebar menu depending on CurrentMode
+    if currentMode == 'View/Edit Node':
+        #need to import all nodes into this thing somehow, when a new node is selected in select box, update the rest of the boxes
+        currentNodeSelect = st.sidebar.selectbox('Select a Node', topologiesDict[selectedMap].deviceMACs)
 
-    # Get current device selected
-    node = topologiesDict[selectedMap].devices[currentNodeSelect]
+        # Get current device selected
+        try:
+            node = topologiesDict[selectedMap].devices[currentNodeSelect]
+        except:
+            node = Device()
+        # Show device attributes in order to be changed
+        selectedNodeDeviceType = st.sidebar.selectbox('Device Type', deviceTypeKeys, index = deviceTypeKeys.index(node.deviceType))
 
-    # Show device attributes in order to be changed
-    deviceTypeKeys = getList(deviceTypes)
-    selectedNodeDeviceType = st.sidebar.selectbox('Device Type', deviceTypeKeys, index = deviceTypeKeys.index(node.deviceType))
+        # Show Device IP Address so they can be changed
+        
+        i = 1
+        for IP in node.IPAddress:
+            st.sidebar.text_input("IP Address " + str(i), IP)
+            i += 1
 
-    # Show Device IP Address so they can be changed
-    
-    i = 1
-    for IP in node.IPAddress:
-        st.sidebar.text_input("IP Address " + str(i), IP)
-        i += 1
+        vendor = st.sidebar.text_input('Vendor', node.vendor)
 
-    vendor = st.sidebar.text_input('Vendor', node.vendor)
+        EditNodeTime = st.sidebar.button('Update Device')
+        if EditNodeTime:
+            topologiesDict[selectedMap].devices[currentNodeSelect].MACAddress = "AAAAAAAAAA"
 
-    EditNodeTime = st.sidebar.button('Update Device')
-    if EditNodeTime:
-        topologiesDict[selectedMap].devices[currentNodeSelect].MACAddress = "AAAAAAAAAA"
+    elif currentMode == 'Add Node':
 
-elif currentMode == 'Add Nodes':
-    AddNodeSourceIP = st.sidebar.text_input('Source IP Address', '') 
-    AddNodeDestinyIP = st.sidebar.text_input('Destination IP Address', '') 
-    AddNodeSourceMAC = st.sidebar.text_input('Source MAC Address', '') 
-    AddNodeDestinyMAC = st.sidebar.text_input('Destination MAC Address', '') 
-    AddNodeDeviceType = st.sidebar.selectbox('Device Type',
-                                        ['Desktop', 'Firewall', 'Laptop', 'Server', 'Switch', 'Printer', 'IPPhone'])
-    NewNodeTime = st.sidebar.button('Add Node')
+        # New Node Properties
+        newNodeMACAddress  = st.sidebar.text_input('MAC Address')
+        newDeviceIPAddress = st.sidebar.text_input('IP Addresses')
+        newDeviceType      = st.sidebar.selectbox('Device Type', deviceTypeKeys)
+        newDeviceNeighbors = st.sidebar.text_input('Neighbors MAC Addresses')
+        newDeviceVendor    = st.sidebar.text_input('Device Vendor')
 
-    if NewNodeTime:
-        AddNodeFrontWrapper(AddNodeSourceIP, AddNodeDestinyIP, AddNodeSourceMAC, AddNodeDestinyMAC, AddNodeDeviceType)    
+        AddNodeTime = st.sidebar.button('Add Device')
+        if AddNodeTime:
+            print()  
 
+    elif currentMode == 'Remove Node':
+        removeNodeSelect = st.sidebar.selectbox('Select a Node', topologiesDict[selectedMap].deviceMACs)
 
-elif currentMode == 'Remove Nodes':
-    # this select box needs to import in all existing nodes somehow, and pass it into delete nodefrontwrapper
-    NodeToDelete = st.sidebar.selectbox('Select a Node',
-                                        ['By event name', 'By GPS'])
-    
-    DeleteNodeTime = st.sidebar.button('Delete Node')
-    if DeleteNodeTime:
-        DeleteNodeFrontWrapper(NodeToDelete) 
+        RemoveNodeTime = st.sidebar.button('Remove Device')
+        if RemoveNodeTime:
+            print()
 
-elif CurrentMode == 'Analyze Networks':        
-    #this won't do anything right now 
-    AnalyzeType = st.sidebar.selectbox('Select Analysis',
-                                        ['blib blob blib', 'taylors version'])   
-    RunAnalysisTime = st.sidebar.button('Run Analysis')
+    elif currentMode == 'Analyze Networks':        
+        layoutType = st.sidebar.selectbox('Topology Layout', ['Bus', 'Ring', 'Star', 'Tree', 'Mesh'])   
+        graphStyle = st.sidebar.selectbox('Graph Style', ['Monochromatic','Colored', 'Shape'])
 
 
 
 
+    # each one of these variables are what i think are needed to add a node
+    def AddNodeFrontWrapper(AddNodeSourceIP, AddNodeDestinyIP, AddNodeSourceMAC, AddNodeDestinyMAC, AddNodeDeviceType):
+        # needs to invoke addNode and add edge in VisualizeGraph... and then refresh the nx.html
+        # what exactly is a node data structure?
 
+        print("blob")
+        reloadHTML()
 
-# each one of these variables are what i think are needed to add a node
-def AddNodeFrontWrapper(AddNodeSourceIP, AddNodeDestinyIP, AddNodeSourceMAC, AddNodeDestinyMAC, AddNodeDeviceType):
-    # needs to invoke addNode and add edge in VisualizeGraph... and then refresh the nx.html
-    # what exactly is a node data structure?
+    def DeleteNodeFrontWrapper(NodeToDelete):
+        # needs to invoke removenode and remove edge in VisualizeGraph... and then refresh the nx.html
+        # what exactly is a node data structure?
 
-    print("blob")
-    reloadHTML()
+        print("blob")
+        reloadHTML()
 
-def DeleteNodeFrontWrapper(NodeToDelete):
-    # needs to invoke removenode and remove edge in VisualizeGraph... and then refresh the nx.html
-    # what exactly is a node data structure?
+    def EditNodeFrontWrapper(CurrentNodeSelect, SelectedNodeSourceIP, SelectedNodeDestinyIP, SelectedNodeSourceMAC, SelectedNodeDestinyMAC, SelectedNodeProtocol, SelectedNodeDeviceType):
+        # not sure what this is supposed to invoke in visualizegraph tbh - maybe create new graph with new data and write new html file?
 
-    print("blob")
-    reloadHTML()
-
-def EditNodeFrontWrapper(CurrentNodeSelect, SelectedNodeSourceIP, SelectedNodeDestinyIP, SelectedNodeSourceMAC, SelectedNodeDestinyMAC, SelectedNodeProtocol, SelectedNodeDeviceType):
-    # not sure what this is supposed to invoke in visualizegraph tbh - maybe create new graph with new data and write new html file?
-
-    print("blob")
-    reloadHTML()
+        print("blob")
+        reloadHTML()
 
 
 

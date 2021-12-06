@@ -16,20 +16,20 @@ from DeviceProperties import Device
 
 # Image URLs for graph nodes
 defaultIcons = {
-    "Desktop"  : "icons/NetDiscover_Icon_Desktop_Colored.png",
-    "Firewall" : "icons/NetDiscover_Icon_FireWall_Colored.png",
-    "Laptop"   : "icons/NetDiscover_Icon_Laptop_Colored.png",
-    "Router"   : "icons/NetDiscover_Icon_Router_Colored.png",
-    "Server"   : "icons/NetDiscover_Icon_Servers_Colored.png",
-    "Switch"   : "icons/NetDiscover_Icon_Switch_Colored.png",
+    "Desktop"  : "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Desktop_V1.png",
+    "Firewall" : "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_FireWall_V1.png",
+    "Laptop"   : "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Laptop_V1.png",
+    "Router"   : "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Modem_V1.png",
+    "Server"   : "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Servers_V1.png",
+    "Switch"   : "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Switch_V1.png",
     "Printer"  : "icons/NetDiscover_Icon_Modem_Colored.png",
-    "IPPhone"  : "icons/NetDiscover_Icon_Modem_Colored.png",
+    "IPPhone"  : "icons/NetDiscover_Icon_Modem_Colored.png"
 }
 
 # Containts the visulization struture for the graph
 class GraphAttributes:
 
-    def __init__(self, nodeSize = 20, icons = None, fontColor = 'white', bgColor = '#222222', edgeWidth = 4, edgeColor = 'lightblue'):
+    def __init__(self, nodeSize = 20, icons = defaultIcons, fontColor = 'white', bgColor = '#222222', edgeWidth = 4, edgeColor = 'lightblue'):
         self.nodeSize = nodeSize
         self.icons = icons
         self.fontColor = fontColor
@@ -56,33 +56,41 @@ class VisualizeGraph:
     # End the graph 
     def updateGraph(self):
         self.graphNT = Network(height='750px', width='100%', bgcolor=self.gA.bgColor, font_color=self.gA.fontColor)
-        self.graphNT.toggle_physics(False)
         #region Options
         self.graphNT.set_options("""
-            var options = {
-            "nodes": {
-            },
-            "edges": {
-                "color": {
-                "inherit": true
+                var options = {
+                "configure": {
+                    "enabled": false,
+                    "filter": true
                 },
-                "scaling": {
-                "label": {
-                    "drawThreshold": 16
-                }
+                "edges": {
+                    "color": {
+                        "inherit": true
+                    },
+                    "smooth": {
+                        "enabled": false,
+                        "type": "continuous"
+                    }
                 },
-                "smooth": {
-                "forceDirection": "none"
+                "interaction": {
+                    "hover": true,
+                    "dragNodes": true,
+                    "hideEdgesOnDrag": false,
+                    "hideNodesOnDrag": false,
+                    "navigationButtons": true
+                },
+                "physics": {
+                    "enabled": true,
+                    "stabilization": {
+                        "enabled": true,
+                        "fit": true,
+                        "iterations": 1000,
+                        "onlyDynamicEdges": false,
+                        "updateInterval": 50
+                    }
                 }
-            },
-            "interaction": {
-                "hideEdgesOnDrag": true,
-                "navigationButtons": true
-            },
-            "physics": {
-            }
-            }
-            """)
+                }
+                """)
         #endregion
         self.graphNT.from_nx(self.graphNX)
         self.graphNT.save_graph(self.fileName)

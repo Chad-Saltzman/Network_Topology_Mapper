@@ -16,6 +16,15 @@ import sys
 import json
 import itertools
 
+# region HELPER
+def getList(dict):
+    list = []
+    for key in dict.keys():
+        list.append(key)
+          
+    return list
+#endregion
+
 deviceTypes = {
     "Switch"  : ["LLDP", "CDP", "IP route", "FDB", "ARP", "MLT", "CAN", "PPP"],
     "Router"  : ["CLNS", "DDP", "EGP", "EIGRP", "ICMP", "IGMP", "IPsec", "IPV4", "IPV6", "IPX", "OSPF", "PIM", "RIP", "IPv4", "IPv6", "HSRP"],
@@ -27,6 +36,8 @@ deviceTypes = {
     "Server"  : ["SNMP"],
     "Firewall": ["NAT"]
 }
+
+deviceTypeKeys = getList(deviceTypes)
 
 class Device:
     
@@ -42,9 +53,18 @@ class Device:
         self.printerProtocol  = ["IPP", "LPD"]
         self.serverProtocol   = ["SNMP"]
         self.firewallProtocol = ["NAT"]
-        self.deviceType = self.findDeviceType(packets)
-        self.neighbors = self.getNeighbors(packets)
-        self.vendor = self.getVendor()
+        try:
+            self.deviceType = self.findDeviceType(packets)
+        except:
+            self.deviceType = "None"
+        try:
+            self.neighbors = self.getNeighbors(packets)
+        except:
+            self.neighbors = []
+        try:
+            self.vendor = self.getVendor()
+        except:
+            self.vendor = None
 
     def __str__(self):
         return f"{self.MACAddress=}\n{self.IPAddress=}\n{self.deviceType=}\n{self.neighbors=}\n{self.vendor=}\n"
