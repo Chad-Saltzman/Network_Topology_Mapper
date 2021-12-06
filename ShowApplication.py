@@ -222,6 +222,8 @@ else:
             topologiesDict[selectedMap].devices[currentNodeSelect].deviceType = selectedNodeDeviceType
             topologiesDict[selectedMap].devices[currentNodeSelect].IPAddress  = set(selectedIPAddresses)
             topologiesDict[selectedMap].devices[currentNodeSelect].vendor     = vendor
+            
+            st.session_state.topologiesDict[selectedMap].createGraph()
 
 
     elif currentMode == 'Add Device':
@@ -260,5 +262,4 @@ else:
         elif graphStyle == 'Shape':
             st.session_state.topologiesDict[selectedMap].gA.graphStyle = "Shape"
 
-        
         st.session_state.topologiesDict[selectedMap].createGraph()
