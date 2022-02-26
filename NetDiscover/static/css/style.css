@@ -1,0 +1,45 @@
+/*
+Name: Gavin Claire
+Document: navbar.css
+Decription: CSS for the the site style (font, colors, transitions)
+*/
+
+/* Import Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+:root {
+    /* Color Vars */
+    --navbar-color: #fffdf7;
+    --primary-color: #001D3D;
+    --primary-color-light: #FFFDF7;
+    --toggle-color: #EBEBEB;
+    --text-color: #707070;
+    --white: #FFFFFF;
+
+    /* Transition Vars */
+    --tran-03: all 0.2s ease;
+    --tran-03: all 0.3s ease;
+    --tran-04: all 0.3s ease;
+    --tran-05: all 0.3s ease;
+}
+body.dark {
+    --navbar-color: #242526;
+    --primary-color: #003566;
+    --primary-color-light: #3a3b3c;
+    --toggle-color: #fff;
+    --text-color: #ccc;
+}
+body {
+    min-height: 100vh;
+    background-color: var(--body-color);
+    transition: var(--tran-05);
+}
+::selection {
+    background-color: var(--primary-color);
+    color: var(--white);
+}

@@ -15,7 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from NetDiscover import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', views.home, name="home"),
+    path('inspect', views.inspect, name="inspect"),
+    path('edit', views.edit, name="edit"),
+    path('compare', views.compare, name="compare"),
+    path('export', views.export, name="export"),
+    path('help', views.help, name="help")
 ]
