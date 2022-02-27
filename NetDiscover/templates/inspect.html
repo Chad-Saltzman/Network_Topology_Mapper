@@ -1,0 +1,24 @@
+<!--
+Name: Gavin Claire
+Document: inspect.html
+Decription: HTML for the inspect page.
+-->
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+    {% include 'navbar.html' %}
+    {% include 'graph.html' %}
+
+    <section class="inspect">
+        <div id="mynetwork"></div>
+    </section>
+</body>
+</html>
+  
