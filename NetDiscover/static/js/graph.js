@@ -1,40 +1,99 @@
-
-    // initialize global variables.
-    var edges;
-    var nodes;
-    var network; 
-    var container;
-    var options, data;
-
-    
-    // This method is responsible for drawing the graph, returns the drawn network
-    function drawGraph() {
-        var container = document.getElementById('mynetwork');
-        
-        
-
-        // parsing and collecting nodes and edges from the python
-        nodes = new vis.DataSet([{"font": {"color": "white"}, "id": "00:10:7b:35:f5:b5", "image": "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_IPPhone_V1.png", "label": "00:10:7b:35:f5:b5", "shape": "image", "size": 20, "text": "00:10:7b:35:f5:b5"}, {"font": {"color": "white"}, "id": "00:10:7b:35:f5:c6", "image": "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Modem_V1.png", "label": "00:10:7b:35:f5:c6", "shape": "image", "size": 20, "text": "00:10:7b:35:f5:c6"}, {"font": {"color": "white"}, "id": "00:10:7b:35:f5:d7", "image": "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Modem_V1.png", "label": "00:10:7b:35:f5:d7", "shape": "image", "size": 20, "text": "00:10:7b:35:f5:d7"}, {"font": {"color": "white"}, "id": "00:10:7b:12:34:56", "image": "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Switch_V1.png", "label": "00:10:7b:12:34:56", "shape": "image", "size": 20, "text": "00:10:7b:12:34:56"}, {"font": {"color": "white"}, "id": "00:10:7b:78:91:23", "image": "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Switch_V1.png", "label": "00:10:7b:78:91:23", "shape": "image", "size": 20, "text": "00:10:7b:78:91:23"}, {"font": {"color": "white"}, "id": "00:10:7b:45:67:89", "image": "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Switch_V1.png", "label": "00:10:7b:45:67:89", "shape": "image", "size": 20, "text": "00:10:7b:45:67:89"}, {"font": {"color": "white"}, "id": "00:10:7b:24:68:13", "image": "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Switch_V1.png", "label": "00:10:7b:24:68:13", "shape": "image", "size": 20, "text": "00:10:7b:24:68:13"}, {"font": {"color": "white"}, "id": "94-ff-3c-1d-c9-05", "image": "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_FireWall_V1.png", "label": "94-ff-3c-1d-c9-05", "shape": "image", "size": 20, "text": "94-ff-3c-1d-c9-05"}, {"font": {"color": "white"}, "id": "fc:15:b4-1e-1d-77", "image": "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Servers_V1.png", "label": "fc:15:b4-1e-1d-77", "shape": "image", "size": 20, "text": "fc:15:b4-1e-1d-77"}, {"font": {"color": "white"}, "id": "F4-8E-38-EC-D7-10", "image": "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Laptop_V1.png", "label": "F4-8E-38-EC-D7-10", "shape": "image", "size": 20, "text": "F4-8E-38-EC-D7-10"}, {"font": {"color": "white"}, "id": "F4-8E-38-EC-E8-10", "image": "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Laptop_V1.png", "label": "F4-8E-38-EC-E8-10", "shape": "image", "size": 20, "text": "F4-8E-38-EC-E8-10"}, {"font": {"color": "white"}, "id": "F4-8E-38-EC-F9-10", "image": "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Laptop_V1.png", "label": "F4-8E-38-EC-F9-10", "shape": "image", "size": 20, "text": "F4-8E-38-EC-F9-10"}, {"font": {"color": "white"}, "id": "6C-E5-C9-98-76-54", "image": "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Desktop_V1.png", "label": "6C-E5-C9-98-76-54", "shape": "image", "size": 20, "text": "6C-E5-C9-98-76-54"}, {"font": {"color": "white"}, "id": "6C-E5-C9-78-90-23", "image": "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Desktop_V1.png", "label": "6C-E5-C9-78-90-23", "shape": "image", "size": 20, "text": "6C-E5-C9-78-90-23"}, {"font": {"color": "white"}, "id": "00-80-f0-a6-e4-99", "image": "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_IPPhone_V1.png", "label": "00-80-f0-a6-e4-99", "shape": "image", "size": 20, "text": "00-80-f0-a6-e4-99"}, {"font": {"color": "white"}, "id": "00-00-aa-37-32-36", "image": "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Printer_V1.png", "label": "00-00-aa-37-32-36", "shape": "image", "size": 20, "text": "00-00-aa-37-32-36"}, {"font": {"color": "white"}, "id": "6C-E5-C9-12-34-56", "image": "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_Desktop_V1.png", "label": "6C-E5-C9-12-34-56", "shape": "image", "size": 20, "text": "6C-E5-C9-12-34-56"}]);
-        edges = new vis.DataSet([{"color": "lightblue", "from": "00:10:7b:35:f5:b5", "to": "00:10:7b:35:f5:c6", "weight": 4}, {"color": "lightblue", "from": "00:10:7b:35:f5:b5", "to": "00:10:7b:35:f5:d7", "weight": 4}, {"color": "lightblue", "from": "00:10:7b:35:f5:c6", "to": "00:10:7b:12:34:56", "weight": 4}, {"color": "lightblue", "from": "00:10:7b:35:f5:c6", "to": "00:10:7b:78:91:23", "weight": 4}, {"color": "lightblue", "from": "00:10:7b:35:f5:d7", "to": "00:10:7b:45:67:89", "weight": 4}, {"color": "lightblue", "from": "00:10:7b:35:f5:d7", "to": "00:10:7b:24:68:13", "weight": 4}, {"color": "lightblue", "from": "00:10:7b:12:34:56", "to": "94-ff-3c-1d-c9-05", "weight": 4}, {"color": "lightblue", "from": "00:10:7b:12:34:56", "to": "fc:15:b4-1e-1d-77", "weight": 4}, {"color": "lightblue", "from": "00:10:7b:78:91:23", "to": "F4-8E-38-EC-D7-10", "weight": 4}, {"color": "lightblue", "from": "00:10:7b:78:91:23", "to": "F4-8E-38-EC-E8-10", "weight": 4}, {"color": "lightblue", "from": "00:10:7b:45:67:89", "to": "F4-8E-38-EC-F9-10", "weight": 4}, {"color": "lightblue", "from": "00:10:7b:45:67:89", "to": "6C-E5-C9-98-76-54", "weight": 4}, {"color": "lightblue", "from": "00:10:7b:24:68:13", "to": "6C-E5-C9-78-90-23", "weight": 4}, {"color": "lightblue", "from": "00:10:7b:24:68:13", "to": "00-80-f0-a6-e4-99", "weight": 4}, {"color": "lightblue", "from": "00:10:7b:24:68:13", "to": "00-00-aa-37-32-36", "weight": 4}, {"color": "lightblue", "from": "00-80-f0-a6-e4-99", "to": "6C-E5-C9-12-34-56", "weight": 4}]);
-
-        // adding nodes and edges to the graph
-        data = {nodes: nodes, edges: edges};
-
-        var options = {"configure": {"enabled": false, "filter": true}, "edges": {"color": {"inherit": true}, "smooth": {"enabled": false, "type": "continuous"}}, "interaction": {"hover": true, "dragNodes": true, "hideEdgesOnDrag": false, "hideNodesOnDrag": false, "navigationButtons": true}, "physics": {"enabled": true, "stabilization": {"enabled": true, "fit": true, "iterations": 1000, "onlyDynamicEdges": false, "updateInterval": 50}}};
-        
-        
-
-        
-
-        network = new vis.Network(container, data, options);
-	 
-        
-
-
-        
-
-        return network;
-
-    }
-
-    drawGraph();
+var nodes = [
+    { id: 0, label: "0", group: "source" },
+    { id: 1, label: "1", group: "icons" },
+    { id: 2, label: "2", group: "icons" },
+    { id: 3, label: "3", group: "icons" },
+    { id: 4, label: "4", group: "icons" },
+    { id: 5, label: "5", group: "icons" },
+    { id: 6, label: "6", group: "icons" },
+    { id: 7, label: "7", group: "icons" },
+    { id: 8, label: "8", group: "icons" },
+    { id: 9, label: "9", group: "icons" },
+    { id: 10, label: "10", group: "mints" },
+    { id: 11, label: "11", group: "mints" },
+    { id: 12, label: "12", group: "mints" },
+    { id: 13, label: "13", group: "mints" },
+    { id: 14, label: "14", group: "mints" },
+    { id: 15, group: "dotsWithLabel" },
+    { id: 16, group: "dotsWithLabel" },
+    { id: 17, group: "dotsWithLabel" },
+    { id: 18, group: "dotsWithLabel" },
+    { id: 19, group: "dotsWithLabel" },
+    { id: 20, label: "diamonds", group: "diamonds" },
+    { id: 21, label: "diamonds", group: "diamonds" },
+    { id: 22, label: "diamonds", group: "diamonds" },
+    { id: 23, label: "diamonds", group: "diamonds" },
+  ];
+  var edges = [
+    { from: 1, to: 0 },
+    { from: 2, to: 0 },
+    { from: 4, to: 3 },
+    { from: 5, to: 4 },
+    { from: 4, to: 0 },
+    { from: 7, to: 6 },
+    { from: 8, to: 7 },
+    { from: 7, to: 0 },
+    { from: 10, to: 9 },
+    { from: 11, to: 10 },
+    { from: 10, to: 4 },
+    { from: 13, to: 12 },
+    { from: 14, to: 13 },
+    { from: 13, to: 0 },
+    { from: 16, to: 15 },
+    { from: 17, to: 15 },
+    { from: 15, to: 10 },
+    { from: 19, to: 18 },
+    { from: 20, to: 19 },
+    { from: 19, to: 4 },
+    { from: 22, to: 21 },
+    { from: 23, to: 22 },
+    { from: 23, to: 0 },
+  ];
+  
+  // create a network
+  var container = document.getElementById("singleNetwork");
+  var data = {
+    nodes: nodes,
+    edges: edges,
+  };
+  var options = {
+    nodes: {
+      shape: "dot",
+      size: 20,
+      font: {
+        size: 15,
+        color: "#ffffff",
+      },
+      borderWidth: 2,
+    },
+    edges: {
+      width: 2,
+    },
+    groups: {
+      diamonds: {
+        color: { background: "red", border: "white" },
+        shape: "diamond",
+      },
+      dotsWithLabel: {
+        label: "I'm a dot!",
+        shape: "dot",
+        color: "cyan",
+      },
+      mints: { color: "rgb(0,255,140)" },
+      icons: {
+        shape: "icon",
+        icon: {
+          face: "FontAwesome",
+          code: "\uf0c0",
+          size: 50,
+          color: "orange",
+        },
+      },
+      source: {
+        color: { border: "white" },
+      },
+    },
+  };
+  var network = new vis.Network(container, data, options);
+  
+  

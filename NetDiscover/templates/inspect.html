@@ -10,15 +10,25 @@ Decription: HTML for the inspect page.
 <head>
     <!-- CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <!-- Network Visulation Scripts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
+
 </head>
+
 <body>
 
     {% include 'navbar.html' %}
-    {% include 'graph.html' %}
 
     <section class="inspect">
-        <div id="mynetwork"></div>
+        <div class="network">
+            <div id="singleNetwork"></div>
+        </div>
+
     </section>
 </body>
+
+<script type="text/javascript" src="{% static 'js/graph.js' %}"></script>
 </html>
   
