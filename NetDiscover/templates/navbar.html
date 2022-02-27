@@ -9,7 +9,6 @@ Decription: HTML for the navigation bar
 <html lang="en">
 <head>
     <!-- CSS -->
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
     
     <!-- Icons -->
@@ -20,7 +19,7 @@ Decription: HTML for the navigation bar
         <header>
             <div class="logo-title">
                 <span class="logo">
-                    <img src="{% static 'images/logo.png' %}" alt="">
+                    <img src="{% static 'images/logo.png' %}" alt="NetDiscover Logo">
                 </span>
 
                 <div class="text title-text">
@@ -100,24 +99,24 @@ Decription: HTML for the navigation bar
                         <span class="switch"></span>
                     </div>
                 </li>
-                
             </div>
         </div>
 
     </nav>
 
-    <script>
+    <script language="javascript" type="text/javascript">
         const body = document.querySelector('body'),
         navbar = body.querySelector('nav'),
         toggle = body.querySelector(".toggle"),
         modeSwitch = body.querySelector(".toggleModeSwitch"),
         modeText = body.querySelector(".mode-text");
 
-
+        // Toggle navbar open/closed
         toggle.addEventListener("click" , () =>{
             navbar.classList.toggle("close");
         })
 
+        // Toggle Light/Dark Mode
         modeSwitch.addEventListener("click" , () =>{
             body.classList.toggle("dark");
             

@@ -1,7 +1,7 @@
 <!--
 Name: Gavin Claire
 Document: home.html
-Decription: HTML for the navigation bar
+Decription: HTML for the home page.
 -->
 
 {% load static %}
@@ -10,14 +10,28 @@ Decription: HTML for the navigation bar
 <head>
     <!-- CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <link rel="stylesheet" href="{% static 'css/home.css' %}">
 </head>
 <body>
 
     {% include 'navbar.html' %}
-
+    
     <section class="home">
-        <div class="text">Dashboard Sidebar</div>
+        <div class="container">
+            <div class="logo">
+                <img src="{% static 'images/logo.png' %}" algin="left" alt="NetDiscover Logo">
+            </div>
+            <div class="text">
+                <h5> Welcome to </h5>
+                <h1> NetDiscover </h1>
+                <p> To get started please: </p>
+
+                <div>
+                    <button class="largeButton">Scan Local Network</a></div>
+                    <a class="smallButton" href="{% url 'inspect' %}">Open Previously Scanned Network</a>
+                </div>
+
+            </div>
+        </div>
     </section>
 </body>
 </html>

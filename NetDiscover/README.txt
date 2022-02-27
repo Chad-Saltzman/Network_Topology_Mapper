@@ -1,4 +1,4 @@
-Developer Notes:
+Developer Notes: 
  - Make sure the virtual environment is running before executing commands.
     - Run ". env/Scripts/activate" to start the virtual environment
 
