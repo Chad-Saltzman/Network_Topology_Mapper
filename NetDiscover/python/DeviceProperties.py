@@ -37,6 +37,11 @@ deviceTypeKeys = getList(deviceTypes)
 
 class Device:
     
+    # function to export the devices and stuff
+    def __repr__(self):
+        
+
+
     def __init__(self, packets = None, MAC = None):
 
         self.MACAddress = MAC
@@ -172,3 +177,4 @@ class Layer3(Device):
 
     def createDevice(self):
         pass
+

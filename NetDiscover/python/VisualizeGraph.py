@@ -21,150 +21,150 @@ defaultIcons = {
     "IPPhone"  : "https://raw.githubusercontent.com/Chad-Saltzman/Network_Topology_Mapper/main/Icons/NetDiscover_Icon_IPPhone_V1.png"
 }
 
-shapeIcons = {
-    "Desktop"  : "dot",
-    "Firewall" : "square",
-    "Laptop"   : "dot",
-    "Router"   : "triangle",
-    "Server"   : "star",
-    "Switch"   : "diamond",
-    "Printer"  : "dot",
-    "IPPhone"  : "dot"
-}
+# shapeIcons = {
+#     "Desktop"  : "dot",
+#     "Firewall" : "square",
+#     "Laptop"   : "dot",
+#     "Router"   : "triangle",
+#     "Server"   : "star",
+#     "Switch"   : "diamond",
+#     "Printer"  : "dot",
+#     "IPPhone"  : "dot"
+# }
 
-shapeColors = {
-    "Desktop"  : "#6151E7",
-    "Firewall" : "#E75151",
-    "Laptop"   : "#b551E7",
-    "Router"   : "#E9C46A",
-    "Server"   : "#E76F51",
-    "Switch"   : "#2A9D8F",
-    "Printer"  : "#51E5E7",
-    "IPPhone"  : "#51E76F"
-}
+# shapeColors = {
+#     "Desktop"  : "#6151E7",
+#     "Firewall" : "#E75151",
+#     "Laptop"   : "#b551E7",
+#     "Router"   : "#E9C46A",
+#     "Server"   : "#E76F51",
+#     "Switch"   : "#2A9D8F",
+#     "Printer"  : "#51E5E7",
+#     "IPPhone"  : "#51E76F"
+# }
 
-# Containts the visulization struture for the graph
-class GraphAttributes:
+# # Containts the visulization struture for the graph
+# class GraphAttributes:
 
-    def __init__(self, nodeSize = 20, icons = defaultIcons, fontColor = 'white', bgColor = '#222222', edgeWidth = 4, edgeColor = 'lightblue', graphStyle = "Shape"):
-        self.nodeSize   = nodeSize
-        self.icons      = icons
-        self.fontColor  = fontColor
-        self.bgColor    = bgColor
-        self.edgeWidth  = edgeWidth
-        self.edgeColor  = edgeColor
-        self.graphStyle = graphStyle
-        self.shape      = shapeIcons 
+#     def __init__(self, nodeSize = 20, icons = defaultIcons, fontColor = 'white', bgColor = '#222222', edgeWidth = 4, edgeColor = 'lightblue', graphStyle = "Shape"):
+#         self.nodeSize   = nodeSize
+#         self.icons      = icons
+#         self.fontColor  = fontColor
+#         self.bgColor    = bgColor
+#         self.edgeWidth  = edgeWidth
+#         self.edgeColor  = edgeColor
+#         self.graphStyle = graphStyle
+#         self.shape      = shapeIcons 
 
-class VisualizeGraph:
+# class VisualizeGraph:
     
-    # Initialize the graph visulization
-    def __init__(self, fileName = "nx.html", devices = None, graphAttributes = GraphAttributes()):
-        self.fileName = fileName
-        self.devices = devices
-        self.gA = graphAttributes
-        self.graphNX = nx.Graph()   # undirectional, no parallel edges
-        if devices is not None:
-            self.createGraph()
-        else:
-            self.updateGraph()
+#     # Initialize the graph visulization
+#     def __init__(self, fileName = "nx.html", devices = None, graphAttributes = GraphAttributes()):
+#         self.fileName = fileName
+#         self.devices = devices
+#         self.gA = graphAttributes
+#         self.graphNX = nx.Graph()   # undirectional, no parallel edges
+#         if devices is not None:
+#             self.createGraph()
+#         else:
+#             self.updateGraph()
 
-    # End the graph 
-    def updateGraph(self):
-        data1 = json_graph.node_link_data(self.graphNX)
-        with open("sample.json", "w") as outfile:
-            outfile.write(data1)
+#     # End the graph 
+#     def updateGraph(self):
+#         data1 = json_graph.node_link_data(self.graphNX)
+#         with open("sample.json", "w") as outfile:
+#             outfile.write(data1)
 
-    # Create graph with class devices
-    def createGraph(self):
+#     # Create graph with class devices
+#     def createGraph(self):
 
-        # Create the nodes within the graph
-        for mac in self.devices:
-            if self.gA.graphStyle == "Image":
-                self.graphNX.add_node(mac, size = self.gA.nodeSize, text = mac, shape = 'image', image = self.gA.icons[self.devices[mac].deviceType])
-            elif self.gA.graphStyle == "Shape":
-                self.graphNX.add_node(mac, size = self.gA.nodeSize, text = mac, color = shapeColors[self.devices[mac].deviceType], shape = self.gA.shape[self.devices[mac].deviceType])
+#         # Create the nodes within the graph
+#         for mac in self.devices:
+#             if self.gA.graphStyle == "Image":
+#                 self.graphNX.add_node(mac, size = self.gA.nodeSize, text = mac, shape = 'image', image = self.gA.icons[self.devices[mac].deviceType])
+#             elif self.gA.graphStyle == "Shape":
+#                 self.graphNX.add_node(mac, size = self.gA.nodeSize, text = mac, color = shapeColors[self.devices[mac].deviceType], shape = self.gA.shape[self.devices[mac].deviceType])
         
-        # Create the edges within the graph
-        for mac in self.devices:
-            for neighborMAC in self.devices[mac].neighbors:
-                self.graphNX.add_edge(mac, neighborMAC, color = self.gA.edgeColor, weight = self.gA.edgeWidth)
+#         # Create the edges within the graph
+#         for mac in self.devices:
+#             for neighborMAC in self.devices[mac].neighbors:
+#                 self.graphNX.add_edge(mac, neighborMAC, color = self.gA.edgeColor, weight = self.gA.edgeWidth)
 
-        self.updateGraph()
+#         self.updateGraph()
 
-    # Add node to graph
-    def addNode(self, node):
+#     # Add node to graph
+#     def addNode(self, node):
 
-        nodeMACAddress = node.MACAddress
+#         nodeMACAddress = node.MACAddress
 
-        # Add node to devices dictionary
-        self.devices[nodeMACAddress] = node
+#         # Add node to devices dictionary
+#         self.devices[nodeMACAddress] = node
 
-        # Create the node within the graph
-        if self.gA.graphStyle == "Image":
-            self.graphNX.add_node(nodeMACAddress, size = self.gA.nodeSize, text = nodeMACAddress, shape = 'image', image = self.gA.icons[self.devices[nodeMACAddress].deviceType])
-        elif self.gA.graphStyle == "Shape":
-            self.graphNX.add_node(nodeMACAddress, size = self.gA.nodeSize, text = nodeMACAddress, color = shapeColors[self.devices[nodeMACAddress].deviceType], shape = self.gA.shape[self.devices[nodeMACAddress].deviceType])
+#         # Create the node within the graph
+#         if self.gA.graphStyle == "Image":
+#             self.graphNX.add_node(nodeMACAddress, size = self.gA.nodeSize, text = nodeMACAddress, shape = 'image', image = self.gA.icons[self.devices[nodeMACAddress].deviceType])
+#         elif self.gA.graphStyle == "Shape":
+#             self.graphNX.add_node(nodeMACAddress, size = self.gA.nodeSize, text = nodeMACAddress, color = shapeColors[self.devices[nodeMACAddress].deviceType], shape = self.gA.shape[self.devices[nodeMACAddress].deviceType])
 
-        # Create the edges within the graph
-        for neighborMAC in self.devices[nodeMACAddress].neighbors:
-            self.graphNX.add_edge(nodeMACAddress, neighborMAC, color = self.gA.edgeColor, weight = self.gA.edgeWidth)
+#         # Create the edges within the graph
+#         for neighborMAC in self.devices[nodeMACAddress].neighbors:
+#             self.graphNX.add_edge(nodeMACAddress, neighborMAC, color = self.gA.edgeColor, weight = self.gA.edgeWidth)
             
-        self.updateGraph()
+#         self.updateGraph()
 
-    # Add node to edge 
-    def addEdge(self, startNodeMACAddress, endNodeMACAddress):
+#     # Add node to edge 
+#     def addEdge(self, startNodeMACAddress, endNodeMACAddress):
 
-        # Add new neighbors to nodes
-        self.devices[startNodeMACAddress].neighbors.append(endNodeMACAddress)
-        self.devices[endNodeMACAddress].neighbors.append(startNodeMACAddress)
+#         # Add new neighbors to nodes
+#         self.devices[startNodeMACAddress].neighbors.append(endNodeMACAddress)
+#         self.devices[endNodeMACAddress].neighbors.append(startNodeMACAddress)
 
-        # Create the edge within the graph
-        self.graphNX.add_edge(startNodeMACAddress, endNodeMACAddress, color = self.gA.edgeColor, weight = self.gA.edgeWidth)
+#         # Create the edge within the graph
+#         self.graphNX.add_edge(startNodeMACAddress, endNodeMACAddress, color = self.gA.edgeColor, weight = self.gA.edgeWidth)
             
-        self.updateGraph()
+#         self.updateGraph()
 
-    # Remove node in graph
-    def removeNode(self, nodeMACAddress):
-        try:
-            # Remove links from graph
-            for neighborMAC in self.devices[nodeMACAddress].neighbors:
-                self.removeEdge(nodeMACAddress, neighborMAC)
+#     # Remove node in graph
+#     def removeNode(self, nodeMACAddress):
+#         try:
+#             # Remove links from graph
+#             for neighborMAC in self.devices[nodeMACAddress].neighbors:
+#                 self.removeEdge(nodeMACAddress, neighborMAC)
             
-            # Remove node from graph
-            self.graphNX.remove_node(nodeMACAddress)
+#             # Remove node from graph
+#             self.graphNX.remove_node(nodeMACAddress)
 
-            # Remove node from devices dictionary
-            del self.devices[nodeMACAddress]
+#             # Remove node from devices dictionary
+#             del self.devices[nodeMACAddress]
 
-            self.updateGraph()
-        except:
-            None
+#             self.updateGraph()
+#         except:
+#             None
 
-    # Remove node in graph
-    def removeEdge(self, startNodeMACAddress, endNodeMACAddress):
+#     # Remove node in graph
+#     def removeEdge(self, startNodeMACAddress, endNodeMACAddress):
 
-        # Remove neighbors from nodes
-        if endNodeMACAddress in self.devices[startNodeMACAddress].neighbors:
-            self.devices[startNodeMACAddress].neighbors.remove(endNodeMACAddress)
-        if startNodeMACAddress in self.devices[endNodeMACAddress].neighbors:
-            self.devices[endNodeMACAddress].neighbors.remove(startNodeMACAddress)
+#         # Remove neighbors from nodes
+#         if endNodeMACAddress in self.devices[startNodeMACAddress].neighbors:
+#             self.devices[startNodeMACAddress].neighbors.remove(endNodeMACAddress)
+#         if startNodeMACAddress in self.devices[endNodeMACAddress].neighbors:
+#             self.devices[endNodeMACAddress].neighbors.remove(startNodeMACAddress)
 
-        # Remove edge from graph
-        self.graphNX.remove_edge(startNodeMACAddress, endNodeMACAddress)
+#         # Remove edge from graph
+#         self.graphNX.remove_edge(startNodeMACAddress, endNodeMACAddress)
 
-        self.updateGraph()
+#         self.updateGraph()
 
 
-# HELPER FUNCTIONS
+# # HELPER FUNCTIONS
 
-# Given an input list, return the flattened list
-def flattenList(list):
-    return [item for sublist in list for item in sublist]
+# # Given an input list, return the flattened list
+# def flattenList(list):
+#     return [item for sublist in list for item in sublist]
 
-# Convert graph data into text file to be exported to
-def getGraphData():
-    return "Graph Data"
+# # Convert graph data into text file to be exported to
+# def getGraphData():
+#     return "Graph Data"
 
 import ProcessPackets as process
 #  Hard coded data as an example of what the parsed data from a packet capture would look like. Loop through router first for each protocol

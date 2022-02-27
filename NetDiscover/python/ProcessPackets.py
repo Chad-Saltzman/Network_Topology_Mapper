@@ -1,11 +1,9 @@
-# -------------------------------------------------------------------
 #
-#   ProcessPackets.py
-#
+#   Name: Chad Saltzman
+#   Document: ProcessPackets.py
 #   Purpose: Allows for the graphing of the inputted devices 
 #   and graph editing/inspecting functionality.
 #
-# -------------------------------------------------------------------
 
 from DeviceProperties import Device
 

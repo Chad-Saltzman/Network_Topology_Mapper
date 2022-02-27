@@ -1,3 +1,14 @@
+/*
+Name: Gavin Claire
+Document: graph.js
+Decription: Graph attributes javascript
+*/
+
+function CreateGraph() {
+    
+}
+
+
 var nodes = [
     { id: 0, label: "0", group: "source" },
     { id: 1, label: "1", group: "icons" },
