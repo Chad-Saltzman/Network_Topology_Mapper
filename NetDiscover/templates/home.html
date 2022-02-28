@@ -1,0 +1,83 @@
+<!--
+Name: Gavin Claire
+Document: home.html
+Decription: HTML for the home page.
+-->
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+    {% include 'navbar.html' %}
+    
+    <section class="home">
+        <div style="margin: 5%;">
+            <h1>
+                <u>Dictionary Data</u>
+            </h1>
+            <h2>
+                <u>All Data</u>
+            </h2>
+            <h4 id='alldata'></h4><br>
+            <h2>
+                <u>Neat Data</u>
+            </h2>
+            <h4 id='neatdata'></h4>
+        </div>
+        <div class="container">
+            <div class="logo">
+                <img src="{% static 'images/logo.png' %}" algin="left" alt="NetDiscover Logo">
+            </div>
+            <div class="text">
+                <h5> Welcome to </h5>
+                <h1> NetDiscover </h1>
+                <p> To get started please: </p>
+
+                <div>
+                    <button class="largeButton">Scan Local Network</a></div>
+                    <a class="smallButton" href="{% url 'inspect' %}">Open Previously Scanned Network</a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+</body>
+</html>
+
+<script>
+    // <!--
+    // function ajaxCall(){
+    //     $.ajax({
+    //         method: "GET",
+    //         url: "{{ url 'devices2json'}}",
+    //         data: {"deviceData": txt},
+    //         dataType: "text",
+    //         beforeSend: function(xhr, settings) {
+    //           if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+    //             xhr.setRequestHeader("X-CSRFToken", csrf_token);
+    //           }
+    //         },
+    //         error: function(xhr, status, error) {
+    //           console.log("error")
+    //         }
+    //       })
+    //       .done(function(data) {
+    //         console.log("Success"); 
+    //       });
+    // }
+        
+    
+    var data = JSON.parse("{{data|escapejs}}");
+    var dataNode = document.getElementById('alldata');
+    dataNode.innerHTML+="{{data|escapejs}}";
+    dataNode = document.getElementById('neatdata');
+    for(var x in data){
+        dataNode.innerHTML+=x+' : '+data[x]+'<br><br>';
+    // }
+    // -->
+</script>
