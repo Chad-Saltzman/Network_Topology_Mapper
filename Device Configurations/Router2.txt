@@ -1,0 +1,33 @@
+Router 2:
+en
+conf t
+hostname Router2
+enable secret password
+int f0/0
+no shut
+ip add 10.0.0.2 255.255.255.252
+exit
+int f0/1
+no shut
+ip add 10.10.10.1 255.255.255.0
+exit
+int f1/0
+no shut
+ip add 10.157.0.1 255.255.255.0
+exit
+ip domain-name netdiscover
+crypto key generate rsa
+1024
+ip ssh version 2
+username netdiscover password password
+line vty 0 15
+transport input ssh
+login local
+router ospf 1
+network 0.0.0.0 255.255.255.255 area 0
+do copy run start
+
+
+
+
+
