@@ -1,0 +1,38 @@
+<html>
+<head>
+
+<style>
+input {
+font-family: monospace;
+}
+label {
+display: block;
+}
+div {
+margin: 0 0 1rem 0;
+color: green;
+font-weight: bold;
+}
+</style>
+</head>
+<body>
+<form action="">
+<div>
+<label for="cc">Card</label>
+<input
+id="cc"
+type="text"
+data-inputmask="'mask': '9999 9999 9999 9999'"
+/>
+</div>
+<div>
+<label for="date">Date</label>
+<input id="date" data-inputmask="'alias': 'date'" />
+</div>
+<div>
+<label for="contact">Contact</label>
+<input id="contact" type="text" />
+</div>
+</form>
+</body>
+</html>

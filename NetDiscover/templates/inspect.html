@@ -30,5 +30,13 @@ Decription: HTML for the inspect page.
 </body>
 
 <script type="text/javascript" src="{% static 'js/graph.js' %}"></script>
+<script>
+    function call_counter(url, pk) { 
+        window.open(url); 
+        $.get('YOUR_VIEW_HERE/'+pk+'/', function (data) { 
+            alert("counter updated!"); 
+        }); 
+    } 
+</script>
 </html>
   

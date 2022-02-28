@@ -19,11 +19,12 @@ Decription: CSS for the the site style (font, colors, transitions)
     --primary-color-light: #13013f;
     --network-color: #eeeeee;
     --secondary-color: #e2ab15;
+    --third-color: #15e271;
     --toggle-color: #000000;
     --text-color: #181818;
     --white: #FFFFFF;
+    --grey: #eeeded;
     --black: #000000;
-    --body-color: #e1ddff;
     --error: #ff0000;
 
     /* Transition Vars */
@@ -40,7 +41,6 @@ body.dark {
     --secondary-color: #e2ab15;
     --toggle-color: #f9ffe6;
     --text-color: #ccc;
-    --body-color: #000000;
 }
 body {
     min-height: 100vh;
@@ -343,6 +343,90 @@ body.dark .home .container {
     color: inherit;
     text-decoration: inherit;
 }
+.home table .subnetspacing h5 {
+    font-weight: 600;
+}
+.inlineblock {
+    float: left;
+    width: 10%;
+}
+
+/* Table Start */
+.datatable {
+    border-collapse: collapse;
+    margin: 25px 0;
+    min-width: 400px;
+    border: 5px solid var(--primary-color);
+}
+.datatable thead tr {
+    background-color: var(--primary-color);
+    color: var(--white);
+    text-align: left;
+}
+.datatable th,
+.datatable td {
+    padding: 12.5px 25px;
+}
+.datatable tbody tr {
+    background-color: var(--white);
+    border-bottom: 1px solid var(--white);
+}
+.datatable tbody tr:nth-of-type(even) {
+    background-color: var(--grey);
+}
+.datatable tbody tr:last-of-type {
+    border-bottom: 2px solid var(--primary-color);
+}
+.datatable tbody tr.active-row {
+    color: var(--primary-color);
+    font-weight: bold;
+}
+.deleteButton {
+  background-color: var(--secondary-color);
+  border-radius: 4px;
+  border-style: none;
+  box-sizing: border-box;
+  color: var(--white);
+  cursor: pointer;
+  display: inline-block;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.5;
+  min-height: 44px;
+  min-width: 10px;
+  overflow: hidden;
+  padding: 9px 20px 8px;
+  position: relative;
+  text-align: center;
+  touch-action: manipulation;
+  width: 60%;
+}
+.addButton {
+    background-color: var(--third-color);
+    border-radius: 4px;
+    border-style: none;
+    box-sizing: border-box;
+    color: var(--white);
+    cursor: pointer;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.5;
+    min-height: 44px;
+    min-width: 10px;
+    overflow: hidden;
+    padding: 9px 20px 8px;
+    position: relative;
+    text-align: center;
+    touch-action: manipulation;
+    width: 100%;
+  }
+
+.button-31:hover,
+.button-31:focus {
+  opacity: .75;
+}
+/* Table End */
 
 /* Home Page End */
 

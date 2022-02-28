@@ -17,6 +17,7 @@ Decription: HTML for the home page.
     
     <section class="home">
         <div class="container">
+            <!--
             <div class="logo">
                 <img src="{% static 'images/logo.png' %}" algin="left" alt="NetDiscover Logo">
             </div>
@@ -29,9 +30,68 @@ Decription: HTML for the home page.
                     <button class="largeButton">Scan Local Network</a></div>
                     <a class="smallButton" href="{% url 'inspect' %}">Open Previously Scanned Network</a>
                 </div>
-
             </div>
+            -->
+            <form name="form1" action="#"> 
+                <table class="datatable" id="datatable">
+                    <thead>
+                        <tr>
+                            <th>IP Subnet</th>
+                            <th>Username</th>
+                            <th>Password</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr id="row1">
+                            <td id="ipsubnetRow1">192.126.232/24</td>
+                            <td id="usernameRow1">steve</td>
+                            <td id="passwordRow1">password123]</td>
+                            <td><input type="button" class="deleteButton" onclick="deleteRow('1');" value="Delete"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" id="newIpsubnet" class="form-input" placeholder="xxx.xxx.xxx.xxx/xx" maxlength=18/></td>
+                            <td><input type="text" id="newUsername" placeholder="steve"></td>
+                            <td><input type="text" id="newPassword" placeholder="password123"></td>
+                            <td><input type="button" class="addButton" onclick="addRow();" value="Add Credential"></td>
+                        </tr>
+                        <!-- and so on... -->
+                    </tbody>
+                </table>
+            </form>
         </div>
     </section>
+    <script language="javascript" type="text/javascript">
+        // Delete row
+        function deleteRow(num) {
+            document.getElementById("row" + num + "").outerHTML="";
+        }
+
+        // Add row
+        function addRow() {
+            var newIPsubnet = document.getElementById("newIpsubnet").value;
+            var newUsername = document.getElementById("newUsername").value;
+            var newPassword = document.getElementById("newPassword").value;
+            
+            var a = validateIP(newIPsubnet);
+            console.log(a);
+
+            if (newIpsubnet != null) {
+                var table = document.getElementById("datatable");
+                var tableLen = (table.rows.length) - 1;
+                //var row = table.insertRow(tableLen).outerHTML = "<tr id='row"+tableLen+"'><td id='ipsubnetRow"+tableLen+"'>"+newIPsubnet+"</td><td id='usernameRow1"+tableLen+"'>"+newUsername+"</td><td id='passwordRow"+tableLen+"'>"+newPassword+"</td><td><input type='button'class='deleteButton' onclick='deleteRow("+tableLen+")' value='Delete'></td></tr>";
+                
+                document.getElementById("newIpsubnet").value="";
+                document.getElementById("newUsername").value="";
+                document.getElementById("newPassword").value="";
+            }
+        }
+
+        // Returns if ip address is valid
+        function validateIP(ip) {
+            const regexExp = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\/\d+$/g;
+            return regexExp.test(ip);
+        }
+    </script>
 </body>
 </html>
