@@ -422,6 +422,22 @@ body.dark .compare .container {
     color: var(--text-color);
 }
 
+.compare .cnetwork{
+    display: flex; /*Toplogy placement */
+    justify-content: center;
+    padding: 30px;
+}
+
+    #compareNetwork{
+        width: 90%;
+        height: 800px;
+        border: 10px solid var(--secondary-color);
+        background-color: var(--network-color);
+
+    }
+
+
+
 /* Compare Page End */
 
 /* Export Page Start */
