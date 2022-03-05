@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    Hello World <br>
+    {{data}}
+    <br><hr><br>
+    <div id="main">Hello</div>
+    <br><hr>
+</body>
+<script>
+    var data = JSON.parse("{{data|escapejs}}")
+    document.getElementById('main').innerHTML = data.name
+    document.getElementById('main').style.color = data.color
+    if (data.dict.is_true){
+        document.getElementById('main').style.fontSize = '20px'
+        document.getElementById('main').innerHTML += '<br><br>-' + data.dict.name
+        document.querySelector("#main").innerHTML += ' ' + (data.number + 4)
+    }
+    console.log(data);
+</script>
+</html>
