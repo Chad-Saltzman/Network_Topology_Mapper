@@ -1,0 +1,133 @@
+<!--
+Name: Gavin Claire
+Document: navbar.html
+Decription: HTML for the navigation bar
+-->
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    
+    <!-- Icons -->
+    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    <nav class="navbar close">
+        <header>
+            <div class="logo-title">
+                <span class="logo">
+                    <img src="{% static 'images/logo.png' %}" alt="NetDiscover Logo">
+                </span>
+
+                <div class="text title-text">
+                    <span class="title">NetDiscover</span>
+                    <span class="subTitle">Team 14</span>
+                </div>
+            </div>
+
+            <i class='bx bx-chevron-right toggle'></i>
+        </header>
+
+        <div class="menu">
+            <div class="menuItems">
+
+                <ul class="menuLinks">
+                    <li class="navLink">
+                        <a href="{% url 'home' %}">
+                            <i class='bx bx-home-alt icon' ></i>
+                            <span class="text navText">Home</span>
+                        </a>
+                    </li>
+
+                    <li class="navLink">
+                        <a href="{% url 'inspect' %}">
+                            <i class='bx bx-search icon' ></i>
+                            <span class="text navText">Inspect</span>
+                        </a>
+                    </li>
+
+                    <li class="navLink">
+                        <a href="{% url 'edit' %}">
+                            <i class='bx bx-edit-alt icon'></i>
+                            <span class="text navText">Edit</span>
+                        </a>
+                    </li>
+
+                    <li class="navLink">
+                        <a href="{% url 'compare' %}">
+                            <i class='bx bx-grid-alt icon'></i>
+                            <span class="text navText">Compare</span>
+                        </a>
+                    </li>
+
+                    <li class="navLink">
+                        <a href="{% url 'export' %}">
+                            <i class='bx bx-export icon' ></i>
+                            <span class="text navText">Export</span>
+                        </a>
+                    </li>
+
+                    <li class="navLink">
+                        <a href="{% url 'help' %}">
+                            <i class='bx bx-question-mark icon' ></i>
+                            <span class="text navText">Help</span>
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+
+            <div class="bottom">
+                <li class="">
+                    <a href="#">
+                        <i class='bx bx-log-out icon' ></i>
+                        <span class="text navText">Logout</span>
+                    </a>
+                </li>
+
+                <li class="mode">
+                    <div class="sun-moon">
+                        <i class='bx bx-moon icon moon'></i>
+                        <i class='bx bx-sun icon sun'></i>
+                    </div>
+                    <span class="mode-text text">Dark mode</span>
+
+                    <div class="toggleModeSwitch">
+                        <span class="switch"></span>
+                    </div>
+                </li>
+            </div>
+        </div>
+
+    </nav>
+
+    <script language="javascript" type="text/javascript">
+        
+        const body = document.querySelector('body'),
+        navbar = body.querySelector('nav'),
+        toggle = body.querySelector(".toggle"),
+        modeSwitch = body.querySelector(".toggleModeSwitch"),
+        modeText = body.querySelector(".mode-text");
+
+        // Toggle navbar open/closed
+        toggle.addEventListener("click" , () =>{
+            navbar.classList.toggle("close");
+        })
+
+        // Toggle light/dark mode
+        modeSwitch.addEventListener("click" , () =>{
+            body.classList.toggle("dark");
+            
+            if(body.classList.contains("dark")){
+                modeText.innerText = "Light mode";
+            }else{
+                modeText.innerText = "Dark mode";
+            }
+        });
+
+    </script>
+</body>
+</html>

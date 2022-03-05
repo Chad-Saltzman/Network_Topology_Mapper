@@ -1,0 +1,131 @@
+<!--
+Name: Gavin Claire
+Document: inspect.html
+Decription: HTML for the inspect page.
+-->
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <!-- Network Visulation Scripts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+</head>
+
+<body>
+
+    {% include 'navbar.html' %}
+
+    <section class="inspect">
+        <button type="button" onclick="TestFunction()">Test Function Button</button>
+
+        <form id="form" method="POST">
+            <input id="first_name" type="text" name="title">
+            <input id="last_name" type="text" name="lang">
+            <input  type="submit" name="submit" value="submit">
+         </form>
+        <div class="network">
+            <div id="singleNetwork"></div>
+        </div>
+
+    </section>
+</body>
+
+<script type="text/javascript">
+
+
+    // test ajax function that calls the function in views
+    function TestFunction() {
+
+    };
+
+    $('#form').on('submit', function(e){
+             
+             e.preventDefault();
+             
+               $.ajax({
+                    type : "POST", 
+                    url: "{% url 'form_testing' %}",
+                    data: {
+                     first_name : $('#first_name').val(),
+                     last_name : $('#last_name').val(),
+                     dataType: "json",
+                    },
+                    
+                    success: function(data){
+                       $('#output').html(data.msg) /* response message */
+                    },
+             
+                    failure: function() {
+                        
+                    }
+             
+             
+                });
+             
+             
+    });  
+
+
+
+
+    var nodes = JSON.parse("{{nodes|escapejs}}")
+    var edges = JSON.parse("{{edges|escapejs}}")
+
+    // create a network
+    var container = document.getElementById("singleNetwork");
+    var data = {
+        nodes: nodes,
+        edges: edges,
+    };
+    var options = {
+        nodes: {
+            shape: "dot",
+            size: 20,
+            font: {
+                size: 15,
+                color: "#ffffff",
+            },
+            borderWidth: 2,
+        },
+        edges: {
+            width: 2,
+        },
+        groups: {
+            diamonds: {
+                color: { background: "red", border: "white" },
+                shape: "diamond",
+            },
+            dotsWithLabel: {
+                label: "I'm a dot!",
+                shape: "dot",
+                color: "cyan",
+            },
+            mints: { color: "rgb(0,255,140)" },
+            icons: {
+                shape: "icon",
+                icon: {
+                    face: "FontAwesome",
+                    code: "\uf0c0",
+                    size: 50,
+                    color: "orange",
+                },
+            },
+            source: {
+                color: { border: "white" },
+            },
+        },
+    };
+    var network = new vis.Network(container, data, options);
+
+</script>
+
+</html>

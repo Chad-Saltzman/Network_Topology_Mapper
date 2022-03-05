@@ -1,0 +1,8 @@
+
+
+
+
+
+
+// Useful commands
+python -m django --version  // Get Django Version
