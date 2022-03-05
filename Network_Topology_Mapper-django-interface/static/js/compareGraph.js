@@ -86,7 +86,7 @@ var nodes = [
         shape: "diamond",
       },
       dotsWithLabel: {
-        label: "I'm a dot!",
+        label: "I'm a dot!!!",
         shape: "dot",
         color: "cyan",
       },
@@ -105,6 +105,6 @@ var nodes = [
       },
     },
   };
-  var network = new vis.Network(container, data, options);
+  var cnetwork = new vis.Network(container, data, options);
   
   

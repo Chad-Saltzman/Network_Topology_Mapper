@@ -86,7 +86,7 @@ var nodes = [
         shape: "diamond",
       },
       dotsWithLabel: {
-        label: "I'm a dot!",
+        label: "I'm a dot*******",
         shape: "dot",
         color: "cyan",
       },
