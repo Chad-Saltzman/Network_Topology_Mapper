@@ -35,12 +35,12 @@ class Device:
         device_dict = {}
         device_dict["IP"] = self.IP 
         device_dict['hostname'] = self.hostname 
-        device_dict['local_mac_address'] = self.local_mac_address 
+        device_dict['local_mac_address'] = list(self.local_mac_address)
         device_dict['model'] = self.model 
         device_dict['neighbors'] = self.neighbors
-        device_dict['interfaces'] = self.interfaces
+        device_dict['interfaces'] = str(self.interfaces)
         device_dict['device_type'] = self.device_type 
-
+        
         return json.dumps(device_dict)
 
 
@@ -107,13 +107,13 @@ class Port:
         port_dict['vlans'] = self.vlans
         port_dict['speed'] = self.speed
         port_dict['duplex'] = self.duplex
-        port_dict['macs'] = self.macs
+        port_dict['macs'] = list(self.macs)
         port_dict['mode'] = self.mode
         port_dict['description'] = self.description
         port_dict['type'] = self.type
         port_dict['destination_port'] = self.destination_port
         port_dict['destination_IP'] = self.destination_IP
-        return port_dict 
+        return json.dumps(port_dict)
 
 def getNodes(devices):
     list_of_nodes = []
@@ -176,8 +176,9 @@ def verifySubnets(subnets_dict):
         network_bits = prefix % 8
         if 2**(8 - network_bits) % octet_value  != 0:
             new_octet_value = octet_value - (octet_value % 2**(8 - network_bits) )
-            print(new_octet_value)
-
+            verified_subnets[subnet.replace(octet_value, new_octet_value)] = subnets_dict[subnet]
+        else:
+            verified_subnets[subnet] = subnets_dict[subnet]
     return verified_subnets
 
 def deviceDiscovery(ip_address, auth_data_dict):
@@ -402,11 +403,37 @@ def DiscoveryMain(IP_address, subnets):
     
     return True 
 
-def exportDeviceData(file_name):
-    pass
+def exportDeviceData(file_name, devices):
+    with open(file_name, 'w') as exported_file:
+        json_data = str(devices).replace("'", '"').strip('("').strip('")').replace('\\','').replace('"{', "{").replace('}"', '}')
+        exported_file.write(json_data)
+        print("exporting")
 
 def importDeviceData(file_name):
-    pass
+    devices_dict = {}
+    with open(file_name, 'r') as import_file:
+        print("importing")
+        import_data = json.loads(import_file.read())
+    for device_IP in import_data:
+        devices_dict[device_IP] = Device(device_IP)
+        for attribute in import_data[device_IP]:
+            if attribute == 'interfaces':
+                for interface in import_data[device_IP][attribute]:
+                    devices_dict[device_IP].interfaces[interface] = Port(port_name=interface)
+                    for interface_attribute in import_data[device_IP][attribute][interface]:
+                        if type(import_data[device_IP][attribute][interface][interface_attribute]) == str:
+                            exec('devices_dict[device_IP].interfaces[interface].%s = "%s"' % (interface_attribute, import_data[device_IP][attribute][interface][interface_attribute]))  # Adds string values 
+                        else:
+                            exec('devices_dict[device_IP].interfaces[interface].%s = %s' % (interface_attribute, import_data[device_IP][attribute][interface][interface_attribute]))  # Adds any non string datatype/datastructure
+
+                #print(devices_dict[device_IP].attribute)
+            else:
+                if type(import_data[device_IP][attribute]) == str:
+                    exec('devices_dict[device_IP].%s = "%s"' % (attribute, import_data[device_IP][attribute]))
+                else:
+                    exec('devices_dict[device_IP].%s = %s' % (attribute, import_data[device_IP][attribute]))
+    print(devices_dict)
+    return devices_dict 
     
 if __name__ == '__main__':
     import os 
@@ -415,7 +442,8 @@ if __name__ == '__main__':
     subnets = {"192.0.0.0/8": {'username' : 'netdiscover', 'password' : 'password'}, "192.168.0.0/16": {'username' : 'netdiscover', 'password' : 'password'}, "192.168.0.0/24": {'username' : 'netdiscover', 'password' : 'password'}, "192.168.0.0/32": {'username' : 'netdiscover', 'password' : 'password'}}
 
     devices_dict = deviceDiscovery("192.168.111.129", subnets)
-
+    exportDeviceData("test.json", devices_dict)
+    importDeviceData("test.json")
     nodes = getNodes(devices_dict)
     edges = getEdges(devices_dict)
     node_data = json.dumps(nodes)
