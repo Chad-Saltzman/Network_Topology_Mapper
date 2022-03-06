@@ -1,0 +1,76 @@
+<!--
+Name: Ronald Du, Gavin Claire
+Document: export.html
+Decription: HTML for the export page.
+-->
+
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    
+    {% include 'navbar.html' %}
+
+    <section class="upload">
+        <div class="container">
+            <div class="text">
+                <h1> Export Scanned Network </h1>
+                <p> Please enter a filename for the exported network JSON file: </p>
+                <form>
+                    <!-- <input type="file" accept="application/JSON"></a> -->
+                    <form id="form" method="POST">
+                        <input id="filename" type="text" name="title">
+                        <input type="submit" value="export" class="submitButton" id="submit" href="{% url 'inspect' %}" />
+                     </form>
+                    <!-- <button class="btn" style="width:100%"><i class="fa fa-download"></i> Download</button> -->
+                    
+                </form>
+            </div>
+        </div>
+    </section>
+</body>
+
+<script type="text/javascript">
+
+
+    $('#form').on('submit', function(e){
+             
+             e.preventDefault();
+             
+               $.ajax({
+                    type : "POST", 
+                    url: "{% url 'form_testing' %}",
+                    data: {
+                     filename : $('#filename').val(),
+                     dataType: "json",
+                    },
+                    
+                    success: function(data){
+                       $('#output').html(data.msg) /* response message */
+                    },
+             
+                    failure: function() {
+                        
+                    }
+             
+             
+                });
+             
+    
+    }); 
+
+
+    
+</script>
+
+</html>
+
+
+

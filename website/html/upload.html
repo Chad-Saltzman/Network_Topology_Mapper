@@ -1,0 +1,37 @@
+<!--
+Name: Gavin Claire
+Document: upload.html
+Decription: HTML for the upload page.
+-->
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+    
+    {% include 'navbar.html' %}
+
+    <section class="upload">
+        <div class="container">
+            <div class="text">
+                <h1> Open Previously Scanned Network </h1>
+                <p> Please select a network JSON file: </p>
+                <form>
+                    <input type="file" accpet="application/JSON"></a>
+                    <input type="submit" value="submit" class="submitButton" id="submit" href="{% url 'inspect' %}" />
+                </form>
+            </div>
+        </div>
+    </section>
+</body>
+
+<script type="text/javascript">
+    
+</script>
+
+</html>

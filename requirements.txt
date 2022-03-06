@@ -1,0 +1,8 @@
+
+
+
+npm install tabulator-tables --save
+
+
+// Useful commands
+python -m django --version  // Get Django Version
