@@ -4,8 +4,6 @@
 #   Purpose: Comparison between old and new toplogies 
 #
 
-from sqlalchemy import false
-
 
 compTopology = []
 missTopology = []
@@ -31,7 +29,7 @@ class Compare:
             for device2 in topology2:
                 if device1 == device2:
                     match = True
-            if match == false:
+            if match == False:
                 newTopology.append(device2)
 
 
