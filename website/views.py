@@ -20,6 +20,9 @@ def home(request):
     if 'devices_dict2' not in globals():
         global devices_dict2
         devices_dict2 = {}
+    if 'devices_dict3' not in globals():
+        global devices_dict3
+        devices_dict3 = {}
     return render(request, 'home.html')
 
 def uploaddouble(request):
