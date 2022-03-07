@@ -1,0 +1,44 @@
+<!--
+Name: Ronald Du, Gavin Claire
+Document: export.html
+Decription: HTML for the export page.
+-->
+
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    
+    {% include 'navbar.html' %}
+
+    <section class="export">
+        <div class="container">
+            <div class="text">
+                <h1> Export Scanned Network </h1>
+                <p> Please enter a filename for the exported network JSON file: </p>
+                <form>
+                    <form id="form" method="POST">
+                        <input id="filename" type="text" name="title">
+                        <input type="submit" value="Export" class="submitButton" id="submit"/>
+                     </form>
+                </form>
+            </div>
+        </div>
+    </section>
+</body>
+
+<script type="text/javascript">
+    
+</script>
+
+</html>
+
+
+
