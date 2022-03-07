@@ -542,16 +542,6 @@ body.dark .inspect .container {
     justify-content: center;
     padding: 30px;
 }
-
-    /* Graph Start */
-    #singleNetwork {
-        width: 90%;
-        height: 800px;
-        border: 10px solid var(--secondary-color);
-        background-color: var(--network-color);
-    }
-    /* Graph End */
-
 body.dark .inspect .container {
     color: var(--text-color);
 }
@@ -624,15 +614,88 @@ body.dark .inspect .container {
     width: calc(100% - 250px);
     transition: var(--tran-05);
 }
-.navbar.close ~ .edit{
+.navbar.close ~ .inspect{
     left: 78px;
     height: 100vh;
     width: calc(100% - 78px);
 }
+body.dark .inspect .container {
+    color: var(--text-color);
+}
+.inspect .network {
+    justify-content: center;
+    padding: 30px;
+}
+
+    /* Graph Start */
+    #singleNetwork {
+        width: 90%;
+        height: 800px;
+        border: 10px solid var(--secondary-color);
+        background-color: var(--network-color);
+    }
+    /* Graph End */
+
 body.dark .edit .container {
     color: var(--text-color);
 }
-
+.edit .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-color);
+    padding: 10px 30px;
+}
+.edit .rightContainer {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    color: var(--text-color);
+    padding: 10px 100px;
+}
+.edit h1 {
+    font-size: 5vmin;
+    color: var(--primary-color);
+}
+.edit .text {
+    justify-content: left;
+    padding: 0px 30px;
+}
+.edit .alignRight .cancelEditButton {
+    font-size: 17.5px;
+    width: 200px;
+    padding: 10px;
+    text-align: center;
+    margin: -5px 0px;
+    border-radius: 25px;
+    font-weight: 600;
+    border: 2px solid var(--fourth-color);
+    background: var(--fourth-color);
+    color: var(--white);
+    cursor: pointer;
+}
+.edit .alignRight .saveEditButton {
+    font-size: 17.5px;
+    width: 200px;
+    padding: 10px;
+    text-align: center;
+    margin: -5px 0px;
+    border-radius: 25px;
+    font-weight: 600;
+    border: 2px solid var(--third-color);
+    background: var(--third-color);
+    color: var(--white);
+    cursor: pointer;
+}
+.divider{
+    width: 10px;
+    height:auto;
+    display:inline-block;
+}
+.edit a {
+    color: inherit;
+    text-decoration: inherit;
+}
 /* Edit Page End */
 
 /* Compare Page Start */

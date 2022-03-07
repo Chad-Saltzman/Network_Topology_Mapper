@@ -1,7 +1,7 @@
 <!--
 Name: Gavin Claire
-Document: export.html
-Decription: HTML for the export page.
+Document: inspect.html
+Decription: HTML for the inspect page.
 -->
 
 {% load static %}
@@ -11,175 +11,87 @@ Decription: HTML for the export page.
     <!-- CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
-    <!-- Tabulator -->
-    <link href="https://unpkg.com/tabulator-tables@4.8.1/dist/css/tabulator.min.css" rel="stylesheet">
-    <script type="text/javascript" src="https://unpkg.com/tabulator-tables@4.8.1/dist/js/tabulator.min.js"></script>
+    <!-- Network Visulation Scripts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
 
 </head>
 
 <body>
-    <div id="players"></div>
-</body>
 
     {% include 'navbar.html' %}
+
+    <section class="edit">
+
+        <div class="text">
+            <h1> Inspect Network </h1>
+        </div>
+
+        <div class="rightContainer">
+            <div class="alignRight">
+                <a class="cancelEditButton" href="{% url 'upload' %}">Cancel</a>
+            </div>
+            <div class="divider"></div>
+            <div class="alignRight">
+                <a class="saveEditButton" href="{% url 'edit' %}">Save</a>
+            </div>
+        </div>
+
+        <form id="table" name="form1" action="#"> 
+            <div class="container">
+                <div id="scanMenu">
+                    <form id="table" name="form1" action="#"> 
+                        <table class="datatable" id="datatable">
+                            <thead>
+                                <tr>
+                                    <th>IP Address</th>
+                                    <th>Hostname</th>
+                                    <th>Models</th>
+                                    <th>Neighbors</th>
+                                    <th>Device Type</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr id="row1">
+                                    <td contenteditable></td>
+                                    <td contenteditable></td>
+                                    <td contenteditable></td>
+                                    <td contenteditable></td>
+                                    <td contenteditable></td>
+                                    <td><input type='button' class='deleteButton' onclick='deleteRow(1);' value='Delete'></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="text" id="newIpAddress" class="form-input" placeholder="xxx.xxx.xxx.xxx/xx" maxlength=18/></td>
+                                    <td><input type="text" id="newHostname" placeholder="Router1"></td>
+                                    <td><input type="text" id="newModel" placeholder="3700"></td>
+                                    <td><input type="text" id="newNeighbors" placeholder="10.0.0.1, 10.0.0.2"></td>
+                                    <td><input type="text" id="newDeviceType" placeholder="Router"></td>
+                                    <td><input type="button" class="addButton" onclick="addRow();" value="Add Credential"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+            </div>
+            <div class="alignRight">
+                <input type="submit" value="submit" class="submitButton" id="submit" href="{% url 'inspect' %}" />
+            </div>
+        </form>
+    </section>
+</body>
+
+<script type="text/javascript">
+    var nodeData = JSON.parse("{{nodeData|escapejs}}")
+    // Create table
+
+    var table = document.getElementById("datatable");
+    for (device in nodeData) {
+        console.log(device);
+        var tableLen = (table.rows.length) - 1;
+        var row = table.insertRow(tableLen).outerHTML = "<tr id='row"+tableLen+"'><td id='ipaddress'>"+nodeData[device].IP+"</td><td id='hostname'>"+nodeData[device].hostname+"</td><td id='models'>"+nodeData[device].model+"</td><td id='neighbors'>"+nodeData[device].neighbors+"</td><td id='devicetype'>"+nodeData[device].device_type+"</td></tr>";
+    }
     
-    <script type="text/javascript">
-        var tabledata = [{
-                playerid: 1,
-                ipaddress: "Virat Kohli",
-                price: "17",
-                team: "RCB",
-                joiningdate: "01/01/2020"
-            }, {
-                playerid: 2,
-                ipaddress: "Rohit Sharma",
-                price: "15",
-                team: "MI",
-                joiningdate: "02/01/2020"
-            }, {
-                playerid: 3,
-                ipaddress: "MS Dhoni",
-                price: "15",
-                team: "CSK",
-                joiningdate: "03/01/2020"
-            }, {
-                playerid: 4,
-                ipaddress: "Shreyas Iyer",
-                price: "7",
-                team: "RCB",
-                joiningdate: "04/01/2020"
-            }, {
-                playerid: 5,
-                ipaddress: "KL Rahul",
-                price: "11",
-                team: "KXIP",
-                joiningdate: "05/01/2020"
-            }, {
-                playerid: 6,
-                ipaddress: "Dinesh Karthik",
-                price: "7",
-                team: "KKR",
-                joiningdate: "06/01/2020"
-            }, {
-                playerid: 7,
-                ipaddress: "Steve Smith",
-                price: "12",
-                team: "RR",
-                joiningdate: "07/01/2020"
-            }, {
-                playerid: 8,
-                ipaddress: "David Warner",
-                price: "12",
-                team: "SRH",
-                joiningdate: "08/01/2020"
-            }, {
-                playerid: 9,
-                ipaddress: "Kane Williamson",
-                price: "3",
-                team: "SRH",
-                joiningdate: "09/01/2020"
-            }, {
-                playerid: 10,
-                ipaddress: "Jofra Archer",
-                price: "7",
-                team: "RR",
-                joiningdate: "10/01/2020"
-            }, {
-                playerid: 11,
-                ipaddress: "Andre Russell",
-                price: "9",
-                team: "KKR",
-                joiningdate: "11/01/2020"
-            }, {
-                playerid: 12,
-                ipaddress: "Chris Gayle",
-                price: "2",
-                team: "KXIP",
-                joiningdate: "12/01/2020"
-            },
 
-        ];
-
-        var table = new Tabulator("#players", {
-            height: 220,
-            data: tabledata,
-            layout: "fitColumns",
-            pagination: "local",
-            paginationSize: 5,
-            tooltips: true,
-            columns: [
-                {
-                    title: "MAC Address",
-                    field: "macaddress",
-                    sorter: "string",
-                    width: 150,
-                    headerFilter: "input"
-                },  
-                {
-                    title: "IP Address",
-                    field: "ipaddress",
-                    sorter: "string",
-                    width: 150,
-                    headerFilter: "input"
-                },  
-                {
-                    title: "Model",
-                    field: "model",
-                    sorter: "string",
-                    width: 150,
-                    headerFilter: "input"
-                }, 
-                {
-                    title: "Port Name",
-                    field: "model",
-                    sorter: "string",
-                    width: 150,
-                    headerFilter: "input"
-                }, 
-                {
-                    title: "Notes",
-                    field: "model",
-                    sorter: "string",
-                    width: 150,
-                    headerFilter: "input"
-                }, 
-                {
-                    title: "Visibility",
-                    field: "model",
-                    sorter: "string",
-                    width: 150,
-                    headerFilter: "input"
-                }, 
-                {
-                    title: "IP Address",
-                    field: "ipaddress",
-                    sorter: "string",
-                    width: 150,
-                    headerFilter: "input"
-                }, 
-                {
-                    title: "Device Type",
-                    field: "team",
-                    sorter: "string",
-                    hozAlign: "center",
-                    editor: "select",
-                    headerFilter: true,
-                    headerFilterParams: {
-                        "RCB": "RCB",
-                        "MI": "MI",
-                        "KKR": "KKR",
-                    }
-                }, {
-                    title: "Joining Date",
-                    field: "joiningdate",
-                    sorter: "date",
-                    hozAlign: "center"
-                },
-            ],
-            rowClick: function(e, row) {
-                alert("Row " + row.getData().playerid + " Clicked!!!!");
-            },
-        });
-    </script>
-
+</script>
 </html>

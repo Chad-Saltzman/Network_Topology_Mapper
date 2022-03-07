@@ -10,7 +10,7 @@ from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 import json
 
-TESTING = False
+TESTING = True
 
 def home(request):
     return render(request, 'home.html')
@@ -57,7 +57,20 @@ def inspect(request):
         return render(request, 'inspect.html', {'nodes': json.dumps(nodes), 'edges': json.dumps(edges), 'nodeData': json.dumps(nodeData)})
 
 def edit(request):
-    return render(request, 'edit.html')
+    if not TESTING:
+        if True:
+            return render(request, 'edit.html', {'nodes': json.dumps(nodes), 'edges': json.dumps(edges), 'nodeData': json.dumps(nodeData)})
+        else:
+            return render(request, 'upload.html')
+    else:
+        with open("test.json") as json_file:
+            nodeData = json.load(json_file)
+
+        devices_dict = importDeviceData("test.json")
+        nodes = getNodes(devices_dict)
+        edges = getEdges(devices_dict)
+
+        return render(request, 'edit.html', {'nodes': json.dumps(nodes), 'edges': json.dumps(edges), 'nodeData': json.dumps(nodeData)})
 
 def compare(request):
     return render(request, 'compare.html')
