@@ -24,6 +24,92 @@ Decription: HTML for the compare page.
 </body>
 
 <script type="text/javascript">
+    var nodes = JSON.parse("{{nodes|escapejs}}")
+    var edges = JSON.parse("{{edges|escapejs}}")
+    var nodeData = JSON.parse("{{nodeData|escapejs}}")
+
+    // create a network
+
+    /// where images are stored
+    var DIR = "./website/static/images/";
+
+    var container = document.getElementById("singleNetwork");
+    var data = {
+        nodes: nodes,
+        edges: edges,
+    };
+    var options = {
+        nodes: {
+            shape: "circularImage",
+            image: DIR + "NetDiscover_Icon_Desktop_V1.png",
+            size: 20,
+            font: {
+                size: 15,
+                color: "#ffffff",
+            },
+            borderWidth: 2,
+        },
+        edges: {
+            width: 2,
+        },
+        groups: {
+            Desktop: {
+                color: { background: "red", border: "red" },
+                shape: "circularImage",
+                image: DIR + "NetDiscover_Icon_Desktop_V1.png",
+            },
+            Firewall: {
+                color: { background: "red", border: "white" },
+                shape: "circularImage",
+                image: DIR + "NetDiscover_Icon_FireWall_V1.png",
+            },
+            IPPhone: {
+                color: { background: "red", border: "purple" },
+                shape: "circularImage",
+                image: DIR + "NetDiscover_Icon_IPPhone_V1.png",
+            },
+            Laptop: {
+                color: { background: "red", border: "yellow" },
+                shape: "circularImage",
+                image: DIR + "NetDiscover_Icon_Laptop_V1.png",
+            },
+            Modem: {
+                color: { background: "red", border: "blue" },
+                shape: "circularImage",
+                image: DIR + "NetDiscover_Icon_Modem_V1.png",
+            },
+            Printer: {
+                color: { background: "red", border: "green" },
+                shape: "circularImage",
+                image: DIR + "NetDiscover_Icon_Printer_V1.png",
+            },
+            Router: {
+                color: { background: "red", border: "gray" },
+                shape: "circularImage",
+                image: DIR + "NetDiscover_Icon_Router_V1.png",
+            },
+            Server: {
+                color: { background: "red", border: "orange" },
+                shape: "circularImage",
+                image: DIR + "NetDiscover_Icon_Servers_V1.png",
+            },
+            Switch: {
+                color: { background: "red", border: "pink" },
+                shape: "circularImage",
+                image: DIR + "NetDiscover_Icon_Switch_V1.png",
+            },
+        },
+    };
+    var network = new vis.Network(container, data, options);
+
+    // Create table
+
+    var table = document.getElementById("datatable");
+    for (device in nodeData) {
+        console.log(device);
+        var tableLen = (table.rows.length) - 1;
+        var row = table.insertRow(tableLen).outerHTML = "<tr id='row"+tableLen+"'><td id='ipaddress'>"+nodeData[device].IP+"</td><td id='hostname'>"+nodeData[device].hostname+"</td><td id='models'>"+nodeData[device].model+"</td><td id='neighbors'>"+nodeData[device].neighbors+"</td><td id='devicetype'>"+nodeData[device].device_type+"</td></tr>";
+    }
     
 </script>
 </html>
