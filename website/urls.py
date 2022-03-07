@@ -8,8 +8,10 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.home, name="home"),
+    path('', views.home, name="start"),
+    path('home', views.home, name="home"),
     path('upload', views.upload, name="upload"),
+    path('upload2', views.upload2, name="upload2"),
     path('inspect', views.inspect, name="inspect"),
     path('edit', views.edit, name="edit"),
     path('compare', views.compare, name="compare"),
