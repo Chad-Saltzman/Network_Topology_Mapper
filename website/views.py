@@ -6,6 +6,8 @@
 
 from django.shortcuts import render
 from website.python.DeviceDiscovery import *
+from website.python.Compare import *
+
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 import json
@@ -48,7 +50,17 @@ def upload3(request):
         edges = getEdges(devices_dict)
     if request.method == 'POST' and request.FILES['myfile2']:
         devices_dict2 = importDeviceData(str(request.FILES['myfile2']))
+        nodeData2 = json.loads(exportDeviceData(devices_dict2, write_true = False))
+        nodes2 = getNodes(devices_dict2)
+        edges2 = getEdges(devices_dict2)
 
+        print(nodes)
+        print("asdasd")
+        print(nodes2)
+
+    test = compareTopologies(devices_dict, devices_dict2)
+    print(json.dumps(test))
+    
     return render(request, 'inspect.html', {'nodes': json.dumps(nodes), 'edges': json.dumps(edges), 'nodeData': json.dumps(nodeData)})
     
 def upload(request):

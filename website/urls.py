@@ -13,6 +13,7 @@ urlpatterns = [
     path('upload', views.upload, name="upload"),
     path('upload2', views.upload2, name="upload2"),
     path('uploaddouble', views.uploaddouble, name="uploaddouble"),
+    path('upload3', views.upload3, name="upload3"),
     path('inspect', views.inspect, name="inspect"),
     path('edit', views.edit, name="edit"),
     path('compare', views.compare, name="compare"),

@@ -31,7 +31,8 @@ def compareTopologies(topology1, topology2):
                 match = True
         if match == False:
             newTopology.append(device2)
-    return compTopology, missTopology, newTopology
+    return compTopology
+    # return compTopology, missTopology, newTopology
 
 
 
