@@ -17,6 +17,9 @@ def home(request):
     if 'devices_dict' not in globals():
         global devices_dict 
         devices_dict = {}
+    if 'devices_dict2' not in globals():
+        global devices_dict2
+        devices_dict2 = {}
     return render(request, 'home.html')
 
 def uploaddouble(request):
@@ -30,6 +33,18 @@ def upload2(request):
         nodeData = json.loads(exportDeviceData(devices_dict, write_true = False))
         nodes = getNodes(devices_dict)
         edges = getEdges(devices_dict)
+
+    return render(request, 'inspect.html', {'nodes': json.dumps(nodes), 'edges': json.dumps(edges), 'nodeData': json.dumps(nodeData)})
+
+def upload3(request):
+    global devices_dict
+    if request.method == 'POST' and request.FILES['myfile']:
+        devices_dict = importDeviceData(str(request.FILES['myfile']))
+        nodeData = json.loads(exportDeviceData(devices_dict, write_true = False))
+        nodes = getNodes(devices_dict)
+        edges = getEdges(devices_dict)
+    if request.method == 'POST' and request.FILES['myfile2']:
+        devices_dict2 = importDeviceData(str(request.FILES['myfile2']))
 
     return render(request, 'inspect.html', {'nodes': json.dumps(nodes), 'edges': json.dumps(edges), 'nodeData': json.dumps(nodeData)})
     
