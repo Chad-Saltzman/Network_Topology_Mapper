@@ -24,20 +24,15 @@ def inspect(request):
         edges = getEdges(devices_dict)
 
         return render(request, 'inspect.html', {'nodes': json.dumps(nodes), 'edges': json.dumps(edges)})
+    else:
+        with open("test.json") as json_file:
+            nodeData = json.load(json_file)
+            
+        devices_dict = importDeviceData("test.json")
+        nodes = getNodes(devices_dict)
+        edges = getEdges(devices_dict)
 
-    devices_dict = importDeviceData("test.json")
-    
-    nodes = getNodes(devices_dict)
-    edges = getEdges(devices_dict)
-    node_data = json.dumps(nodes)
-    edge_data = json.dumps(edges)
-    with open("node.txt", 'w') as temp_file:   
-        temp_file.write(f"node data: {node_data}")
-
-    with open("edge.txt", 'w') as temp_file:   
-        temp_file.write(f"edge data: {edge_data}")
-    
-    return render(request, 'inspect.html', {'nodes': json.dumps(nodes), 'edges': json.dumps(edges)})
+        return render(request, 'inspect.html', {'nodes': json.dumps(nodes), 'edges': json.dumps(edges), 'nodeData': json.dumps(nodeData)})
 
 def edit(request):
     return render(request, 'edit.html')

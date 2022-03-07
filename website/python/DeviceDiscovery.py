@@ -432,12 +432,12 @@ def importDeviceData(file_name):
                     exec('devices_dict[device_IP].%s = "%s"' % (attribute, import_data[device_IP][attribute]))
                 else:
                     exec('devices_dict[device_IP].%s = %s' % (attribute, import_data[device_IP][attribute]))
-    print(devices_dict)
+    #print(devices_dict)
     return devices_dict 
     
 if __name__ == '__main__':
     import os 
-    print(os.getcwd())
+    #print(os.getcwd())
     # Sample set of subnets to test 
     subnets = {"192.0.0.0/8": {'username' : 'netdiscover', 'password' : 'password'}, "192.168.0.0/16": {'username' : 'netdiscover', 'password' : 'password'}, "192.168.0.0/24": {'username' : 'netdiscover', 'password' : 'password'}, "192.168.0.0/32": {'username' : 'netdiscover', 'password' : 'password'}}
 

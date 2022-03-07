@@ -18,19 +18,16 @@ Decription: HTML for the export page.
     
     {% include 'navbar.html' %}
 
-    <section class="upload">
+    <section class="export">
         <div class="container">
             <div class="text">
                 <h1> Export Scanned Network </h1>
                 <p> Please enter a filename for the exported network JSON file: </p>
                 <form>
-                    <!-- <input type="file" accept="application/JSON"></a> -->
                     <form id="form" method="POST">
                         <input id="filename" type="text" name="title">
-                        <input type="submit" value="export" class="submitButton" id="submit" href="{% url 'inspect' %}" />
+                        <input type="submit" value="Export" class="submitButton" id="submit"/>
                      </form>
-                    <!-- <button class="btn" style="width:100%"><i class="fa fa-download"></i> Download</button> -->
-                    
                 </form>
             </div>
         </div>
@@ -38,35 +35,6 @@ Decription: HTML for the export page.
 </body>
 
 <script type="text/javascript">
-
-
-    $('#form').on('submit', function(e){
-             
-             e.preventDefault();
-             
-               $.ajax({
-                    type : "POST", 
-                    url: "{% url 'form_testing' %}",
-                    data: {
-                     filename : $('#filename').val(),
-                     dataType: "json",
-                    },
-                    
-                    success: function(data){
-                       $('#output').html(data.msg) /* response message */
-                    },
-             
-                    failure: function() {
-                        
-                    }
-             
-             
-                });
-             
-    
-    }); 
-
-
     
 </script>
 

@@ -22,8 +22,47 @@ Decription: HTML for the inspect page.
     {% include 'navbar.html' %}
 
     <section class="inspect">
-        <div class="network">
+
+        <div class="text">
+            <h1> Inspect Network </h1>
+        </div>
+
+        <div class="container">
             <div id="singleNetwork"></div>
+        </div>
+
+        <div class="rightContainer">
+            <div class="alignRight">
+                <a class="inspectNewButton" href="{% url 'upload' %}">Inspect New Network</a>
+            </div>
+            <div class="divider"></div>
+            <div class="alignRight">
+                <a class="editButton" href="{% url 'edit' %}">Edit Network</a>
+            </div>
+        </div>
+
+        <div class="container">
+            <div id="scanMenu">
+                <form id="table" name="form1" action="#"> 
+                    <div class="divScroll">
+                        <table class="datatable" id="datatable">
+                            <thead>
+                                <tr>
+                                    <th>IP Address</th>
+                                    <th>Hostname</th>
+                                    <th>Models</th>
+                                    <th>Neighbors</th>
+                                    <th>Device Type</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr id="row1">
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+            </div>
         </div>
     </section>
 </body>
@@ -31,6 +70,7 @@ Decription: HTML for the inspect page.
 <script type="text/javascript">
     var nodes = JSON.parse("{{nodes|escapejs}}")
     var edges = JSON.parse("{{edges|escapejs}}")
+    var nodeData = JSON.parse("{{nodeData|escapejs}}")
 
     // create a network
 
@@ -105,6 +145,16 @@ Decription: HTML for the inspect page.
         },
     };
     var network = new vis.Network(container, data, options);
+
+    // Create table
+
+    var table = document.getElementById("datatable");
+    for (device in nodeData) {
+        console.log(device);
+        var tableLen = (table.rows.length) - 1;
+        var row = table.insertRow(tableLen).outerHTML = "<tr id='row"+tableLen+"'><td id='ipaddress'>"+nodeData[device].IP+"</td><td id='hostname'>"+nodeData[device].hostname+"</td><td id='models'>"+nodeData[device].model+"</td><td id='neighbors'>"+nodeData[device].neighbors+"</td><td id='devicetype'>"+nodeData[device].device_type+"</td></tr>";
+    }
+    
 
 </script>
 </html>

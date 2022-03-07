@@ -1,8 +1,9 @@
-
-
-
-npm install tabulator-tables --save
-
+// Libraries
+django
+netmiko
+ipaddress
+textfsm
+requests
 
 // Useful commands
 python -m django --version  // Get Django Version

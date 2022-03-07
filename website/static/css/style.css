@@ -20,6 +20,7 @@ Decription: CSS for the the site style (font, colors, transitions)
     --network-color: #eeeeee;
     --secondary-color: #e2ab15;
     --third-color: #15e271;
+    --fourth-color: #b915e2;
     --toggle-color: #000000;
     --text-color: #181818;
     --white: #FFFFFF;
@@ -39,6 +40,7 @@ body.dark {
     --primary-color-light: #ffffff;
     --network-color: #111111;
     --secondary-color: #e2ab15;
+    --fourth-color: #b915e2;
     --toggle-color: #f9ffe6;
     --text-color: #ccc;
 }
@@ -351,7 +353,7 @@ body.dark .home .container {
     font-weight: 600;
     border: 2px solid var(--third-color);
     background: var(--third-color);
-    color: var(--primary-color-light);
+    color: var(--white);
     cursor: pointer;
 }
 .home a {
@@ -366,8 +368,10 @@ body.dark .home .container {
 .datatable {
     border-collapse: collapse;
     margin: 25px 0;
-    min-width: 400px;
+    min-width: 90%;
     border: 5px solid var(--primary-color);
+    color: var(--black);
+    padding-bottom: 10%;
 }
 .datatable thead tr {
     background-color: var(--primary-color);
@@ -376,7 +380,13 @@ body.dark .home .container {
 }
 .datatable th,
 .datatable td {
-    padding: 12.5px 25px;
+    padding: 10px 2vmin;
+}
+.inspect .datatable th,
+.inspect .datatable td {
+    text-overflow: ellipsis; 
+    word-wrap: break-word;
+    padding: 10px 6vmin;
 }
 .datatable tbody tr {
     background-color: var(--white);
@@ -435,6 +445,11 @@ body.dark .home .container {
 .button-31:hover,
 .button-31:focus {
   opacity: .75;
+}
+.divScroll {
+    overflow:scroll;
+    height:600px;
+    width:1500px;
 }
 /* #endregion Table */
 
@@ -496,7 +511,7 @@ body.dark .upload .container {
     font-weight: 600;
     border: 1px solid var(--third-color);
     background: var(--third-color);
-    color: var(--primary-color-light);
+    color: var(--white);
     cursor: pointer;
 }
 /* #endregion Upload Page */
@@ -524,7 +539,6 @@ body.dark .inspect .container {
     color: var(--text-color);
 }
 .inspect .network {
-    display: flex;
     justify-content: center;
     padding: 30px;
 }
@@ -538,6 +552,66 @@ body.dark .inspect .container {
     }
     /* Graph End */
 
+body.dark .inspect .container {
+    color: var(--text-color);
+}
+.inspect .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-color);
+    padding: 10px 30px;
+}
+.inspect .rightContainer {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    color: var(--text-color);
+    padding: 10px 100px;
+}
+.inspect h1 {
+    font-size: 5vmin;
+    color: var(--primary-color);
+}
+.inspect .text {
+    justify-content: left;
+    padding: 0px 30px;
+}
+.inspect .alignRight .editButton {
+    font-size: 17.5px;
+    width: 200px;
+    padding: 10px;
+    text-align: center;
+    margin: -5px 0px;
+    border-radius: 25px;
+    font-weight: 600;
+    border: 2px solid var(--fourth-color);
+    background: var(--fourth-color);
+    color: var(--white);
+    cursor: pointer;
+}
+.inspect .alignRight .inspectNewButton {
+    font-size: 17.5px;
+    width: 200px;
+    padding: 10px;
+    text-align: center;
+    margin: -5px 0px;
+    border-radius: 25px;
+    font-weight: 600;
+    border: 2px solid var(--third-color);
+    background: var(--third-color);
+    color: var(--white);
+    cursor: pointer;
+}
+.divider{
+    width: 10px;
+    height:auto;
+    display:inline-block;
+}
+.inspect a {
+    color: inherit;
+    text-decoration: inherit;
+}
 /* Inspect Page End */
 
 /* Edit Page Start */
@@ -585,7 +659,7 @@ body.dark .compare .container {
 
 /* Export Page Start */
 
-.compare {
+.export {
     position: absolute;
     top: 0;
     top: 0;
@@ -601,6 +675,56 @@ body.dark .compare .container {
 }
 body.dark .compare .container {
     color: var(--text-color);
+}
+.export .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-color);
+    transform: translateY(50%);
+}
+.export .container h5 {
+    font-size: 3vmin;
+    margin: 5px auto;
+    font-weight: 300;
+    line-height: 25px;
+}
+.export .container h1 {
+    font-size: 5vmin;
+    margin-top: -10px;
+    color: var(--primary-color);
+}
+.export .container p {
+    font-size: 25px;
+    margin: 5px auto;
+    font-weight: 300;
+    line-height: 25px;
+}
+.export .container .submitButton {
+    font-size: 17.5px;
+    width: 100px;
+    padding: 10px;
+    text-align: center;
+    margin: 25px 0px;
+    border-radius: 25px;
+    font-weight: 600;
+    border: 1px solid var(--third-color);
+    background: var(--third-color);
+    color: var(--white);
+    cursor: pointer;
+}
+.export .container #filename {
+    font-size: 17.5px;
+    width: 600px;
+    padding: 10px;
+    text-align: left;
+    margin: -5px 0px;
+    border-radius: 5px;
+    font-weight: 600;
+    border: 2px solid var(--primary-color);
+    background: var(--white);
+    color: var(--primary-color);
+    cursor: pointer;
 }
 
 /* Export Page End */
