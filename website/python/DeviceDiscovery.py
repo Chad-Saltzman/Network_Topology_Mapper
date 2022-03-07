@@ -24,12 +24,12 @@ class Device:
     
     def __init__(self, IP):
         self.IP = IP 
-        self.hostname = ""
+        self.hostname = "None"
         self.local_mac_address = set()
-        self.model = ""
+        self.model = "None"
         self.neighbors = []
         self.interfaces = {}
-        self.device_type = ""
+        self.device_type = "None"
 
     def __repr__(self):
         device_dict = {}
@@ -47,13 +47,13 @@ class Device:
     def getDeviceType(self):
         if self.model:
             if self.model.startswith("ws") or re.match(r'N\dK', self.model) or "vios_l2" in self.model:
-                self.device_type = "switch"
+                self.device_type = "Switch"
             elif "ASA" in self.model or "ISA" in self.model or "SM" in self.model:
-                self.device_type = "firewalls"
+                self.device_type = "Firewall"
             elif "Phone" in self.model:
-                self.device_type = "ipphone"
+                self.device_type = "IPPhone"
             else:
-                self.device_type = "routers"
+                self.device_type = "Router"
 
     def getNeighbors(self):
         for interface in self.interfaces:

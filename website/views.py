@@ -19,7 +19,9 @@ def upload(request):
 def inspect(request):
 
     if not TESTING:
-        
+
+     
+        devices_dict = importDeviceData("test.json")       
         nodes = getNodes(devices_dict)
         edges = getEdges(devices_dict)
 
@@ -27,7 +29,7 @@ def inspect(request):
     else:
         with open("test.json") as json_file:
             nodeData = json.load(json_file)
-            
+
         devices_dict = importDeviceData("test.json")
         nodes = getNodes(devices_dict)
         edges = getEdges(devices_dict)
