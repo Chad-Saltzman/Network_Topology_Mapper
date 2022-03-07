@@ -401,11 +401,15 @@ def DiscoveryMain(IP_address, subnets):
     
     return True 
 
-def exportDeviceData(file_name, devices):
-    with open(file_name, 'w') as exported_file:
-        json_data = str(devices).replace("'", '"').strip('("').strip('")').replace('\\','').replace('"{', "{").replace('}"', '}')
-        exported_file.write(json_data)
-        print("exporting")
+def exportDeviceData( devices, file_name = "", write_true = True):
+    if write_true:
+        with open(file_name, 'w') as exported_file:
+            json_data = str(devices).replace("'", '"').strip('("').strip('")').replace('\\','').replace('"{', "{").replace('}"', '}')
+            exported_file.write(json_data)
+            print("exporting")
+    else:
+        return str(devices).replace("'", '"').strip('("').strip('")').replace('\\','').replace('"{', "{").replace('}"', '}')
+
 
 def importDeviceData(file_name):
     devices_dict = {}
