@@ -11,38 +11,48 @@ from django.core.files.storage import FileSystemStorage
 import json
 
 TESTING = False
-
-def home(request):
+def start(request):
+    global devices_dict
+    devices_dict = True
     return render(request, 'home.html')
 
-def upload(request):
-    
+def home(request):
+    global devices_dict
+    if 'devices_dict' not in globals():
+        global devices_dict 
+        devices_dict = {}
+    return render(request, 'home.html')
+
+def upload2(request):
+    global devices_dict
     if request.method == 'POST' and request.FILES['myfile']:
-        myfile = request.FILES['myfile']
-        fs = FileSystemStorage()
-        filename = fs.save(myfile.name.replace(' ', ''), myfile)
-        uploaded_file_url = fs.url(filename)
-        with open('currentfiledirectory.txt', 'w') as f:
-            f.write(str(uploaded_file_url))
-            
+        devices_dict = importDeviceData(str(request.FILES['myfile']))
+        nodeData = json.loads(exportDeviceData(devices_dict, write_true = False))
+        nodes = getNodes(devices_dict)
+        edges = getEdges(devices_dict)
+
+    return render(request, 'inspect.html', {'nodes': json.dumps(nodes), 'edges': json.dumps(edges), 'nodeData': json.dumps(nodeData)})
+    
+def upload(request):
+    global devices_dict
     return render(request, 'upload.html')
     
 def inspect(request):
-
+    global devices_dict
     if not TESTING:
-        with open('currentfiledirectory.txt') as f:
-            currentFileDirectory = f.readlines()
+        # with open('currentfiledirectory.txt') as f:
+        #     currentFileDirectory = f.readlines()
         
-        fileDirectory = currentFileDirectory[0].lstrip('/')
+        # fileDirectory = currentFileDirectory[0].lstrip('/')
 
-        if fileDirectory != "":
-            with open(fileDirectory) as json_file:
-                nodeData = json.load(json_file)
+        # if fileDirectory != "":
+        #     with open(fileDirectory) as json_file:
+        #         nodeData = json.load(json_file)
 
-            devices_dict = importDeviceData(fileDirectory)       
+        if not devices_dict:
+            nodeData = json.loads(exportDeviceData(devices_dict, write_true = False))
             nodes = getNodes(devices_dict)
             edges = getEdges(devices_dict)
-
             return render(request, 'inspect.html', {'nodes': json.dumps(nodes), 'edges': json.dumps(edges), 'nodeData': json.dumps(nodeData)})
         else:
             return render(request, 'upload.html')
