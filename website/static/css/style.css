@@ -602,6 +602,26 @@ body.dark .inspect .container {
     color: inherit;
     text-decoration: inherit;
 }
+
+body.dark .inspect .container {
+    color: var(--text-color);
+}
+
+.inspect .network {
+    justify-content: center;
+    padding: 30px;
+}
+
+    /* Graph Start */
+    #singleNetwork {
+        width: 90%;
+        height: 800px;
+        border: 10px solid var(--secondary-color);
+        background-color: var(--network-color);
+    }
+    /* Graph End */
+
+    
 /* Inspect Page End */
 
 /* Edit Page Start */
@@ -619,22 +639,8 @@ body.dark .inspect .container {
     height: 100vh;
     width: calc(100% - 78px);
 }
-body.dark .inspect .container {
-    color: var(--text-color);
-}
-.inspect .network {
-    justify-content: center;
-    padding: 30px;
-}
 
-    /* Graph Start */
-    #singleNetwork {
-        width: 90%;
-        height: 800px;
-        border: 10px solid var(--secondary-color);
-        background-color: var(--network-color);
-    }
-    /* Graph End */
+
 
 body.dark .edit .container {
     color: var(--text-color);
@@ -718,6 +724,21 @@ body.dark .compare .container {
     color: var(--text-color);
 }
 
+.compare .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-color);
+    padding: 10px 30px;
+}
+.compare .rightContainer {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    color: var(--text-color);
+    padding: 10px 100px;
+}
+
 .compare h1 {
     font-size: 5vmin;
     color: var(--primary-color);
@@ -728,6 +749,46 @@ body.dark .compare .container {
     padding: 0px 30px;
 }
 
+.compare .network {
+    justify-content: center;
+    padding: 30px;
+}
+
+/* Graph Start */
+#compareNetwork {
+    width: 90%;
+    height: 800px;
+    border: 10px solid var(--secondary-color);
+    background-color: var(--network-color);
+}
+/* Graph End */
+
+.compare .alignRight .topo1Button {
+    font-size: 17.5px;
+    width: 200px;
+    padding: 10px;
+    text-align: center;
+    margin: -5px 0px;
+    border-radius: 25px;
+    font-weight: 600;
+    border: 2px solid var(--fourth-color);
+    background: var(--fourth-color);
+    color: var(--white);
+    cursor: pointer;
+}
+.compare .alignRight .topo2Button {
+    font-size: 17.5px;
+    width: 200px;
+    padding: 10px;
+    text-align: center;
+    margin: -5px 0px;
+    border-radius: 25px;
+    font-weight: 600;
+    border: 2px solid var(--third-color);
+    background: var(--third-color);
+    color: var(--white);
+    cursor: pointer;
+}
 /* Compare Page End */
 
 /* Export Page Start */
