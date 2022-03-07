@@ -18,8 +18,6 @@ import math
 # Endpoints cannot be distinguished from one another
 # Phones will show up in cdp neighbors
 
-
-
 class Device:
     
     def __init__(self, IP):

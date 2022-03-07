@@ -17,16 +17,17 @@ Decription: HTML for the upload page.
     {% include 'navbar.html' %}
 
     <section class="upload">
-        <div class="container">
-            <div class="text">
-                <h1> Open Previously Scanned Network </h1>
-                <p> Please select a network JSON file: </p>
-                <form>
-                    <input type="file" accpet="application/JSON"></a>
-                    <input type="submit" value="Submit" class="submitButton" id="submit" href="{% url 'inspect' %}" />
-                </form>
+        <form method="post" enctype="multipart/form-data" action="{% url 'inspect' %}">
+            {% csrf_token %}
+            <div class="container">
+                <div class="text">
+                    <h1> Open Previously Scanned Network </h1>
+                    <p> Please select a network JSON file: </p>
+                    <input type="file" accpet="application/JSON" name="myfile">
+                    <input type="submit" value="Submit" class="submitButton" id="submit" />
+                </div>
+            </form>
             </div>
-        </div>
     </section>
 </body>
 
