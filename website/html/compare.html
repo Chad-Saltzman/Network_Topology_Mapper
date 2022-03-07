@@ -29,12 +29,7 @@ Decription: HTML for the compare page.
 
         <div class="rightContainer">
             <div class="alignRight">
-                <a class="topo1Button" href="{% url 'upload' %}">Load Topology 1</a>
-            </div>
-            <div class="divider"></div>
-            <div class="alignRight">
-                <a class="topo2Button" href="{% url 'upload' %}">Load Topology 2</a>
-            </div>
+                <a class="topo1Button" href="{% url 'uploaddouble' %}">Load Topologies</a>
         </div>
     </section>
 </body>
@@ -54,6 +49,7 @@ Decription: HTML for the compare page.
         nodes: nodes,
         edges: edges,
     };
+
     var options = {
         nodes: {
             shape: "circularImage",
@@ -118,14 +114,6 @@ Decription: HTML for the compare page.
     };
     var network = new vis.Network(container, data, options);
 
-    // Create table
-
-    var table = document.getElementById("datatable");
-    for (device in nodeData) {
-        console.log(device);
-        var tableLen = (table.rows.length) - 1;
-        var row = table.insertRow(tableLen).outerHTML = "<tr id='row"+tableLen+"'><td id='ipaddress'>"+nodeData[device].IP+"</td><td id='hostname'>"+nodeData[device].hostname+"</td><td id='models'>"+nodeData[device].model+"</td><td id='neighbors'>"+nodeData[device].neighbors+"</td><td id='devicetype'>"+nodeData[device].device_type+"</td></tr>";
-    }
     
 </script>
 </html>

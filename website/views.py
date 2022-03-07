@@ -19,6 +19,10 @@ def home(request):
         devices_dict = {}
     return render(request, 'home.html')
 
+def uploaddouble(request):
+    global devices_dict
+    return render(request, 'uploaddouble.html')
+
 def upload2(request):
     global devices_dict
     if request.method == 'POST' and request.FILES['myfile']:
