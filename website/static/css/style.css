@@ -718,6 +718,16 @@ body.dark .compare .container {
     color: var(--text-color);
 }
 
+.compare h1 {
+    font-size: 5vmin;
+    color: var(--primary-color);
+}
+
+.compare .text {
+    justify-content: left;
+    padding: 0px 30px;
+}
+
 /* Compare Page End */
 
 /* Export Page Start */

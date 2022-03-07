@@ -10,6 +10,9 @@ Decription: HTML for the compare page.
 <head>
     <!-- CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <!-- Network Visulation Scripts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
 </head>
 
 <body>
@@ -17,8 +20,10 @@ Decription: HTML for the compare page.
     {% include 'navbar.html' %}
     
     <section class="compare">
+        <div class="text">
+            <h1> Compare Network </h1>
+        </div>
         <div class="network">
-            <div id="singleNetwork"></div>
         </div>
     </section>
 </body>
