@@ -10,6 +10,8 @@ from . import views
 urlpatterns = [
     path('', views.home, name="home"),
     path('upload', views.upload, name="upload"),
+    path('comparisonUpload', views.comparisonUpload, name="comparisonUpload"),
+    path('comparisonUploadNew', views.comparisonUploadNew, name="comparisonUploadNew"),
     path('inspectUpload', views.inspectUpload, name="inspectUpload"),
     path('inspect', views.inspect, name="inspect"),
     path('edit', views.edit, name="edit"),

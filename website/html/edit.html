@@ -1,7 +1,7 @@
 <!--
 Name: Gavin Claire
-Document: inspect.html
-Decription: HTML for the inspect page.
+Document: edit.html
+Decription: HTML for the edit page.
 -->
 
 {% load static %}
@@ -75,7 +75,7 @@ Decription: HTML for the inspect page.
     var table = document.getElementById("datatable");
     for (device in nodeData) {
         var tableLen = (table.rows.length) - 1;
-        var row = table.insertRow(tableLen).outerHTML = "<tr id='row"+nodeData[device].IP+"'><td id = 'ipAddress"+nodeData[device].IP+"' contenteditable>"+nodeData[device].IP+"</td><td id = 'hostname"+nodeData[device].IP+"' contenteditable>"+nodeData[device].hostname+"</td><td contenteditable id = 'model"+nodeData[device].IP+"'>"+nodeData[device].model+"</td><td contenteditable id = 'neighbors"+nodeData[device].IP+"'>"+nodeData[device].neighbors+"</td><td contenteditable id = 'devicetype"+nodeData[device].IP+"'>"+nodeData[device].device_type+"</td><td><input type='button' class='saveButton' onclick='saveRow("+'"'+nodeData[device].IP+'"'+");' value='Save'><input type='button' class='deleteButton' onclick='deleteRow("+'"'+nodeData[device].IP+'"'+");' value='Delete'></td></tr>";
+        var row = table.insertRow(tableLen).outerHTML = "<tr id='row"+nodeData[device].IP+"'><td id = 'ipAddress"+nodeData[device].IP+"' contenteditable>"+nodeData[device].IP+"</td><td id = 'hostname"+nodeData[device].IP+"' contenteditable>"+nodeData[device].hostname+"</td><td contenteditable id = 'model"+nodeData[device].IP+"'>"+nodeData[device].model+"</td><td contenteditable id = 'neighbors"+nodeData[device].IP+"'>"+nodeData[device].neighbors+"</td><td id = 'devicetype"+nodeData[device].IP+"'>"+nodeData[device].device_type+"</td><td><input type='button' class='saveButton' onclick='saveRow("+'"'+nodeData[device].IP+'"'+");' value='Save'><input type='button' class='deleteButton' onclick='deleteRow("+'"'+nodeData[device].IP+'"'+");' value='Delete'></td></tr>";
     }
     
     // Delete row
@@ -134,7 +134,7 @@ Decription: HTML for the inspect page.
         if (newIpAddress != "") {
             var table = document.getElementById("datatable");
             var tableLen = (table.rows.length) - 1;
-            var row = table.insertRow(tableLen).outerHTML = "<tr id='row"+newIpAddress+"'><td id = 'ipAddress"+newIpAddress+"' contenteditable>"+newIpAddress+"</td><td id = 'hostname"+newIpAddress+"' contenteditable>"+newHostname+"</td><td id = 'model"+newIpAddress+"' contenteditable>"+newModel+"</td><td id = 'neighbors"+newIpAddress+"' contenteditable>"+newNeighbors+"</td><td id = 'devicetype"+newIpAddress+"' contenteditable>"+newDeviceType+"</td><td><input type='button' class='saveButton' onclick='saveRow("+'"'+newIpAddress+'"'+");' value='Save'><input type='button' class='deleteButton' onclick='deleteRow("+'"'+newIpAddress+'"'+");' value='Delete'></td></tr>";
+            var row = table.insertRow(tableLen).outerHTML = "<tr id='row"+newIpAddress+"'><td id = 'ipAddress"+newIpAddress+"' contenteditable>"+newIpAddress+"</td><td id = 'hostname"+newIpAddress+"' contenteditable>"+newHostname+"</td><td id = 'model"+newIpAddress+"' contenteditable>"+newModel+"</td><td id = 'neighbors"+newIpAddress+"' contenteditable>"+newNeighbors+"</td><td id = 'devicetype"+newIpAddress+"'>"+newDeviceType+"</td><td><input type='button' class='saveButton' onclick='saveRow("+'"'+newIpAddress+'"'+");' value='Save'><input type='button' class='deleteButton' onclick='deleteRow("+'"'+newIpAddress+'"'+");' value='Delete'></td></tr>";
             
             document.getElementById("newIpAddress").value="";
             document.getElementById("newHostname").value="";

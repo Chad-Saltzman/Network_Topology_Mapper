@@ -24,7 +24,7 @@ Decription: HTML for the inspect page.
     <section class="inspect">
 
         <div class="text">
-            <h1> Inspect Network </h1>
+            <h1> Compare Network </h1>
         </div>
 
         <div class="container">
@@ -33,35 +33,7 @@ Decription: HTML for the inspect page.
 
         <div class="rightContainer">
             <div class="alignRight">
-                <a class="inspectNewButton" href="{% url 'upload' %}">Inspect New Network</a>
-            </div>
-            <div class="divider"></div>
-            <div class="alignRight">
-                <a class="editButton" href="{% url 'edit' %}">Edit Network</a>
-            </div>
-        </div>
-
-        <div class="container">
-            <div id="scanMenu">
-                <form id="table" name="form1" action="#"> 
-                    <div class="divScroll">
-                        <table class="datatable" id="datatable">
-                            <thead>
-                                <tr>
-                                    <th>IP Address</th>
-                                    <th>Hostname</th>
-                                    <th>Models</th>
-                                    <th>Neighbors</th>
-                                    <th>Device Type</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr id="row1">
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </form>
+                <a class="inspectNewButton" href="{% url 'comparisonUploadNew' %}">Compare New Network</a>
             </div>
         </div>
     </section>
@@ -70,7 +42,6 @@ Decription: HTML for the inspect page.
 <script type="text/javascript">
     var nodes = JSON.parse("{{nodes|escapejs}}")
     var edges = JSON.parse("{{edges|escapejs}}")
-    var nodeData = JSON.parse("{{nodeData|escapejs}}")
 
     // create a network
 
@@ -83,6 +54,14 @@ Decription: HTML for the inspect page.
         edges: edges,
     };
     var options = {
+        configure : {
+        "enabled": false, 
+        "filter": true}, 
+        "edges": {"color": {"inherit": true}, 
+        "smooth": {"enabled": false, "type": "continuous"}}, 
+        "interaction": {"hover": true, "dragNodes": true, "hideEdgesOnDrag": false, "hideNodesOnDrag": false, "navigationButtons": true}, 
+        "physics": {"enabled": true, "stabilization": {"enabled": true, "fit": true, "iterations": 1000, "onlyDynamicEdges": false, "updateInterval": 50}
+        },
         nodes: {
             shape: "circularImage",
             image: DIR + "NetDiscover_Icon_Desktop_V1.png",
@@ -97,64 +76,149 @@ Decription: HTML for the inspect page.
             width: 2,
         },
         groups: {
+            // White
             Desktop: {
-                color: { background: "red", border: "red" },
+                color: { background: "black", border: "black" },
                 shape: "circularImage",
                 image: DIR + "NetDiscover_Icon_Desktop_V1.png",
             },
             Firewall: {
-                color: { background: "red", border: "white" },
+                color: { background: "black", border: "black" },
                 shape: "circularImage",
                 image: DIR + "NetDiscover_Icon_FireWall_V1.png",
             },
             IPPhone: {
-                color: { background: "red", border: "purple" },
+                color: { background: "black", border: "black" },
                 shape: "circularImage",
                 image: DIR + "NetDiscover_Icon_IPPhone_V1.png",
             },
             Laptop: {
-                color: { background: "red", border: "yellow" },
+                color: { background: "black", border: "black" },
                 shape: "circularImage",
                 image: DIR + "NetDiscover_Icon_Laptop_V1.png",
             },
             Modem: {
-                color: { background: "red", border: "blue" },
+                color: { background: "black", border: "black" },
                 shape: "circularImage",
                 image: DIR + "NetDiscover_Icon_Modem_V1.png",
             },
             Printer: {
-                color: { background: "red", border: "green" },
+                color: { background: "black", border: "black" },
                 shape: "circularImage",
                 image: DIR + "NetDiscover_Icon_Printer_V1.png",
             },
             Router: {
-                color: { background: "red", border: "gray" },
+                color: { background: "black", border: "black" },
                 shape: "circularImage",
                 image: DIR + "NetDiscover_Icon_Router_V1.png",
             },
             Server: {
-                color: { background: "red", border: "orange" },
+                color: { background: "black", border: "black" },
                 shape: "circularImage",
                 image: DIR + "NetDiscover_Icon_Servers_V1.png",
             },
             Switch: {
-                color: { background: "red", border: "pink" },
+                color: { background: "black", border: "black" },
                 shape: "circularImage",
                 image: DIR + "NetDiscover_Icon_Switch_V1.png",
+            },
+            
+            // Red
+            DesktopRed: {
+                color: { background: "black", border: "black" },
+                shape: "circularImage",
+                image: DIR + "NetDiscover_Icon_Desktop_V1_Red.png",
+            },
+            FirewallRed: {
+                color: { background: "black", border: "black" },
+                shape: "circularImage",
+                image: DIR + "NetDiscover_Icon_FireWall_V1_Red.png",
+            },
+            IPPhoneRed: {
+                color: { background: "black", border: "black" },
+                shape: "circularImage",
+                image: DIR + "NetDiscover_Icon_IPPhone_V1_Red.png",
+            },
+            LaptopRed: {
+                color: { background: "black", border: "black" },
+                shape: "circularImage",
+                image: DIR + "NetDiscover_Icon_Laptop_V1_Red.png",
+            },
+            ModemRed: {
+                color: { background: "black", border: "black" },
+                shape: "circularImage",
+                image: DIR + "NetDiscover_Icon_Modem_V1_Red.png",
+            },
+            PrinterRed: {
+                color: { background: "black", border: "black" },
+                shape: "circularImage",
+                image: DIR + "NetDiscover_Icon_Printer_V1_Red.png",
+            },
+            RouterRed: {
+                color: { background: "black", border: "black" },
+                shape: "circularImage",
+                image: DIR + "NetDiscover_Icon_Router_V1_Red.png",
+            },
+            ServerRed: {
+                color: { background: "black", border: "black" },
+                shape: "circularImage",
+                image: DIR + "NetDiscover_Icon_Servers_V1_Red.png",
+            },
+            SwitchRed: {
+                color: { background: "black", border: "black" },
+                shape: "circularImage",
+                image: DIR + "NetDiscover_Icon_Switch_V1_Red.png",
+            },
+
+            
+            // Green
+            DesktopGreen: {
+                color: { background: "black", border: "black" },
+                shape: "circularImage",
+                image: DIR + "NetDiscover_Icon_Desktop_V1_Green.png",
+            },
+            FirewallGreen: {
+                color: { background: "black", border: "black" },
+                shape: "circularImage",
+                image: DIR + "NetDiscover_Icon_FireWall_V1_Green.png",
+            },
+            IPPhoneGreen: {
+                color: { background: "black", border: "black" },
+                shape: "circularImage",
+                image: DIR + "NetDiscover_Icon_IPPhone_V1_Green.png",
+            },
+            LaptopGreen: {
+                color: { background: "black", border: "black" },
+                shape: "circularImage",
+                image: DIR + "NetDiscover_Icon_Laptop_V1_Green.png",
+            },
+            ModemGreen: {
+                color: { background: "black", border: "black" },
+                shape: "circularImage",
+                image: DIR + "NetDiscover_Icon_Modem_V1_Green.png",
+            },
+            PrinterGreen: {
+                color: { background: "black", border: "black" },
+                shape: "circularImage",
+                image: DIR + "NetDiscover_Icon_Printer_V1_Green.png",
+            },
+            RouterGreen: {
+                color: { background: "black", border: "black" },
+                shape: "circularImage",
+                image: DIR + "NetDiscover_Icon_Router_V1_Green.png",
+            },
+            ServerGreen: {
+                color: { background: "black", border: "black" },
+                shape: "circularImage",
+                image: DIR + "NetDiscover_Icon_Servers_V1_Green.png",
+            },
+            SwitchGreen: {
+                color: { background: "black", border: "black" },
+                shape: "circularImage",
+                image: DIR + "NetDiscover_Icon_Switch_V1_Green.png",
             },
         },
     };
     var network = new vis.Network(container, data, options);
-
-    // Create table
-
-    var table = document.getElementById("datatable");
-    for (device in nodeData) {
-        console.log(device);
-        var tableLen = (table.rows.length) - 1;
-        var row = table.insertRow(tableLen).outerHTML = "<tr id='row"+tableLen+"'><td id='ipaddress'>"+nodeData[device].IP+"</td><td id='hostname'>"+nodeData[device].hostname+"</td><td id='models'>"+nodeData[device].model+"</td><td id='neighbors'>"+nodeData[device].neighbors+"</td><td id='devicetype'>"+nodeData[device].device_type+"</td></tr>";
-    }
-    
-
 </script>
 </html>

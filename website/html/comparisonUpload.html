@@ -1,0 +1,42 @@
+<!--
+Name: Carlos Dye
+Document: comparisonupload.html
+Decription: HTML for the comparison upload page.
+-->
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+    
+    {% include 'navbar.html' %}
+
+    <section class="upload">
+        <form method="post" enctype="multipart/form-data" action="{% url 'comparisonUpload' %}">
+            {% csrf_token %}
+            <div class="container">
+                <div class="text">
+                    <h1> Open Two Previously Scanned Networks </h1>
+                    <p> Please input two previous network scans (JSON files): </p>
+                    <input type="file" accept="application/JSON" name="myfile">
+                    <input type="file" accept="application/JSON" name="myfile2">
+                    <input type="submit" value="Submit" class="submitButton" id="submit" />
+                    
+                </div>
+                
+            </div>
+            
+        </form>
+    </section>
+</body>
+
+<script type="text/javascript">
+    
+</script>
+
+</html>

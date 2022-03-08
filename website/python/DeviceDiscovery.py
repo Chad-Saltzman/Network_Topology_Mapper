@@ -105,7 +105,9 @@ class Port:
     def __repr__(self):
         return self.toJSON().replace("'", '"')
 
-def getNodes(devices):
+def getNodes(devices, color = ""):
+    if not devices:
+        return
     list_of_nodes = []
     # DIR = "../website/static/images/"
     # router_img = "NetDiscover_Icon_Router_V1.png"
@@ -115,7 +117,7 @@ def getNodes(devices):
     for device in devices:
         node_properties = {
             'id' : devices[device].IP,
-            'group' : devices[device].device_type,
+            'group' : devices[device].device_type + color if devices[device].device_type else "Desktop" + color,
             'title' : devices[device].IP,
             'label' : devices[device].hostname if devices[device].hostname else devices[device].IP,
             'shape' : 'circularImage', 
@@ -126,6 +128,8 @@ def getNodes(devices):
     return list_of_nodes
 
 def getEdges(devices):
+    if not devices:
+        return
     list_of_edges = []
 
     for device in devices:
