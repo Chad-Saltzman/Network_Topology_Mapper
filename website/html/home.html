@@ -51,7 +51,7 @@ Decription: HTML for the home page.
                                 <th>IP Subnet</th>
                                 <th>Username</th>
                                 <th>Password</th>
-                                <th></th>
+                                <th>Seed IP</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -59,7 +59,7 @@ Decription: HTML for the home page.
                                 <td id="ipsubnet0.0.0.0/0">0.0.0.0/0</td>
                                 <td><input type="text" id="username0.0.0.0/0" placeholder="computer1"></td>
                                 <td><input type="text" id="password0.0.0.0/0" placeholder="password123"></td>
-                                <td></td>
+                                <td><input type="text" id="seedIP" placeholder="seed"></td>
                             </tr>
                             <tr>
                                 <td><input type="text" id="newIPsubnet" class="form-input" placeholder="xxx.xxx.xxx.xxx/xx" maxlength=18/></td>
@@ -144,6 +144,7 @@ Decription: HTML for the home page.
             var newIPsubnet = document.getElementById("ipsubnet0.0.0.0/0").value;
             var newUsername = document.getElementById("username0.0.0.0/0").value;
             var newPassword = document.getElementById("password0.0.0.0/0").value;
+            var seedIP = document.getElementById("seedIP").value;
 
             networkData["0.0.0.0/0"] = {
                 
@@ -160,6 +161,7 @@ Decription: HTML for the home page.
                 url: "{% url 'passNetworkInformation' %}",
                 data: {
                     dic : outputDic,
+                    IP  : seedIP
                 },
                 success: function(data){
                     window.location.href="{% url 'inspect' %}"; 

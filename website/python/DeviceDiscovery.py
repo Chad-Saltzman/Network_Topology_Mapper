@@ -22,7 +22,7 @@ class Device:
     
     def __init__(self, IP):
         self.IP = IP 
-        self.hostname = "None"
+        self.hostname = None
         self.local_mac_address = list()
         self.model = "None"
         self.neighbors = []
@@ -46,6 +46,8 @@ class Device:
                 self.device_type = "Firewall"
             elif "Phone" in self.model:
                 self.device_type = "IPPhone"
+            elif self.hostname == None:
+                self.device_type = "Desktop"
             else:
                 self.device_type = "Router"
 
@@ -89,7 +91,7 @@ class Port:
         self.vlans = []
         self.speed = ""
         self.duplex = ""
-        self.macs = set()
+        self.macs = []
         self.mode = ""
         self.description = ""
         self.type = ""
@@ -150,6 +152,7 @@ def sortSubnets(subnet_dict):
     return sorted_subnets
 
 def getIPPrefix(subnet):
+    print(subnet)
     return int(subnet.split('/')[1])
 
 def getHostnameFromIP(IP_address, IP_address_to_hostname_dict):
@@ -334,7 +337,7 @@ def deviceDiscovery(ip_address, auth_data_dict):
                     if interface[4]:
                         if interface[0] not in devices_dict[ip_address].interfaces:
                             devices_dict[ip_address].interfaces[interface[0]] = Port(port_name = interface[0])
-                        devices_dict[ip_address].local_mac_address.add(interface[4])
+                        devices_dict[ip_address].local_mac_address.append(interface[4])
                         if interface[7]:
                             devices_dict[ip_address].interfaces[interface[0]].IP = interface[7]
             except Exception as e:
@@ -365,7 +368,7 @@ def deviceDiscovery(ip_address, auth_data_dict):
 
                     # if mac[5] not in devices_dict[ip_address].interfaces:
                     #     devices_dict[ip_address].interfaces[mac[5]] = Port(port_name = mac[5])
-                    # devices_dict[ip_address].interfaces[mac[5]].macs.add(mac[3])
+                    # devices_dict[ip_address].interfaces[mac[5]].macs.append(mac[3])
 
         
             except Exception as e:

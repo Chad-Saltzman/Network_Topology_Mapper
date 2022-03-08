@@ -88,13 +88,13 @@ Decription: HTML for the inspect page.
     // Save row
     function saveRow(num) {
 
-        var ipAddress = document.getElementById("ipAddress" + num.toString()).innerHTML;
-        var hostname = document.getElementById("hostname" + num.toString()).innerHTML;
-        var model = document.getElementById("model" + num.toString()).innerHTML;
-        var neighbors = [document.getElementById("neighbors" + num.toString()).innerHTML];
-        var devicetype = document.getElementById("devicetype" + num.toString()).innerHTML;
+        var ipAddress = document.getElementById("ipAddress" + num.toString()).innerText;
+        var hostname = document.getElementById("hostname" + num.toString()).innerText;
+        var model = document.getElementById("model" + num.toString()).innerText;
+        var neighbors = document.getElementById("neighbors" + num.toString()).innerText;
+        var devicetype = document.getElementById("devicetype" + num.toString()).innerText;
         
-        var neighborArray = newNeighbors.split(',').map(element => {
+        var neighborArray = neighbors.split(',').map(element => {
             return element.trim();
         });
 
@@ -114,7 +114,6 @@ Decription: HTML for the inspect page.
             }
         } else {
             
-
             nodeData[num.toString()].IP = ipAddress;
             nodeData[num.toString()].hostname = hostname;
             nodeData[num.toString()].model = model;

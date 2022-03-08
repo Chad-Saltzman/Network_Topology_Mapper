@@ -146,10 +146,13 @@ def passDictionary(request):
     return HttpResponse("", content_type='text/plain')
 
 def passNetworkInformation(request):
-    devices_dict = request.POST.get('dic', None)
-
+    auth_dict = json.loads(request.POST.get('dic', None))
+    # logger.critical(auth_dict)
     
-    logger.critical(devices_dict)
+    seed_IP = request.POST.get('IP', None)
+    # logger.critical(seed_IP)
+    # test = {"0.0.0.0/0":{"username":"netdiscover","password":"password"}}
+    request.session['devices_dict'] = str(deviceDiscovery(seed_IP, auth_dict))
 
 
     return HttpResponse("", content_type='text/plain')
