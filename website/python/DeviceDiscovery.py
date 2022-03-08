@@ -54,6 +54,8 @@ class Device:
             if self.interfaces[interface].macs:
                 for mac in self.interfaces[interface].macs:
                     self.neighbors.append(mac)
+            elif self.interfaces[interface].destination_IP in IP_to_Hostname:
+                self.neighbors.append(getHostnameFromIP(self.interfaces[interface].destination_IP, IP_to_Hostname))
             else:
                 self.neighbors.append(self.interfaces[interface].destination_IP)
             
@@ -113,6 +115,7 @@ def getNodes(devices):
             'id' : devices[device].IP,
             'group' : devices[device].device_type,
             'title' : devices[device].IP,
+            'label' : devices[device].hostname if devices[device].hostname else devices[device].IP,
             'shape' : 'circularImage', 
             'size' : 20,
             'smooth' : False
@@ -149,6 +152,9 @@ def sortSubnets(subnet_dict):
 def getIPPrefix(subnet):
     return int(subnet.split('/')[1])
 
+def getHostnameFromIP(IP_address, IP_address_to_hostname_dict):
+    return IP_address_to_hostname_dict[IP_address]
+
 # Gurantees that host bits are not set 
 def verifySubnets(subnets_dict):
     verified_subnets = {}
@@ -166,6 +172,8 @@ def verifySubnets(subnets_dict):
         else:
             verified_subnets[subnet] = subnets_dict[subnet]
     return verified_subnets
+
+IP_to_Hostname = {}
 
 def deviceDiscovery(ip_address, auth_data_dict):
     hostname_set = set()
@@ -239,6 +247,7 @@ def deviceDiscovery(ip_address, auth_data_dict):
             hostname = net_connect.find_prompt()[:-1]  # Finds the hostname of the device
             hostname_set.add(hostname)
             devices_dict[ip_address].hostname = hostname 
+            IP_to_Hostname[ip_address] = hostname
             # if "(config" in net_connect.find_prompt():
             #     net_connect.send_command("end")
             # elif ">" in net_connect.find_prompt():
@@ -420,7 +429,6 @@ def importDeviceData(file_name = "", json_string = ""):
                         else:
                             exec('devices_dict[device_IP].interfaces[interface].%s = %s' % (interface_attribute, import_data[device_IP][attribute][interface][interface_attribute]))  # Adds any non string datatype/datastructure
 
-                #print(devices_dict[device_IP].attribute)
             else:
                 if type(import_data[device_IP][attribute]) == str:
                     exec('devices_dict[device_IP].%s = "%s"' % (attribute, import_data[device_IP][attribute]))
@@ -428,26 +436,6 @@ def importDeviceData(file_name = "", json_string = ""):
                     exec('devices_dict[device_IP].%s = %s' % (attribute, import_data[device_IP][attribute]))
         if file_name:
             import_file.close()
-    #print(devices_dict)
+
     return devices_dict 
     
-if __name__ == '__main__':
-    import os 
-    #print(os.getcwd())
-    # Sample set of subnets to test 
-    subnets = {"192.0.0.0/8": {'username' : 'netdiscover', 'password' : 'password'}, "192.168.0.0/16": {'username' : 'netdiscover', 'password' : 'password'}, "192.168.0.0/24": {'username' : 'netdiscover', 'password' : 'password'}, "192.168.0.0/32": {'username' : 'netdiscover', 'password' : 'password'}}
-
-    devices_dict = deviceDiscovery("192.168.111.129", subnets)
-    exportDeviceData("test.json", devices_dict)
-    importDeviceData("test.json")
-    nodes = getNodes(devices_dict)
-    edges = getEdges(devices_dict)
-    node_data = json.dumps(nodes)
-    edge_data = json.dumps(edges)
-    with open("node.txt", 'w') as temp_file:   
-        temp_file.write(f"node data: {node_data}")
-
-    with open("edge.txt", 'w') as temp_file:   
-        temp_file.write(f"edge data: {edge_data}")
-
-    ############# FINISH SCAN 

@@ -137,16 +137,12 @@ Decription: HTML for the inspect page.
             document.getElementById("newNeighbors").value="";
             document.getElementById("newDeviceType").value="";
 
-            var neighborArray = newNeighbors.split(',').map(element => {
-                return element.trim();
-            });
-            
             nodeData[newIpAddress] = {
                 "IP":newIpAddress,
                 "hostname":newHostname,
                 "local_mac_address":[],
                 "model": newModel,
-                "neighbors": neighborArray,
+                "neighbors":[newNeighbors],
                 "interfaces":{},
                 "device_type": newDeviceType
             }
