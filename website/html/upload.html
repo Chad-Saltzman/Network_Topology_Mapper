@@ -17,7 +17,7 @@ Decription: HTML for the upload page.
     {% include 'navbar.html' %}
 
     <section class="upload">
-        <form method="post" enctype="multipart/form-data" action="{% url 'upload2' %}">
+        <form method="post" enctype="multipart/form-data" action="{% url 'inspectUpload' %}">
             {% csrf_token %}
             <div class="container">
                 <div class="text">

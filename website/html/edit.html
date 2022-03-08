@@ -10,11 +10,7 @@ Decription: HTML for the inspect page.
 <head>
     <!-- CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-
-    <!-- Network Visulation Scripts -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
-
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -24,58 +20,49 @@ Decription: HTML for the inspect page.
     <section class="edit">
 
         <div class="text">
-            <h1> Inspect Network </h1>
+            <h1> Edit Network </h1>
         </div>
-
-        <div class="rightContainer">
-            <div class="alignRight">
-                <a class="cancelEditButton" href="{% url 'upload' %}">Cancel</a>
+        <form id="form" method="POST">
+            {% csrf_token %}
+            <div class="rightContainer">
+                <div class="alignRight">
+                    <a class="cancelEditButton" href="{% url 'inspect' %}">Cancel</a>
+                </div>
+                <div class="divider"></div>
+                <div class="alignRight">
+                    <input type="submit" name="submit" value="Save Changes">
+                </div>
             </div>
-            <div class="divider"></div>
-            <div class="alignRight">
-                <a class="saveEditButton" href="{% url 'edit' %}">Save</a>
-            </div>
-        </div>
+        </form>
 
         <form id="table" name="form1" action="#"> 
             <div class="container">
                 <div id="scanMenu">
-                    <form id="table" name="form1" action="#"> 
-                        <table class="datatable" id="datatable">
-                            <thead>
-                                <tr>
-                                    <th>IP Address</th>
-                                    <th>Hostname</th>
-                                    <th>Models</th>
-                                    <th>Neighbors</th>
-                                    <th>Device Type</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr id="row1">
-                                    <td contenteditable></td>
-                                    <td contenteditable></td>
-                                    <td contenteditable></td>
-                                    <td contenteditable></td>
-                                    <td contenteditable></td>
-                                    <td><input type='button' class='deleteButton' onclick='deleteRow(1);' value='Delete'></td>
-                                </tr>
-                                <tr>
-                                    <td><input type="text" id="newIpAddress" class="form-input" placeholder="xxx.xxx.xxx.xxx/xx" maxlength=18/></td>
-                                    <td><input type="text" id="newHostname" placeholder="Router1"></td>
-                                    <td><input type="text" id="newModel" placeholder="3700"></td>
-                                    <td><input type="text" id="newNeighbors" placeholder="10.0.0.1, 10.0.0.2"></td>
-                                    <td><input type="text" id="newDeviceType" placeholder="Router"></td>
-                                    <td><input type="button" class="addButton" onclick="addRow();" value="Add Credential"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </form>
+                    <table class="datatable" id="datatable">
+                        <thead>
+                            <tr>
+                                <th>IP Address</th>
+                                <th>Hostname</th>
+                                <th>Models</th>
+                                <th>Neighbors</th>
+                                <th>Device Type</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="text" id="newIpAddress" class="form-input" placeholder="xxx.xxx.xxx.xxx" maxlength=18/></td>
+                                <td><input type="text" id="newHostname" placeholder="Router1"></td>
+                                <td><input type="text" id="newModel" placeholder="3700"></td>
+                                <td><input type="text" id="newNeighbors" placeholder="10.0.0.1, 10.0.0.2"></td>
+                                <td><input type="text" id="newDeviceType" placeholder="Router"></td>
+                                <td><input type="button" class="addButton" onclick="addRow();" value="Add Credential"></td>
+                            </tr>
+                            <tr id="">
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-            </div>
-            <div class="alignRight">
-                <input type="submit" value="submit" class="submitButton" id="submit" href="{% url 'inspect' %}" />
             </div>
         </form>
     </section>
@@ -83,15 +70,106 @@ Decription: HTML for the inspect page.
 
 <script type="text/javascript">
     var nodeData = JSON.parse("{{nodeData|escapejs}}")
-    // Create table
 
+    // Create table
     var table = document.getElementById("datatable");
     for (device in nodeData) {
-        console.log(device);
         var tableLen = (table.rows.length) - 1;
-        var row = table.insertRow(tableLen).outerHTML = "<tr id='row"+tableLen+"'><td id='ipaddress'>"+nodeData[device].IP+"</td><td id='hostname'>"+nodeData[device].hostname+"</td><td id='models'>"+nodeData[device].model+"</td><td id='neighbors'>"+nodeData[device].neighbors+"</td><td id='devicetype'>"+nodeData[device].device_type+"</td></tr>";
+        var row = table.insertRow(tableLen).outerHTML = "<tr id='row"+nodeData[device].IP+"'><td id = 'ipAddress"+nodeData[device].IP+"' contenteditable>"+nodeData[device].IP+"</td><td id = 'hostname"+nodeData[device].IP+"' contenteditable>"+nodeData[device].hostname+"</td><td contenteditable id = 'model"+nodeData[device].IP+"'>"+nodeData[device].model+"</td><td contenteditable id = 'neighbors"+nodeData[device].IP+"'>"+nodeData[device].neighbors+"</td><td contenteditable id = 'devicetype"+nodeData[device].IP+"'>"+nodeData[device].device_type+"</td><td><input type='button' class='saveButton' onclick='saveRow("+'"'+nodeData[device].IP+'"'+");' value='Save'><input type='button' class='deleteButton' onclick='deleteRow("+'"'+nodeData[device].IP+'"'+");' value='Delete'></td></tr>";
     }
     
+    // Delete row
+    function deleteRow(num) {
+        delete nodeData[num.toString()];
+        document.getElementById("row" + num.toString()).outerHTML="";
+        console.log(nodeData);
+    }
 
+    // Save row
+    function saveRow(num) {
+
+        var ipAddress = document.getElementById("ipAddress" + num.toString()).innerHTML;
+        var hostname = document.getElementById("hostname" + num.toString()).innerHTML;
+        var model = document.getElementById("model" + num.toString()).innerHTML;
+        var neighbors = [document.getElementById("neighbors" + num.toString()).innerHTML];
+        var devicetype = document.getElementById("devicetype" + num.toString()).innerHTML;
+        
+        if (nodeData[num.toString()].IP != ipAddress) {
+            document.getElementById("row" + num.toString()).value = ipAddress;
+
+            delete nodeData[num.toString()];
+
+            nodeData[ipAddress] = {
+                "IP": ipAddress,
+                "hostname": hostname,
+                "local_mac_address":[],
+                "model": model,
+                "neighbors": [neighbors],
+                "interfaces": {},
+                "device_type": devicetype
+            }
+        } else {
+            nodeData[num.toString()].IP = ipAddress;
+            nodeData[num.toString()].hostname = hostname;
+            nodeData[num.toString()].model = model;
+            nodeData[num.toString()].neighbors = neighbors;
+            nodeData[num.toString()].devicetype = devicetype;
+        }
+        console.log(nodeData);
+    }
+
+    // Add row
+    function addRow() {
+        var newIpAddress = document.getElementById("newIpAddress").value;
+        var newHostname = document.getElementById("newHostname").value;
+        var newModel = document.getElementById("newModel").value;
+        var newNeighbors = document.getElementById("newNeighbors").value;
+        var newDeviceType = document.getElementById("newDeviceType").value;
+
+        if (newIpAddress != "") {
+            var table = document.getElementById("datatable");
+            var tableLen = (table.rows.length) - 1;
+            var row = table.insertRow(tableLen).outerHTML = "<tr id='row"+newIpAddress+"'><td id = 'ipAddress"+newIpAddress+"' contenteditable>"+newIpAddress+"</td><td id = 'hostname"+newIpAddress+"' contenteditable>"+newHostname+"</td><td id = 'model"+newIpAddress+"' contenteditable>"+newModel+"</td><td id = 'neighbors"+newIpAddress+"' contenteditable>"+newNeighbors+"</td><td id = 'devicetype"+newIpAddress+"' contenteditable>"+newDeviceType+"</td><td><input type='button' class='saveButton' onclick='saveRow("+'"'+newIpAddress+'"'+");' value='Save'><input type='button' class='deleteButton' onclick='deleteRow("+'"'+newIpAddress+'"'+");' value='Delete'></td></tr>";
+            
+            document.getElementById("newIpAddress").value="";
+            document.getElementById("newHostname").value="";
+            document.getElementById("newModel").value="";
+            document.getElementById("newNeighbors").value="";
+            document.getElementById("newDeviceType").value="";
+
+            nodeData[newIpAddress] = {
+                "IP":newIpAddress,
+                "hostname":newHostname,
+                "local_mac_address":[],
+                "model": newModel,
+                "neighbors":[newNeighbors],
+                "interfaces":{},
+                "device_type": newDeviceType
+            }
+        }
+
+        console.log(nodeData);
+    }
+
+    $('#form').on('submit', function(e){
+    
+        
+        var outputDic = JSON.stringify(nodeData);
+            
+        e.preventDefault();
+        
+        $.ajax({
+            type : "POST", 
+            url: "{% url 'passDictionary' %}",
+            data: {
+                dic : outputDic,
+            },
+            success: function(data){
+                window.location.href="{% url 'inspect' %}"; 
+            },
+            failure: function() {
+            }
+        });
+    });  
 </script>
 </html>

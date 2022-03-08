@@ -1,7 +1,7 @@
 <!--
 Name: Gavin Claire
 Document: compare.html
-Decription: HTML for the compare page.
+Decription: HTML for the inspect page.
 -->
 
 {% load static %}
@@ -10,26 +10,59 @@ Decription: HTML for the compare page.
 <head>
     <!-- CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
     <!-- Network Visulation Scripts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
+
 </head>
 
 <body>
-    
+
     {% include 'navbar.html' %}
-    
-    <section class="compare">
+
+    <section class="inspect">
+
         <div class="text">
-            <h1> Compare Network </h1>
+            <h1> Inspect Network </h1>
         </div>
+
         <div class="container">
-            <div id="compareNetwork"></div>
+            <div id="singleNetwork"></div>
         </div>
 
         <div class="rightContainer">
             <div class="alignRight">
-                <a class="topo1Button" href="{% url 'uploaddouble' %}">Load Topologies</a>
+                <a class="inspectNewButton" href="{% url 'upload' %}">Inspect New Network</a>
+            </div>
+            <div class="divider"></div>
+            <div class="alignRight">
+                <a class="editButton" href="{% url 'edit' %}">Edit Network</a>
+            </div>
+        </div>
+
+        <div class="container">
+            <div id="scanMenu">
+                <form id="table" name="form1" action="#"> 
+                    <div class="divScroll">
+                        <table class="datatable" id="datatable">
+                            <thead>
+                                <tr>
+                                    <th>IP Address</th>
+                                    <th>Hostname</th>
+                                    <th>Models</th>
+                                    <th>Neighbors</th>
+                                    <th>Device Type</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr id="row1">
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+            </div>
         </div>
     </section>
 </body>
@@ -44,16 +77,15 @@ Decription: HTML for the compare page.
     /// where images are stored
     var DIR = "./website/static/images/";
 
-    var container = document.getElementById("compareNetwork");
+    var container = document.getElementById("singleNetwork");
     var data = {
         nodes: nodes,
         edges: edges,
     };
-
     var options = {
         nodes: {
             shape: "circularImage",
-            image: DIR + "NetDiscover_Icon_Desktop.png",
+            image: DIR + "NetDiscover_Icon_Desktop_V1.png",
             size: 20,
             font: {
                 size: 15,
@@ -114,6 +146,15 @@ Decription: HTML for the compare page.
     };
     var network = new vis.Network(container, data, options);
 
+    // Create table
+
+    var table = document.getElementById("datatable");
+    for (device in nodeData) {
+        console.log(device);
+        var tableLen = (table.rows.length) - 1;
+        var row = table.insertRow(tableLen).outerHTML = "<tr id='row"+tableLen+"'><td id='ipaddress'>"+nodeData[device].IP+"</td><td id='hostname'>"+nodeData[device].hostname+"</td><td id='models'>"+nodeData[device].model+"</td><td id='neighbors'>"+nodeData[device].neighbors+"</td><td id='devicetype'>"+nodeData[device].device_type+"</td></tr>";
+    }
     
+
 </script>
 </html>

@@ -1,89 +1,62 @@
 #
-# Name: Gavin Claire
+# Name: Gavin Claire, Ronald Du, Chad Saltzman
 # Document: views.py
 # Decription: Views for the website.
 #
-
 from django.shortcuts import render
 from website.python.DeviceDiscovery import *
-from website.python.Compare import *
-
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
+from django.http import HttpResponse
+
+from django.core import serializers
 import json
 
-TESTING = True
+import logging as logger
+
+TESTING = False
 
 def home(request):
-    global devices_dict
-    if 'devices_dict' not in globals():
-        global devices_dict 
-        devices_dict = {}
-    if 'devices_dict2' not in globals():
-        global devices_dict2
-        devices_dict2 = {}
-    if 'devices_dict3' not in globals():
-        global devices_dict3
-        devices_dict3 = {}
+    print("home")
+    # devices_dict = request.session.get('devices_dict', '')
     return render(request, 'home.html')
 
-def uploaddouble(request):
-    global devices_dict
-    return render(request, 'uploaddouble.html')
-
-def upload2(request):
-    global devices_dict
+def inspectUpload(request):
+    print("upload2")
     if request.method == 'POST' and request.FILES['myfile']:
         devices_dict = importDeviceData(str(request.FILES['myfile']))
-        nodeData = json.loads(exportDeviceData(devices_dict, write_true = False))
+        request.session['devices_dict'] = str(devices_dict)
+        nodeData = str(devices_dict)
+        # print("asdasdasasdasdasddsAD")
         nodes = getNodes(devices_dict)
         edges = getEdges(devices_dict)
-
-    return render(request, 'inspect.html', {'nodes': json.dumps(nodes), 'edges': json.dumps(edges), 'nodeData': json.dumps(nodeData)})
-
-def upload3(request):
-    global devices_dict
-    if request.method == 'POST' and request.FILES['myfile']:
-        devices_dict = importDeviceData(str(request.FILES['myfile']))
-        nodeData = json.loads(exportDeviceData(devices_dict, write_true = False))
-        nodes = getNodes(devices_dict)
-        edges = getEdges(devices_dict)
-    if request.method == 'POST' and request.FILES['myfile2']:
-        devices_dict2 = importDeviceData(str(request.FILES['myfile2']))
-        nodeData2 = json.loads(exportDeviceData(devices_dict2, write_true = False))
-        nodes2 = getNodes(devices_dict2)
-        edges2 = getEdges(devices_dict2)
-
-        print(nodes)
-        print("asdasd")
-        print(nodes2)
-
-    test = compareTopologies(devices_dict, devices_dict2)
-    print(json.dumps(test))
-    
-    return render(request, 'inspect.html', {'nodes': json.dumps(nodes), 'edges': json.dumps(edges), 'nodeData': json.dumps(nodeData)})
+        return render(request, 'inspect.html', {'nodes': json.dumps(nodes), 'edges': json.dumps(edges), 'nodeData': nodeData.replace("'", '"')})
+    # try:
+        
+    # except Expection as e:
+    #     print("short error\n\n\n")
     
 def upload(request):
-    global devices_dict
+    print("upload")
     return render(request, 'upload.html')
     
 def inspect(request):
-    global devices_dict
+
+    try:
+        devices_dict = importDeviceData(json_string = request.session.get('devices_dict', ''))
+        print(type(devices_dict))
+
+    except:
+        devices_dict = None
+        pass
+
     if not TESTING:
-        # with open('currentfiledirectory.txt') as f:
-        #     currentFileDirectory = f.readlines()
-        
-        # fileDirectory = currentFileDirectory[0].lstrip('/')
+        if  devices_dict:
 
-        # if fileDirectory != "":
-        #     with open(fileDirectory) as json_file:
-        #         nodeData = json.load(json_file)
-
-        if not devices_dict:
-            nodeData = json.loads(exportDeviceData(devices_dict, write_true = False))
             nodes = getNodes(devices_dict)
             edges = getEdges(devices_dict)
-            return render(request, 'inspect.html', {'nodes': json.dumps(nodes), 'edges': json.dumps(edges), 'nodeData': json.dumps(nodeData)})
+
+            return render(request, 'inspect.html', {'nodes': json.dumps(nodes), 'edges': json.dumps(edges), 'nodeData': str(devices_dict).replace("'", '"')})
         else:
             return render(request, 'upload.html')
     else:
@@ -91,15 +64,29 @@ def inspect(request):
             nodeData = json.load(json_file)
 
         devices_dict = importDeviceData("test.json")
+        request.session['devices_dict'] = str(devices_dict)
         nodes = getNodes(devices_dict)
         edges = getEdges(devices_dict)
-
-        return render(request, 'inspect.html', {'nodes': json.dumps(nodes), 'edges': json.dumps(edges), 'nodeData': json.dumps(nodeData)})
+        
+        return render(request, 'inspect.html', {'nodes': json.dumps(nodes), 'edges': json.dumps(edges), 'nodeData': nodeData.replace("'", '"')})
 
 def edit(request):
+
+    try:
+        devices_dict = importDeviceData(json_string = request.session.get('devices_dict', ''))
+        print(type(devices_dict))
+
+    except:
+        devices_dict = None
+        pass
+
     if not TESTING:
-        if True:
-            return render(request, 'edit.html', {'nodes': json.dumps(nodes), 'edges': json.dumps(edges), 'nodeData': json.dumps(nodeData)})
+        if  devices_dict:
+
+            nodes = getNodes(devices_dict)
+            edges = getEdges(devices_dict)
+
+            return render(request, 'edit.html', {'nodes': json.dumps(nodes), 'edges': json.dumps(edges), 'nodeData': str(devices_dict).replace("'", '"')})
         else:
             return render(request, 'upload.html')
     else:
@@ -107,17 +94,60 @@ def edit(request):
             nodeData = json.load(json_file)
 
         devices_dict = importDeviceData("test.json")
+        request.session['devices_dict'] = str(devices_dict)
         nodes = getNodes(devices_dict)
         edges = getEdges(devices_dict)
-
-        return render(request, 'edit.html', {'nodes': json.dumps(nodes), 'edges': json.dumps(edges), 'nodeData': json.dumps(nodeData)})
+        
+        return render(request, 'edit.html', {'nodes': json.dumps(nodes), 'edges': json.dumps(edges), 'nodeData': nodeData.replace("'", '"')})
 
 def compare(request):
+    print("compare")
     return render(request, 'compare.html')
 
 def export(request):
-    return render(request, 'export.html')
+
+    try:
+        devices_dict = importDeviceData(json_string = request.session.get('devices_dict', ''))
+        print(type(devices_dict))
+
+    except:
+        devices_dict = None
+        pass
+
+    if not TESTING:
+        if  devices_dict:
+
+            nodes = getNodes(devices_dict)
+            edges = getEdges(devices_dict)
+
+            return render(request, 'export.html', {'nodeData': str(devices_dict).replace("'", '"')})
+        else:
+            return render(request, 'upload.html')
+    else:
+        with open("test.json") as json_file:
+            nodeData = json.load(json_file)
+
+        devices_dict = importDeviceData("test.json")
+        request.session['devices_dict'] = str(devices_dict)
+        nodes = getNodes(devices_dict)
+        edges = getEdges(devices_dict)
+        
+        return render(request, 'export.html', {'nodeData': nodeData.replace("'", '"')})
 
 def help(request):
     return render(request, 'help.html')
-    
+
+def passDictionary(request):
+    devices_dict = request.POST.get('dic', None)
+    #logger.critical(devices_dict)
+
+    request.session['devices_dict'] = str(devices_dict)
+
+    return HttpResponse("", content_type='text/plain')
+
+def passNetworkInformation(request):
+    devices_dict = request.POST.get('dic', None)
+    logger.critical(devices_dict)
+
+
+    return HttpResponse("", content_type='text/plain')

@@ -21,6 +21,7 @@ Decription: CSS for the the site style (font, colors, transitions)
     --secondary-color: #e2ab15;
     --third-color: #15e271;
     --fourth-color: #b915e2;
+    --fifth-color: #15c3e2;
     --toggle-color: #000000;
     --text-color: #181818;
     --white: #FFFFFF;
@@ -41,6 +42,7 @@ body.dark {
     --network-color: #111111;
     --secondary-color: #e2ab15;
     --fourth-color: #b915e2;
+    --fifth-color: #15c3e2;
     --toggle-color: #f9ffe6;
     --text-color: #ccc;
 }
@@ -422,6 +424,26 @@ body.dark .home .container {
   touch-action: manipulation;
   width: 60%;
 }
+.saveButton {
+    background-color: var(--fifth-color);
+    border-radius: 4px;
+    border-style: none;
+    box-sizing: border-box;
+    color: var(--white);
+    cursor: pointer;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.5;
+    min-height: 44px;
+    min-width: 10px;
+    overflow: hidden;
+    padding: 9px 20px 8px;
+    position: relative;
+    text-align: center;
+    touch-action: manipulation;
+    width: 60%;
+}
 .addButton {
     background-color: var(--third-color);
     border-radius: 4px;
@@ -447,7 +469,7 @@ body.dark .home .container {
   opacity: .75;
 }
 .divScroll {
-    overflow:scroll;
+    overflow-y: scroll;
     height:600px;
     width:1500px;
 }
@@ -602,26 +624,6 @@ body.dark .inspect .container {
     color: inherit;
     text-decoration: inherit;
 }
-
-body.dark .inspect .container {
-    color: var(--text-color);
-}
-
-.inspect .network {
-    justify-content: center;
-    padding: 30px;
-}
-
-    /* Graph Start */
-    #singleNetwork {
-        width: 90%;
-        height: 800px;
-        border: 10px solid var(--secondary-color);
-        background-color: var(--network-color);
-    }
-    /* Graph End */
-
-    
 /* Inspect Page End */
 
 /* Edit Page Start */
@@ -639,8 +641,22 @@ body.dark .inspect .container {
     height: 100vh;
     width: calc(100% - 78px);
 }
+body.dark .inspect .container {
+    color: var(--text-color);
+}
+.inspect .network {
+    justify-content: center;
+    padding: 30px;
+}
 
-
+    /* Graph Start */
+    #singleNetwork {
+        width: 90%;
+        height: 800px;
+        border: 10px solid var(--secondary-color);
+        background-color: var(--network-color);
+    }
+    /* Graph End */
 
 body.dark .edit .container {
     color: var(--text-color);
@@ -680,7 +696,7 @@ body.dark .edit .container {
     color: var(--white);
     cursor: pointer;
 }
-.edit .alignRight .saveEditButton {
+.edit .alignRight input[type=submit] {
     font-size: 17.5px;
     width: 200px;
     padding: 10px;
@@ -724,71 +740,6 @@ body.dark .compare .container {
     color: var(--text-color);
 }
 
-.compare .container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: var(--text-color);
-    padding: 10px 30px;
-}
-.compare .rightContainer {
-    display: flex;
-    justify-content: right;
-    align-items: center;
-    color: var(--text-color);
-    padding: 10px 100px;
-}
-
-.compare h1 {
-    font-size: 5vmin;
-    color: var(--primary-color);
-}
-
-.compare .text {
-    justify-content: left;
-    padding: 0px 30px;
-}
-
-.compare .network {
-    justify-content: center;
-    padding: 30px;
-}
-
-/* Graph Start */
-#compareNetwork {
-    width: 90%;
-    height: 800px;
-    border: 10px solid var(--secondary-color);
-    background-color: var(--network-color);
-}
-/* Graph End */
-
-.compare .alignRight .topo1Button {
-    font-size: 17.5px;
-    width: 200px;
-    padding: 10px;
-    text-align: center;
-    margin: -5px 0px;
-    border-radius: 25px;
-    font-weight: 600;
-    border: 2px solid var(--fourth-color);
-    background: var(--fourth-color);
-    color: var(--white);
-    cursor: pointer;
-}
-.compare .alignRight .topo2Button {
-    font-size: 17.5px;
-    width: 200px;
-    padding: 10px;
-    text-align: center;
-    margin: -5px 0px;
-    border-radius: 25px;
-    font-weight: 600;
-    border: 2px solid var(--third-color);
-    background: var(--third-color);
-    color: var(--white);
-    cursor: pointer;
-}
 /* Compare Page End */
 
 /* Export Page Start */
@@ -866,8 +817,7 @@ body.dark .compare .container {
 /* #region Help Page */
 .help {
     position: absolute;
-    top: 0px;
-    right: 0px;
+    top: 0;
     left: 250px;
     height: 100vh;
     width: calc(100% - 250px);
@@ -882,35 +832,29 @@ body.dark .help .container {
     color: var(--text-color);
 }
 .help .container {
-    font-size: 20px;
-    font-weight: 500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     color: var(--text-color);
-    width: 100%;
-    position: absolute;
-    top: 10%;
 }
-.largeTitle {
-    font-size: 30px;
-    width: 30%;
-    padding: 5px;
-    text-align: center;
-    margin: 0px 20px;
-    border-radius: 25px;
-    font-weight: 600;
-    border: 2px solid var(--primary-color);
-    background: var(--primary-color);
-    color: var(--white);
+.help .container h5 {
+    font-size: 3vmin;
+    margin: 5px auto;
+    font-weight: 300;
+    line-height: 25px;
 }
-.box {
-    font-size: 20px;
-    width: 90%;
-    padding: 5px;
-    text-align: left;
-    margin: 5px 20px;
-    border-radius: 25px;
-    font-weight: 600;
-    border: 2px solid var(--primary-color);
-    background: var(--white);
+.help .container h1 {
+    font-size: 5vmin;
+    margin-top: -10px;
     color: var(--primary-color);
+}
+.help .container p {
+    font-size: 20px;
+    margin: 5px auto;
+    font-weight: 300;
+    line-height: 25px;
+}
+.help .text {
+    padding: 5% 5%;
 }
 /* #endregion Help Page */

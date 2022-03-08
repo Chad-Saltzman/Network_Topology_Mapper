@@ -4,6 +4,7 @@ netmiko
 ipaddress
 textfsm
 requests
+file-saver
 
 // Useful commands
 python -m django --version  // Get Django Version

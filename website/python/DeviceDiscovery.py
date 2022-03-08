@@ -23,24 +23,20 @@ class Device:
     def __init__(self, IP):
         self.IP = IP 
         self.hostname = "None"
-        self.local_mac_address = set()
+        self.local_mac_address = list()
         self.model = "None"
         self.neighbors = []
         self.interfaces = {}
         self.device_type = "None"
 
-    def __repr__(self):
-        device_dict = {}
-        device_dict["IP"] = self.IP 
-        device_dict['hostname'] = self.hostname 
-        device_dict['local_mac_address'] = list(self.local_mac_address)
-        device_dict['model'] = self.model 
-        device_dict['neighbors'] = self.neighbors
-        device_dict['interfaces'] = str(self.interfaces)
-        device_dict['device_type'] = self.device_type 
-        
-        return json.dumps(device_dict)
+    def toJSON(self):
+        return json.dumps(self, default=lambda o: o.__dict__, 
+                    sort_keys=True, indent=4)
 
+
+    def __repr__(self):
+        
+        return self.toJSON().replace("'", '"')
 
     def getDeviceType(self):
         if self.model:
@@ -98,20 +94,12 @@ class Port:
         self.destination_port = ""
         self.destination_IP = ""
 
+    def toJSON(self):
+        return json.dumps(self, default=lambda o: o.__dict__, 
+                    sort_keys=True, indent=4)
+
     def __repr__(self):
-        port_dict = {}
-        port_dict['port_name'] = self.port_name
-        port_dict['IP'] = self.IP
-        port_dict['vlans'] = self.vlans
-        port_dict['speed'] = self.speed
-        port_dict['duplex'] = self.duplex
-        port_dict['macs'] = list(self.macs)
-        port_dict['mode'] = self.mode
-        port_dict['description'] = self.description
-        port_dict['type'] = self.type
-        port_dict['destination_port'] = self.destination_port
-        port_dict['destination_IP'] = self.destination_IP
-        return json.dumps(port_dict)
+        return self.toJSON().replace("'", '"')
 
 def getNodes(devices):
     list_of_nodes = []
@@ -404,17 +392,21 @@ def DiscoveryMain(IP_address, subnets):
 def exportDeviceData( devices, file_name = "", write_true = True):
     if write_true:
         with open(file_name, 'w') as exported_file:
-            json_data = str(devices).replace("'", '"').strip('("').strip('")').replace('\\','').replace('"{', "{").replace('}"', '}')
-            exported_file.write(json_data)
+            json_data = str(devices)
+            exported_file.write()
             print("exporting")
     else:
-        return str(devices).replace("'", '"').strip('("').strip('")').replace('\\','').replace('"{', "{").replace('}"', '}')
+        return str(devices).replace("'", '"')
 
 
-def importDeviceData(file_name):
+def importDeviceData(file_name = "", json_string = ""):
     devices_dict = {}
-    with open(file_name, 'r') as import_file:
+    if file_name:
+        import_file = open(file_name)
         print("importing")
+    if json_string:
+        import_data = json.loads(json_string.replace("'", '"'))
+    else:
         import_data = json.loads(import_file.read())
     for device_IP in import_data:
         devices_dict[device_IP] = Device(device_IP)
@@ -434,6 +426,8 @@ def importDeviceData(file_name):
                     exec('devices_dict[device_IP].%s = "%s"' % (attribute, import_data[device_IP][attribute]))
                 else:
                     exec('devices_dict[device_IP].%s = %s' % (attribute, import_data[device_IP][attribute]))
+        if file_name:
+            import_file.close()
     #print(devices_dict)
     return devices_dict 
     

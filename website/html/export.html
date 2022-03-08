@@ -26,7 +26,7 @@ Decription: HTML for the export page.
                 <form>
                     <form id="form" method="POST">
                         <input id="filename" type="text" name="title">
-                        <input type="submit" value="Export" class="submitButton" id="submit"/>
+                        <input type="button" class="submitButton" onclick="exportFile();" value="Export">
                      </form>
                 </form>
             </div>
@@ -35,7 +35,28 @@ Decription: HTML for the export page.
 </body>
 
 <script type="text/javascript">
-    
+    var nodeData = JSON.parse("{{nodeData|escapejs}}")
+
+    function exportFile() {
+
+        // file setting
+        const text = JSON.stringify(nodeData);
+        var name = document.getElementById("filename").value + ".json";
+        const type = "text/plain";
+
+        if (name == ".json") {
+            name = "network.json";
+        }
+
+        // create file
+        const a = document.createElement("a");
+        const file = new Blob([text], { type: type });
+        a.href = URL.createObjectURL(file);
+        a.download = name;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+    }
 </script>
 
 </html>
