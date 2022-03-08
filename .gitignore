@@ -1,0 +1,6 @@
+
+website/__pycache__/urls.cpython-38.pyc
+website/__pycache__/views.cpython-38.pyc
+website/python/__pycache__/Comparison.cpython-38.pyc
+website/python/__pycache__/DeviceDiscovery.cpython-38.pyc
+*.pyc
