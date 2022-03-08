@@ -105,7 +105,7 @@ Decription: HTML for the home page.
                 document.getElementById("newPassword").value="";
 
                 networkData[newIPsubnet] = {
-                    "ipsubnet": newIPsubnet,
+        
                     "username": newUsername,
                     "password": newPassword
                 }
@@ -139,14 +139,14 @@ Decription: HTML for the home page.
             document.getElementById(name).style.display = "block";
         }
 
-        $('#form').on('submit', function(e){
+        $('#table').on('submit', function(e){
 
             var newIPsubnet = document.getElementById("ipsubnet0.0.0.0/0").value;
             var newUsername = document.getElementById("username0.0.0.0/0").value;
             var newPassword = document.getElementById("password0.0.0.0/0").value;
 
-            networkData[newIPsubnet] = {
-                "ipsubnet": newIPsubnet,
+            networkData["0.0.0.0/0"] = {
+                
                 "username": newUsername,
                 "password": newPassword
             }

@@ -305,15 +305,9 @@ def deviceDiscovery(ip_address, auth_data_dict):
                     if neighbor[3] not in devices_dict[ip_address].interfaces:
                         devices_dict[ip_address].interfaces[neighbor[3]] = Port(port_name=neighbor[3], destination_ip=neighbor[1], destination_port=neighbor[4])
                     if neighbor[1] in IP_map and IP_map[neighbor[1]] not in devices_dict[ip_address].neighbors and IP_map[neighbor[1]] != ip_address:
-                        if IP_map[neighbor[1]] in IP_to_Hostname:
-                            devices_dict[ip_address].neighbors.append(IP_to_Hostname[IP_map[neighbor[1]]])
-                        else:
-                            devices_dict[ip_address].neighbors.append(IP_map[neighbor[1]])
+                        devices_dict[ip_address].neighbors.append(IP_map[neighbor[1]])
                     elif neighbor[1] not in IP_map and neighbor[1] not in devices_dict[ip_address].neighbors and neighbor[1] != ip_address:
-                        if neighbor[1] in IP_to_Hostname:
-                            devices_dict[ip_address].neighbors.append(IP_to_Hostname[neighbor[1]])
-                        else:
-                            devices_dict[ip_address].neighbors.append(neighbor[1])
+                        devices_dict[ip_address].neighbors.append(neighbor[1])
                     
 
             except Exception as e:
@@ -351,15 +345,9 @@ def deviceDiscovery(ip_address, auth_data_dict):
                 macs = fsm.ParseText(output)
                 for mac in macs:
                     if mac[1] in IP_map and IP_map[mac[1]] not in devices_dict[ip_address].neighbors and IP_map[mac[1]] != ip_address:
-                        if IP_map[mac[1]] in IP_to_Hostname:
-                            devices_dict[ip_address].neighbors.append(IP_to_Hostname[IP_map[mac[1]]])
-                        else:
-                            devices_dict[ip_address].neighbors.append(IP_map[mac[1]])
+                        devices_dict[ip_address].neighbors.append(IP_map[mac[1]])
                     elif mac[1] not in IP_map and mac[1] not in devices_dict[ip_address].neighbors and mac[1] != ip_address:
-                        if mac[1] in IP_to_Hostname:
-                            devices_dict[ip_address].neighbors.append(IP_to_Hostname[mac[1]])
-                        else:
-                            devices_dict[ip_address].neighbors.append(mac[1])
+                        devices_dict[ip_address].neighbors.append(mac[1])
                         if mac[1] not in devices:
                             devices_dict[mac[1]] = Device(mac[1])
 

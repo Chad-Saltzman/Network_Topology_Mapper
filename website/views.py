@@ -147,6 +147,8 @@ def passDictionary(request):
 
 def passNetworkInformation(request):
     devices_dict = request.POST.get('dic', None)
+
+    
     logger.critical(devices_dict)
 
 

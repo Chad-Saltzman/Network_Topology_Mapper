@@ -83,6 +83,14 @@ Decription: HTML for the inspect page.
         edges: edges,
     };
     var options = {
+        configure : {
+        "enabled": false, 
+        "filter": true}, 
+        "edges": {"color": {"inherit": true}, 
+        "smooth": {"enabled": false, "type": "continuous"}}, 
+        "interaction": {"hover": true, "dragNodes": true, "hideEdgesOnDrag": false, "hideNodesOnDrag": false, "navigationButtons": true}, 
+        "physics": {"enabled": true, "stabilization": {"enabled": true, "fit": true, "iterations": 1000, "onlyDynamicEdges": false, "updateInterval": 50}
+        },
         nodes: {
             shape: "circularImage",
             image: DIR + "NetDiscover_Icon_Desktop_V1.png",
