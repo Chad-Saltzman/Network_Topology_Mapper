@@ -37,7 +37,7 @@ Decription: CSS for the the site style (font, colors, transitions)
 }
 body.dark {
     --navbar-color: #242526;
-    --primary-color: #003566;
+    --primary-color: #c9c8c8;
     --primary-color-light: #ffffff;
     --network-color: #111111;
     --secondary-color: #e2ab15;
@@ -188,7 +188,7 @@ body.dark .navbar header .toggle {
 }
 body.dark .navbar li a:hover .icon,
 body.dark .navbar li a:hover .text{
-    color: var(--text-color);
+    color: var(--network-color);
 }
 .navbar .menu {
     height: calc(100% - 55px);
