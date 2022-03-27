@@ -18,24 +18,20 @@ import logging as logger
 TESTING = False
 
 def home(request):
-    print("home")
     # devices_dict = request.session.get('devices_dict', '')
     return render(request, 'home.html')
 
 def inspectUpload(request):
-    print("upload2")
     if request.method == 'POST' and request.FILES['myfile']:
         devices_dict = importDeviceData(str(request.FILES['myfile']))
         request.session['devices_dict'] = str(devices_dict)
         nodeData = str(devices_dict)
-        # print("asdasdasasdasdasddsAD")
         nodes = getNodes(devices_dict)
         edges = getEdges(devices_dict)
         return render(request, 'inspect.html', {'nodes': json.dumps(nodes), 'edges': json.dumps(edges), 'nodeData': nodeData.replace("'", '"')})
     # try:
         
     # except Expection as e:
-    #     print("short error\n\n\n")
     
 def upload(request):
     return render(request, 'upload.html')
@@ -44,7 +40,6 @@ def inspect(request):
 
     try:
         devices_dict = importDeviceData(json_string = request.session.get('devices_dict', ''))
-        print(type(devices_dict))
 
     except:
         devices_dict = None
@@ -74,7 +69,6 @@ def edit(request):
 
     try:
         devices_dict = importDeviceData(json_string = request.session.get('devices_dict', ''))
-        print(type(devices_dict))
 
     except:
         devices_dict = None
