@@ -18,16 +18,22 @@ Decription: CSS for the the site style (font, colors, transitions)
     --primary-color: #001D3D;
     --primary-color-light: #13013f;
     --network-color: #eeeeee;
-    --secondary-color: #e2ab15;
+    --secondary-color: #3d3d3d;
     --third-color: #15e271;
     --fourth-color: #b915e2;
     --fifth-color: #15c3e2;
     --toggle-color: #000000;
     --text-color: #181818;
+    --topo-color: rgb(255, 255, 255);
     --white: #FFFFFF;
     --grey: #eeeded;
     --black: #000000;
     --error: #ff0000;
+    --data-color: #13013f;
+    --drow1-color: #ffffff;
+    --drow2-color: #d1d1d1;
+    --flip-color: #ffffff;
+    --flip2-color: #001D3D;
 
     /* Transition Vars */
     --tran-03: all 0.2s ease;
@@ -40,11 +46,17 @@ body.dark {
     --primary-color: #c9c8c8;
     --primary-color-light: #ffffff;
     --network-color: #111111;
-    --secondary-color: #e2ab15;
+    --secondary-color: #7a7a7a;
     --fourth-color: #b915e2;
     --fifth-color: #15c3e2;
     --toggle-color: #f9ffe6;
     --text-color: #ccc;
+    --topo-color: #b1b1b1;
+    --data-color: #7a7a7a;
+    --drow1-color: #d1d1d1;
+    --drow2-color: #b1b1b1;
+    --flip-color: #000000;
+    --flip2-color: #c9c8c8;
 }
 body {
     min-height: 100vh;
@@ -159,7 +171,7 @@ header .logo-title .subTitle {
     transition: var(--tran-05);
 }
 body.dark .navbar header .toggle {
-    color: var(--text-color);
+    color: var(--network-color);
 }
 .navbar.close .toggle {
     transform: translateY(-50%) rotate(0deg);
@@ -212,13 +224,13 @@ body.dark .navbar li a:hover .text{
 }
 .mode .sun-moon i {
     position: absolute;
-    color: var(--white);
+    color: var(--flip-color);
 }
 .mode .sun-moon i.sun {
     opacity: 0;
 }
 .mode .mode-text {
-    color: var(--white);
+    color: var(--flip-color); /*fuck*/
 }
 body.dark .mode .sun-moon i.sun {
     opacity: 1;
@@ -242,7 +254,7 @@ body.dark .mode .sun-moon i.moon {
     height: 22px;
     width: 40px;
     border-radius: 25px;
-    background-color: var(--text-color);
+    background-color: var(--flip-color);/* button background icon*/
     transition: var(--tran-05);
 }
 .switch::before {
@@ -254,7 +266,7 @@ body.dark .mode .sun-moon i.moon {
     top: 50%;
     left: 5px;
     transform: translateY(-50%);
-    background-color: var(--navbar-color);
+    background-color: var(--flip2-color); /* button icon*/
     transition: var(--tran-04);
 }
 body.dark .switch::before {
@@ -369,14 +381,14 @@ body.dark .home .container {
 
 .datatable {
     border-collapse: collapse;
-    margin: 25px 0;
+    margin: 25px 35px;
     min-width: 90%;
-    border: 5px solid var(--primary-color);
+    border: 5px solid var(--data-color);
     color: var(--black);
     padding-bottom: 10%;
 }
 .datatable thead tr {
-    background-color: var(--primary-color);
+    background-color: var(--data-color);
     color: var(--white);
     text-align: left;
 }
@@ -391,11 +403,11 @@ body.dark .home .container {
     padding: 10px 6vmin;
 }
 .datatable tbody tr {
-    background-color: var(--white);
-    border-bottom: 1px solid var(--white);
+    background-color: var(--drow1-color);
+    border-bottom: 1px solid var(--drow1-color);
 }
 .datatable tbody tr:nth-of-type(even) {
-    background-color: var(--grey);
+    background-color: var(--drow2-color);
 }
 .datatable tbody tr:last-of-type {
     border-bottom: 2px solid var(--primary-color);
@@ -654,7 +666,7 @@ body.dark .inspect .container {
         width: 90%;
         height: 800px;
         border: 10px solid var(--secondary-color);
-        background-color: var(--network-color);
+        background-color: var(--topo-color);
     }
     /* Graph End */
 
