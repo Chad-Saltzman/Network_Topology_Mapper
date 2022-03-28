@@ -23,6 +23,8 @@ Decription: HTML for the home page.
                 <img src="{% static 'images/logo.png' %}" alt="NetDiscover Logo">
             </div>
 
+            
+
             <div id="main">
 
                 <div class="text">
@@ -65,7 +67,7 @@ Decription: HTML for the home page.
                                 <td><input type="text" id="newIPsubnet" class="form-input" placeholder="xxx.xxx.xxx.xxx/xx" maxlength=18/></td>
                                 <td><input type="text" id="newUsername" placeholder="steve"></td>
                                 <td><input type="text" id="newPassword" placeholder="password123"></td>
-                                <td><input type="button" class="addButton" onclick="addRow();" value="Add Credential"></td>
+                                <td><input type="button" class="addButton" onclick="addRow(); hide('scanMenu'); show('scanVisual')" value="Add Credential"></td>
                             </tr>
                         </tbody>
                     </table>
@@ -75,7 +77,18 @@ Decription: HTML for the home page.
                     </div>
                 </form>
             </div>
+
+            <div id="scanVisual">
+                <div class="text">
+                    <h1> Scanning </h1>
+                </div>
+                <div class="loading">
+                    <img src="{% static 'images/NetDiscover_Icon_Loading_DarkMode.gif' %}" alt="Scanning Logo">
+                </div>
+            </div>
+
         </div>
+
     </section>
 
 
@@ -121,7 +134,9 @@ Decription: HTML for the home page.
         // Hide and show elements
 
         // On page start hide elements
+        //hide('menu');
         hide('scanMenu');
+        hide('scanVisual');
 
         // Start local network scan
         scanButton = body.querySelector(".scanbutton");
