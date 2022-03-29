@@ -169,7 +169,8 @@ Decription: HTML for the inspect page.
         if (model == "None") {
             model = "Unknown";
         }
-        var row = table.insertRow(tableLen).outerHTML = "<tr id='row"+tableLen+"'><td id='ipaddress'>"+nodeData[device].IP+"</td><td id='hostname'>"+hostname+"</td><td id='models'>"+model+"</td><td id='neighbors'>"+nodeData[device].neighbors+"</td><td id='devicetype'>"+nodeData[device].device_type+"</td></tr>";
+        var neighbors = nodeData[device].neighbors.toString().replace(/,/gi, ", ");
+        var row = table.insertRow(tableLen).outerHTML = "<tr id='row"+tableLen+"'><td id='ipaddress'>"+nodeData[device].IP+"</td><td id='hostname'>"+hostname+"</td><td id='models'>"+model+"</td><td id='neighbors'>"+neighbors+"</td><td id='devicetype'>"+nodeData[device].device_type+"</td></tr>";
     }
     
 
