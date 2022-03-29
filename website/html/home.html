@@ -67,13 +67,13 @@ Decription: HTML for the home page.
                                 <td><input type="text" id="newIPsubnet" class="form-input" placeholder="xxx.xxx.xxx.xxx/xx" maxlength=18/></td>
                                 <td><input type="text" id="newUsername" placeholder="steve"></td>
                                 <td><input type="text" id="newPassword" placeholder="password123"></td>
-                                <td><input type="button" class="addButton" onclick="addRow(); hide('scanMenu'); show('scanVisual')" value="Add Credential"></td>
+                                <td><input type="button" class="addButton" onclick="addRow(); " value="Add Credential"></td>
                             </tr>
                         </tbody>
                     </table>
 
                     <div class="alignRight">
-                        <input type="submit" value="submit" class="submitButton" id="submit"/>
+                        <input type="submit" value="submit" class="submitButton" id="submit" onclick="hide('scanMenu'); show('scanVisual')"/>
                     </div>
                 </form>
             </div>
