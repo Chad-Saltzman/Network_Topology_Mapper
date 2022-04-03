@@ -142,6 +142,7 @@ def getNodes(devices, color = ""):
             'id' : devices[device].hostname if devices[device].hostname else devices[device].IP,
             'group' : devices[device].device_type + color if devices[device].device_type else "Desktop" + color,
             'title' : devices[device].IP,
+            # 'title' : f"{devices[device].IP} {devices[device].neighbors" 
             'label' : devices[device].hostname if devices[device].hostname else devices[device].IP,
             'shape' : 'circularImage', 
             'size' : 20,

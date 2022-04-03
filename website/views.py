@@ -116,10 +116,12 @@ def compare(request):
         compare_dict2 = None
         pass
 
+    nodeData = compare_dict1
+    nodeData.update(compare_dict2)
     if not TESTING:
         if  compare_dict1 and compare_dict2:
 
-            return render(request, 'compare.html', {'nodes': json.dumps(nodes), 'edges': json.dumps(edges)})
+            return render(request, 'compare.html', {'nodes': json.dumps(nodes), 'edges': json.dumps(edges), 'nodeData': str(nodeData).replace("'", '"')})
         else:
             return render(request, 'comparisonUpload.html')
 

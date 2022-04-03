@@ -382,25 +382,27 @@ body.dark .home .container {
 .datatable {
     border-collapse: collapse;
     margin: 25px 35px;
-    min-width: 90%;
     border: 5px solid var(--data-color);
     color: var(--black);
     padding-bottom: 10%;
+}
+.edit .datatable {
+    width: 95%;
 }
 .datatable thead tr {
     background-color: var(--data-color);
     color: var(--white);
     text-align: left;
 }
-.datatable th,
-.datatable td {
-    padding: 10px 2vmin;
+.edit .datatable th,
+.edit .datatable td {
+    padding: 10px 2vmax;
 }
 .inspect .datatable th,
 .inspect .datatable td {
     text-overflow: ellipsis; 
     word-wrap: break-word;
-    padding: 10px 6vmin;
+    padding: 10px 5vmax;
 }
 .datatable tbody tr {
     background-color: var(--drow1-color);
@@ -413,6 +415,47 @@ body.dark .home .container {
     border-bottom: 2px solid var(--primary-color);
 }
 .datatable tbody tr.active-row {
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+.datatable2 {
+    border-collapse: collapse;
+    margin: 25px 35px;
+    width: 20%;
+    border: 5px solid var(--data-color);
+    color: var(--black);
+    padding-bottom: 10%;
+}
+.datatable2 thead tr {
+    background-color: var(--data-color);
+    color: var(--white);
+    text-align: left;
+}
+.datatable2 th,
+.datatable2 td {
+    padding: 10px 2vmin;
+}
+.datatable2 img {
+    width: 80px;
+    border-radius: 6px;
+}
+.inspect .datatable2 th,
+.inspect .datatable2 td {
+    text-overflow: ellipsis; 
+    word-wrap: break-word;
+}
+.datatable2 tbody tr {
+    background-color: var(--drow1-color);
+    border-bottom: 1px solid var(--drow1-color);
+}
+.datatable2 tbody tr:nth-of-type(even) {
+    background-color: var(--drow2-color);
+}
+.datatable2 tbody tr:last-of-type {
+    border-bottom: 2px solid var(--primary-color);
+}
+.datatable2 tbody tr.active-row {
     color: var(--primary-color);
     font-weight: bold;
 }
@@ -481,14 +524,23 @@ body.dark .home .container {
   opacity: .75;
 }
 .divScroll {
+    scrollbar-width: thin;
     overflow-y: scroll;
     height:600px;
-    width:1500px;
+}
+.divScrollEdit {
+    scrollbar-width: thin;
+    overflow-y: scroll;
+    width:2000px;
+    height:600px;
 }
 /* #endregion Table */
 
 .alignRight {
     float: right;
+}
+.alignLeft {
+    float: left;
 }
 .alignCenter {
     float: center;
@@ -606,7 +658,7 @@ body.dark .inspect .container {
     width: 200px;
     padding: 10px;
     text-align: center;
-    margin: -5px 0px;
+    margin: 5px 0px;
     border-radius: 25px;
     font-weight: 600;
     border: 2px solid var(--fourth-color);
@@ -619,7 +671,7 @@ body.dark .inspect .container {
     width: 200px;
     padding: 10px;
     text-align: center;
-    margin: -5px 0px;
+    margin: 5px 0px;
     border-radius: 25px;
     font-weight: 600;
     border: 2px solid var(--third-color);
@@ -636,6 +688,67 @@ body.dark .inspect .container {
     color: inherit;
     text-decoration: inherit;
 }
+
+
+
+/* Popup container - can be anything you want */
+.popup {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  
+  /* The actual popup */
+  .popup .popuptext {
+    visibility: hidden;
+    width: 160px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -80px;
+  }
+  
+  /* Popup arrow */
+  .popup .popuptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+  }
+  
+  /* Toggle this class - hide and show the popup */
+  .popup .show {
+    visibility: visible;
+    -webkit-animation: fadeIn 1s;
+    animation: fadeIn 1s;
+  }
+  
+  /* Add animation (fade in the popup) */
+  @-webkit-keyframes fadeIn {
+    from {opacity: 0;} 
+    to {opacity: 1;}
+  }
+  
+  @keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity:1 ;}
+  }
+
+
 /* Inspect Page End */
 
 /* Edit Page Start */
@@ -683,6 +796,13 @@ body.dark .edit .container {
 .edit .rightContainer {
     display: flex;
     justify-content: right;
+    align-items: center;
+    color: var(--text-color);
+    padding: 10px 100px;
+}
+.edit .leftContainer {
+    display: flex;
+    justify-content: left;
     align-items: center;
     color: var(--text-color);
     padding: 10px 100px;
@@ -820,7 +940,7 @@ body.dark .compare .container {
     font-weight: 600;
     border: 2px solid var(--primary-color);
     background: var(--white);
-    color: var(--primary-color);
+    color: var(--black);
     cursor: pointer;
 }
 
