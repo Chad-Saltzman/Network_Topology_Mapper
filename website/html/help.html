@@ -1,0 +1,61 @@
+<!--
+Name: Ronald Du, Gavin Claire
+Document: help.html
+Decription: HTML for the help page.
+-->
+
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    
+    {% include 'navbar.html' %}
+
+    <section class="help">
+        <div class="container">
+            <div class="text">
+                <h1> Help </h1>
+                <p> <b>NetDiscover:</b> A Network Discovery and Documentation Application </p>
+                <br><p>
+                    NetDiscover, a network utility application, allows users to create and visualize their network through a topological map layout. NetDiscover is a user-friendly, affordable, low-maintenance network mapping tool that small companies and enterprises employ to monitor their networks. NetDiscover is geared toward assisting small businesses which are unable to monitor their networks effectively. NetDiscover provides a simple user interface where clients effectively and efficiently check the health of their network with local network topology construction, modification, and inspection. This paper details the recent project advancements and updated specifications of NetDiscover while examining the functional and non-functional requirements of the program. Furthermore, changes to the project design since the initial conception are discussed. Finally, the project has an updated user interface design. 
+                </p><br>
+
+                <hr>
+
+                <br><p>
+                    Team 14 [Internet Explorers]: Gavin Claire, Ronald Du, Carlos Dye, and Chad Saltzman<br> 
+                    Instructors: Devrin Lee and Dr. David Feil-Seifer<br>
+                    External Advisors: Dr. Engin Arslan (High-Performance Computing Researcher) and Dr. Shamik Sengupta (Cybersecurity Center Executive Director)
+                </p><br>
+
+                <hr>
+
+                <br><p>
+                    <b>Page Desciptions</b>
+                    <br>
+                    <p><i>Home Page:</i> Start here to start scanning your netwok, or upload a previously scanned network.</p>
+                    <p><i>Inspect Network Page:</i> Start here to visualize your network data.</p>
+                    <p><i>Edit Network Page:</i> Start here to edit your network data.</p>
+                    <p><i>Compare Page:</i> Start here to compare two different network scans.</p>
+                    <p><i>Export Page:</i> Start here to save your network to a file to use at a later date.</p>
+                </p><br>
+            </div>
+        </div>
+    </section>
+</body>
+
+<script type="text/javascript">
+    
+</script>
+
+</html>
+
+
+

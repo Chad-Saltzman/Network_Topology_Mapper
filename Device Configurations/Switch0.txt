@@ -1,0 +1,31 @@
+Switch 0:
+en
+conf t
+hostname Switch0
+enable secret password
+int Gi0/0
+no shut
+exit
+int Gi1/0
+no shut
+exit
+int vlan10
+ip address 10.157.0.10 255.255.255.0
+no shut
+ip default-gateway 10.157.0.1
+ip route 0.0.0.0 0.0.0.0 10.157.0.1
+ip domain-name netdiscover
+crypto key generate rsa
+1024
+ip ssh version 2
+username netdiscover password password
+line vty 0 15
+transport input ssh
+login local
+do copy run start
+
+
+
+
+
+

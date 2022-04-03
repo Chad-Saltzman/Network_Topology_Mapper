@@ -1,0 +1,28 @@
+Value Required NEIGHBOR_HOSTNAME (.*)
+Value SYSNAME (.*)
+Value NEIGHBOR_ADDRESS (.*)
+Value PLATFORM (.*)
+Value NEIGHBOR_INTERFACE (.*)
+Value LOCAL_INTERFACE (.*)
+Value SYSTEM_DESCRIPTION (.*)
+Value INTERFACE_IP (.*)
+Value CAPABILITIES (.*)
+
+Start
+  ^Device ID:${NEIGHBOR_HOSTNAME}
+  ^System Name: ${SYSNAME}
+  ^Interface address\(es\): -> GetInterfaceIP
+  ^Mgmt address\(es\): -> GetIP
+  ^Platform: ${PLATFORM}, Capabilities: ${CAPABILITIES}
+  ^Interface: ${LOCAL_INTERFACE}, Port ID \(outgoing port\): ${NEIGHBOR_INTERFACE}
+  ^Version: -> GetVersion
+  ^----- -> Record
+
+GetIP
+  ^.*IP.+Address: ${NEIGHBOR_ADDRESS} -> Start
+
+GetInterfaceIP
+  ^.*IP.+Address: ${INTERFACE_IP} -> Start
+
+GetVersion
+  ^${SYSTEM_DESCRIPTION} -> Start

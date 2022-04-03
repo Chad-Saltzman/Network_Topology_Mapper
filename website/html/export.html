@@ -1,0 +1,65 @@
+<!--
+Name: Ronald Du, Gavin Claire
+Document: export.html
+Decription: HTML for the export page.
+-->
+
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    
+    {% include 'navbar.html' %}
+
+    <section class="export">
+        <div class="container">
+            <div class="text">
+                <h1> Export Scanned Network </h1>
+                <p> Please enter a filename for the exported network JSON file: </p>
+                <form>
+                    <form id="form" method="POST">
+                        <input id="filename" type="text" name="title">
+                        <input type="button" class="submitButton" onclick="exportFile();" value="Export">
+                     </form>
+                </form>
+            </div>
+        </div>
+    </section>
+</body>
+
+<script type="text/javascript">
+    var nodeData = JSON.parse("{{nodeData|escapejs}}")
+
+    function exportFile() {
+
+        // file setting
+        const text = JSON.stringify(nodeData);
+        var name = document.getElementById("filename").value + ".json";
+        const type = "text/plain";
+
+        if (name == ".json") {
+            name = "network.json";
+        }
+
+        // create file
+        const a = document.createElement("a");
+        const file = new Blob([text], { type: type });
+        a.href = URL.createObjectURL(file);
+        a.download = name;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+    }
+</script>
+
+</html>
+
+
+
