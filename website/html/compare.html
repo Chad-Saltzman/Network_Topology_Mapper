@@ -57,12 +57,16 @@ Decription: HTML for the inspect page.
             <div class="alignRight">
                 <a class="inspectNewButton" href="{% url 'comparisonUploadNew' %}">Compare New Network</a>
             </div>
+            <div class="divider"></div>
+            <div class="alignRight">
+                <a class="exportButton" onclick="downloadPDF();">Export Table (PDF)</a>
+            </div>
         </div>
 
         <div class="container">
             <div id="scanMenu">
                 <form id="table" name="form1" action="#"> 
-                    <div class="divScroll">
+                    <div id="tableExport" class="divScroll">
                         <table class="datatable" id="datatable">
                             <thead>
                                 <tr>
@@ -302,6 +306,30 @@ network.on( 'click', function(properties) {
     }
 });
 
+// Create pdf of page
+function downloadPDF() {
+    var sTable = document.getElementById('tableExport').innerHTML;
+
+    // Create temp html document with table contents and print
+    var style = "<style>";
+    style = style + "table { width: 100%; font: 17px sans-serif;}";
+    style = style + "table, th, td {border: solid 1px #DDD; border-collapse: collapse;";
+    style = style + "padding: 2px 3px; text-align: center; }";
+    style = style + "</style>";
+
+    var win = window.open('', '', 'height=700,width=700');
+
+    win.document.write('<html><head>');
+    win.document.write('<title>Network Topology Compare Table</title>');
+    win.document.write(style);
+    win.document.write('</head>');
+    win.document.write('<body>');
+    win.document.write(sTable);
+    win.document.write('</body></html>');
+
+    win.document.close();
+    win.print();
+}
 // Create table
 
 var table = document.getElementById("datatable");

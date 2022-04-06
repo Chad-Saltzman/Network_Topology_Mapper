@@ -117,7 +117,9 @@ def compare(request):
         pass
 
     nodeData = compare_dict1
-    nodeData.update(compare_dict2)
+    if nodeData is not None:
+        nodeData.update(compare_dict2)
+
     if not TESTING:
         if  compare_dict1 and compare_dict2:
 
@@ -152,8 +154,12 @@ def comparisonUpload(request):
     edges = (edgesWhite + edgesRed + edgesGreen)
     request.session['compare_dict1'] = str(compare_dict1)
     request.session['compare_dict2'] = str(compare_dict2)
+    
+    nodeData = compare_dict1
+    if nodeData is not None:
+        nodeData.update(compare_dict2)
 
-    return render(request, 'compare.html', {'nodes': json.dumps(nodes), 'edges': json.dumps(edges)})
+    return render(request, 'compare.html', {'nodes': json.dumps(nodes), 'edges': json.dumps(edges), 'nodeData': str(nodeData).replace("'", '"')})
 
 def export(request):
 

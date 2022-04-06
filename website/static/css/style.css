@@ -459,6 +459,48 @@ body.dark .home .container {
     color: var(--primary-color);
     font-weight: bold;
 }
+
+.datatableScan {
+    border-collapse: collapse;
+    margin: 25px 35px;
+    min-width: 90%;
+    border: 5px solid var(--data-color);
+    color: var(--black);
+    padding-bottom: 10%;
+}
+.edit .datatableScan {
+    width: 95%;
+}
+.datatableScan thead tr {
+    background-color: var(--data-color);
+    color: var(--white);
+    text-align: left;
+}
+.edit .datatableScan th,
+.edit .datatableScan td {
+    padding: 10px 2vmax;
+}
+.inspect .datatableScan th,
+.inspect .datatableScan td {
+    text-overflow: ellipsis; 
+    word-wrap: break-word;
+    padding: 10px 6vmax;
+}
+.datatableScan tbody tr {
+    background-color: var(--drow1-color);
+    border-bottom: 1px solid var(--drow1-color);
+}
+.datatableScan tbody tr:nth-of-type(even) {
+    background-color: var(--drow2-color);
+}
+.datatableScan tbody tr:last-of-type {
+    border-bottom: 2px solid var(--primary-color);
+}
+.datatableScan tbody tr.active-row {
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
 .deleteButton {
   background-color: var(--secondary-color);
   border-radius: 4px;
@@ -663,6 +705,19 @@ body.dark .inspect .container {
     font-weight: 600;
     border: 2px solid var(--fourth-color);
     background: var(--fourth-color);
+    color: var(--white);
+    cursor: pointer;
+}
+.inspect .alignRight .exportButton {
+    font-size: 17.5px;
+    width: 200px;
+    padding: 10px;
+    text-align: center;
+    margin: 5px 0px;
+    border-radius: 25px;
+    font-weight: 600;
+    border: 2px solid var(--fifth-color);
+    background: var(--fifth-color);
     color: var(--white);
     cursor: pointer;
 }
