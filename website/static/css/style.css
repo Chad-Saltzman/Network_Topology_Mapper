@@ -463,18 +463,19 @@ body.dark .home .container {
 .datatableScan {
     border-collapse: collapse;
     margin: 25px 35px;
-    min-width: 90%;
+    min-width: 100%;
     border: 5px solid var(--data-color);
     color: var(--black);
     padding-bottom: 10%;
 }
 .edit .datatableScan {
-    width: 95%;
+    width: 105%;
 }
 .datatableScan thead tr {
     background-color: var(--data-color);
     color: var(--white);
-    text-align: left;
+    text-align: center;
+    padding: 10px 2vmax;
 }
 .edit .datatableScan th,
 .edit .datatableScan td {
@@ -560,6 +561,27 @@ body.dark .home .container {
     text-align: center;
     touch-action: manipulation;
     width: 100%;
+}
+.addCredButton {
+    background-color: var(--third-color);
+    border-radius: 4px;
+    border-style: none;
+    box-sizing: border-box;
+    color: var(--white);
+    cursor: pointer;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.5;
+    height: 70%;
+    max-height: 60px;
+    min-width: 10px;
+    overflow: hidden;
+    padding: 1px 1px 1px;
+    position: relative;
+    text-align: center;
+    touch-action: manipulation;
+    width: 90%;
 }
 .button-31:hover,
 .button-31:focus {
