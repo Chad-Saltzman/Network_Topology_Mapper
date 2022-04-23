@@ -69,6 +69,7 @@ Decription: HTML for the home page.
                                 <td><input type="text" id="newPassword" placeholder="password123"></td>
                                 <td><input type="button" class="addCredButton" onclick="addRow(); " value="Add Credential"></td>
                             </tr>
+
                         </tbody>
                     </table>
 
@@ -98,20 +99,22 @@ Decription: HTML for the home page.
 
         // Delete row
         function deleteRow(num) {
+            console.log(num.toString())
             delete networkData[num.toString()];
-            document.getElementById("row" + num.toString() + "").outerHTML="";
+            document.getElementById("row" + num.toString()).outerHTML="";
         }
 
         // Add row
         function addRow() {
+
             var newIPsubnet = document.getElementById("newIPsubnet").value;
             var newUsername = document.getElementById("newUsername").value;
             var newPassword = document.getElementById("newPassword").value;
 
             if (newIPsubnet != null && validateIP(newIPsubnet) && newUsername.indexOf(' ') == -1 && newPassword.indexOf(' ') == -1) {
-                var table = document.getElementById("datatable");
+                var table = document.getElementById("datatableScan");
                 var tableLen = (table.rows.length) - 1;
-                var row = table.insertRow(tableLen).outerHTML = "<tr id=row"+newIPsubnet+"><td id='ipsubnet'>"+newIPsubnet+"</td><td id='username'>"+newUsername+"</td><td id='password'>"+newPassword+"</td><td><input type='button' class='deleteButton' onclick='deleteRow("+newIPsubnet+");' value='Delete'></td></tr>";
+                var row = table.insertRow(tableLen).outerHTML = "<tr id='row"+newIPsubnet+"'><td id='"+"ipsubnet"+"'>"+newIPsubnet+"</td><td id='"+"username"+"'>"+newUsername+"</td><td id='"+"password"+"'>"+newPassword+"</td><td><input type='"+"button"+"' class='"+"deleteCredButton"+"' onclick='"+"deleteRow("+'"'+newIPsubnet+'"'+");"+"' value='"+"Delete"+"'></td></tr>";
                 
                 document.getElementById("newIPsubnet").value="";
                 document.getElementById("newUsername").value="";
